@@ -12,13 +12,27 @@
     </div>
   </div>
   <div class="container-fluid">
-      <div class="col-lg-12">
-          <div class="testdiv">
-              <p><?php echo var_dump($user->getUserName());?></p>
-              <p><?php echo var_dump($user->getId());?></p>
-              <p><?php echo var_dump($user->getGroupId());?></p>
-          </div>
-      </div>       
+      
+      <div>
+        <div class="col-lg-6">
+            <div class="testdiv testdivred">
+                 <p class="testp"><?php echo $email;?></p>
+                <p class="testp newtestone"><?php echo $firstmane." ".$lastname ;?></p>
+                <p class="testp"><?php echo $userAL;?></p>
+                <p class="testp"><?php echo $user_group;?></p>
+            </div>
+        </div>       
+      </div> 
+<div>
+        <div class="col-lg-6">
+            <div class="testdiv testdivgreen">
+                <p class="testp"><?php echo $user_group;?></p>
+                <p class="testp newtestone"><?php echo $firstmane." ".$lastname ;?></p>
+                <p class="testp"><?php echo $userAL;?></p>
+                <p class="testp"><?php echo $email;?></p>
+            </div>
+        </div>       
+      </div>             
   </div>
 </div>
 
