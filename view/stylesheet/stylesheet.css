@@ -22,6 +22,15 @@ html, body {
     border-radius: 10px;
     border: 1px dashed #99bf9c;
 }
+.testdiv{
+    position: absolute;
+    top: 0;
+    left:0;
+    padding: 15px 20px;
+    background-color: #FA8072;
+    border-radius: 10px;
+    border: solid 1px black;
+}
 
 .pointdesc .hide{
     display: none;

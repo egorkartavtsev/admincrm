@@ -13,16 +13,12 @@
   </div>
   <div class="container-fluid">
       <div class="col-lg-12">
-          <div class="alert alert-danger">
-              <p><?php echo var_dump($user->getUserInfo());?></p>
-              <p><?php echo var_dump($user->isAdmin());?></p>
-              <p><?php echo var_dump($user->isLogged());?></p>
+          <div class="testdiv">
+              <p><?php echo var_dump($user->getUserName());?></p>
+              <p><?php echo var_dump($user->getId());?></p>
+              <p><?php echo var_dump($user->getGroupId());?></p>
           </div>
-          <div class="alert alert-danger"><?php echo var_dump($tegggg);?></div>
-          <div class="alert alert-success"><?php echo var_dump($simple->row);?></div>
-          <div class="alert alert-info"><?php echo var_dump($simple->rows);?></div>
-          <div class="alert alert-warning"><?php echo var_dump($simple->num_rows);?></div>
-      </div>
+      </div>       
   </div>
 </div>
 
