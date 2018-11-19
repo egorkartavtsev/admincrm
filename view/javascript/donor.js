@@ -11,15 +11,15 @@ function validateDonorForm (){
 
 function filterDonorList(){
     ajax({
-            url:"index.php?route=donor/list/filter" ,
+            url:"index.php?route=donor/list/filter",
             statbox:"status",
             method:"POST",
             data:
             {
                 param: $("#searchd").val()
             },
-            success:function(data){
-                $("#listDonors").html(data);
+            success:function(resp){
+                $("#listDonors").html(resp);
             }
         })
 }
