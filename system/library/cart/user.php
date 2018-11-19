@@ -12,7 +12,7 @@ class User {
 	private $permission = array();
         private $info;
         
-
+ 
 	public function __construct($registry) {
 		$this->db = $registry->get('db');
 		$this->request = $registry->get('request');
