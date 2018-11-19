@@ -11,7 +11,7 @@ function validateDonorForm (){
 
 function filterDonorList(){
     ajax({
-            url:"index.php?route=donor/list/filter&token=" + getURLVar('token'),
+            url:"index.php?route=donor/list/filter" ,
             statbox:"status",
             method:"POST",
             data:
