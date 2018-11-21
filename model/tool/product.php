@@ -515,6 +515,7 @@ class ModelToolProduct extends Model {
     
     public function searchingProds($request) {
         $reqwords = explode(" ", $request);
+        $tmp = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE searching = 1")->rows;
 
         $query = "SELECT "
                   . "pd.name AS name, "
@@ -530,8 +531,11 @@ class ModelToolProduct extends Model {
                     . "WHERE !LOCATE('complect', p.vin) AND p.status>0 ";
         foreach ($reqwords as $word){
             $query.="AND (p.vin = '".$this->db->escape($word)."' "
-                       . "OR LOCATE('" . $this->db->escape($word) . "', pd.name) "
-                       . "OR LOCATE('" . $this->db->escape($word) . "', p.catn)) ";
+                       . "OR LOCATE('" . $this->db->escape($word) . "', pd.name) ";
+               foreach ($tmp as $field) {
+                   $query.="OR LOCATE('" . $this->db->escape($word) . "', p.".$field['name'].") ";
+               }
+           $query.=") ";
         }
         $result = $this->db->query($query);
         return $result->rows;
