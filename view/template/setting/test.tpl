@@ -12,17 +12,27 @@
     </div>
   </div>
   <div class="container-fluid">
-      <div class="col-lg-12">
-          <div class="alert alert-danger">
-              <p><?php echo var_dump($user->getUserInfo());?></p>
-              <p><?php echo var_dump($user->isAdmin());?></p>
-              <p><?php echo var_dump($user->isLogged());?></p>
-          </div>
-          <div class="alert alert-danger"><?php echo var_dump($tegggg);?></div>
-          <div class="alert alert-success"><?php echo var_dump($simple->row);?></div>
-          <div class="alert alert-info"><?php echo var_dump($simple->rows);?></div>
-          <div class="alert alert-warning"><?php echo var_dump($simple->num_rows);?></div>
-      </div>
+      
+      <div>
+        <div class="col-lg-6">
+            <div class="testdiv testdivred">
+                 <p class="testp"><?php echo $email;?></p>
+                <p class="testp newtestone"><?php echo $firstmane." ".$lastname ;?></p>
+                <p class="testp"><?php echo $userAL;?></p>
+                <p class="testp"><?php echo $user_group;?></p>
+            </div>
+        </div>       
+      </div> 
+<div>
+        <div class="col-lg-6">
+            <div class="testdiv testdivgreen">
+                <p class="testp"><?php echo $user_group;?></p>
+                <p class="testp newtestone"><?php echo $firstmane." ".$lastname ;?></p>
+                <p class="testp"><?php echo $userAL;?></p>
+                <p class="testp"><?php echo $email;?></p>
+            </div>
+        </div>       
+      </div>             
   </div>
 </div>
 

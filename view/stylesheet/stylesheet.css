@@ -22,7 +22,28 @@ html, body {
     border-radius: 10px;
     border: 1px dashed #99bf9c;
 }
+.testdiv{
+    
+    color: #1E91CF;
+    padding: 15px 20px;
+    border-radius: 10px;
+}
+.testdivred{
+    background-color: red;
+   
+}
+.testdivgreen{
+    background-color: green;
+} 
+.testp{
+     background-color: yellow;
+    border: solid 10px green;
+    padding: 15px 20px;
+}
 
+.newtestone{
+    font-size: 26pt;
+}
 .pointdesc .hide{
     display: none;
 }
