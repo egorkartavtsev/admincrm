@@ -334,9 +334,9 @@ class ControllerSettingUser extends Controller {
 		}
 
 		if (!isset($this->request->get['user_id'])) {
-			$data['action'] = $this->url->link('setting/user/add', 'token=' . $this->session->data['token'] . $url, true);
+			$data['action'] = $this->url->link('setting/user/add', '1' . $url, true);
 		} else {
-			$data['action'] = $this->url->link('setting/user/edit', 'token=' . $this->session->data['token'] . '&user_id=' . $this->request->get['user_id'] . $url, true);
+			$data['action'] = $this->url->link('setting/user/edit', 'user_id=' . $this->request->get['user_id'] . $url, true);
 		}
 
 		$data['cancel'] = $this->url->link('setting/user', 'token=' . $this->session->data['token'] . $url, true);
