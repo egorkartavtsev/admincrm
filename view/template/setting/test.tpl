@@ -34,6 +34,55 @@
         </div>       
       </div>             
   </div>
+    <div class='alert well'>
+    <form method="post" action="index.php?route=setting/test">
+        <div  class="col-lg-3 form-group  well-sm">
+            <label for="brandTest">Марка</label>
+            <input type="search" class="form-control" name="brandTest" placeholder="Бренд" value="<?php if (isset($filter['brandTest'])){ echo $filter['brandTest'];}?>">
+        </div>
+         <div class="col-lg-2 form-group  well-sm">
+            <label for="minpriceTest">Цена от:</label>
+            <input type="number" class="form-control" name="minpriceTest" placeholder="Цена от" value="<?php echo $filter['minpriceTest'];?>">
+        </div>
+        <div class="col-lg-2 form-group well-sm">
+            <label for="maxpriceTest">Цена до:</label>
+            <input type="number" class="form-control" name="maxpriceTest" placeholder="Цена до:" value="<?php echo $filter['maxpriceTest'];?>">
+        </div>
+         <div class="col-lg-2 form-group well-sm">
+            <label for="compliteTest">Состав</label>
+            <input list="List" type="text"  class="form-control" name="compliteTest" placeholder="Введите " >
+        </div>
+        <div class="col-lg-1 form-group well-sm"> 
+            <label for="colvo">Кол-во товара</label><br>
+            <input type="number" class="form-control" name="colvo" placeholder="50" value="<?php echo $filter['maxpriceTest'];?>">
+        </div>    
+        <div class='col-lg-2 form-group well-sm'>
+            <label>&nbsp;</label><br>
+            <button type="submit" class="right btn btn-default">Фильтровать</button>
+            <datalist id="List">
+                <option value="Комплект" />
+                <option value="Отдельная деталь" />
+            </datalist>
+        </div>
+    </form>
+    </div>    
+<table class="table table-striped">
+ <tr>
+     <th>Порядковый номер</th>
+     <th>Название товара</th>
+     <th>Внутриний номер</th>
+     <th>Цена</th>
+     <th>Изображение</th>
+ </tr>   
+    <?php foreach($products as $key => $prostata){ ?>
+        <tr>
+            <td><?php echo $key+1;?></td>
+            <td><?php echo $prostata['nametest'];?></td>
+            <td><?php echo $prostata['vintest'];?></td>
+            <td><?php echo $prostata['pricetest'];?></td>
+            <td><img src="<?php echo $prostata['imagetest'];?>" class="img-circle"></td>
+        </tr>
+    <?php } ?>
+</table>
 </div>
-
 <?php echo $footer; ?>

@@ -26,6 +26,7 @@ class ControllerReportOrdersInfo extends Controller{
             $url.='&filter-telephone='.$this->request->get['filter-telephone'];
         }
         $data['order'] = $order;
+        $data['order_id'] = $this->request->get['order_id'];
         $data['complects'] = array();
         $data['order_history'] = $this->model_tool_order->getHistInfo($this->request->get['order_id']);
         foreach ($order['products'] as $prod) {
