@@ -24,7 +24,7 @@ class ControllerReportPlaning extends Controller{
                 'currHist'      => $this->model_report_planing->getPlanChangeHistory($key)
             ];
         }
-        
+        //exit(var_dump($plan));
         $data['plans'] = $plan;
         $this->response->setOutput($this->load->view('report/planing', $data));
     }

@@ -112,15 +112,8 @@
             <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
             <div class="col-sm-10">
               <select name="status" id="input-status" class="form-control">
-                <?php if ($status == '2') { ?>
-                    <option value="0"><?php echo $text_disabled; ?></option>
-                    <option value="1"><?php echo $text_enabled; ?></option>
-                    <option value="2"  selected="selected" ><?php echo $text_reserve; ?></option>
-                    <?php } elseif ($status == '1') { ?>
-                    <option value="0"><?php echo $text_disabled; ?></option>
-                    <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                    <option value="2"><?php echo $text_reserve; ?></option>
-                    <?php } ?>
+                  <option value="0">Отключен</option>
+                  <option value="1" <?php echo $status?'selected':'';?>>Активирован</option>
               </select>
             </div>
           </div>

@@ -5,8 +5,9 @@
 /system/storage/logs/
 /image/
 /config.php
-/admin/config.php
+/config.php
 /Avito/
+/Avito/ads.xml
 /uploadeXcelfiles/
 /downloadXcelFiles/
 /nbproject/
