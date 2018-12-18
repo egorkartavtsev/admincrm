@@ -14,11 +14,17 @@ class ControllerReportPlaning extends Controller{
         foreach ($plan as $key => $value) {
             $curFact = $this->model_report_planing->getCurrentFact($key);
             $current = $this->model_report_planing->getCurrentPlan($key);
+            if ($current = "" ||  $current = '0'){
+                $currentFloor = floor($curFact*100/1);
+            }
+            else {
+                $currentFloor = floor($curFact*100/$current);
+            }
             $plan[$key] = [
                 'id'            => $value,
                 'current'       => $current,
                 'curFact'       => $curFact,
-                'totalPercent'  => floor($curFact*100/$current),
+                'totalPercent'  => $currentFloor,
                 'history'       => $this->getTotalHistory($key),
                 'planPerDay'    => $current?$this->planPerDay($key, $current):[],
                 'currHist'      => $this->model_report_planing->getPlanChangeHistory($key)

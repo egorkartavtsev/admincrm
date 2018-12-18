@@ -53,6 +53,7 @@ class ModelToolForms extends Model {
         $attrs = '';
         switch ($option['field_type']) {
             case 'input':
+                //***Каталожный номер***
                 if($option['name']!=='numb' && $option['name']!=='catn'){
                     $this->form[$option['field_type']].= '<div class="form-group-sm col-md-12" link="'.$option['name'].'">';
                         $attrs.= $option['required']==='1'?' required="required" aria-required="true"':'';
