@@ -14,7 +14,7 @@ class ControllerReportPlaning extends Controller{
         foreach ($plan as $key => $value) {
             $curFact = $this->model_report_planing->getCurrentFact($key);
             $current = $this->model_report_planing->getCurrentPlan($key);
-            if ($current = "" ||  $current = '0'){
+            if ($current === "" ||  $current === '0'){
                 $currentFloor = floor($curFact*100/1);
             }
             else {
