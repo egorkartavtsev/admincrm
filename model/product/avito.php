@@ -78,6 +78,7 @@ class ModelProductAvito extends Model {
                     . "AND LOCATE('".$filter['model']."', p.model) "
                     . "AND LOCATE('".$filter['stock']."', p.adress) "
                     . "AND LOCATE('".$filter['vin']."', p.vin) "
+                    . "AND LOCATE('".$filter['donor']."', p.numb) "
                     . "AND p.price>=".(int)$filter['priceFrom']." "
                     . "AND p.price<=".(int)$filter['priceTo']." "
                     . "AND p2a.dateEnd>='".$filter['date']."' ";

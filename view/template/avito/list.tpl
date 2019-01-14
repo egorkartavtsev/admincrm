@@ -69,6 +69,10 @@
                     <label>Модель:</label>
                     <input type="text" class="form-control" target="filter" target-name="model" value="<?php echo isset($filter['model'])?$filter['model']:'';?>">
                 </div>
+                <div class="form-group-sm">
+                    <label>Донор</label>
+                    <input type="text" class="form-control" target="filter" target-name="donor" value="<?php echo isset($filter['donor'])?$filter['donor']:'';?>">
+                </div>
                 <div class="clearfix"><p></p></div>
                 <div class="clearfix"></div>
                 <div class="form-group">

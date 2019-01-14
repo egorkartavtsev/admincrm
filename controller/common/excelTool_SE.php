@@ -2,9 +2,9 @@
     class ControllerCommonExcelToolSE extends Controller {
         
         
-        public function FormNewOrderShiping()  {
-            $order_id = $this->request->get['order_id'];
-            $OrderSQL = $this->db->query("SELECT * FROM " . DB_PREFIX . "order WHERE `order_id` = '$order_id'");
+        public function FormDROMOrder()  {
+       //   $order_id = $this->request->get['order_id'];
+       //     $OrderSQL = $this->db->query("SELECT * FROM " . DB_PREFIX . "order WHERE `order_id` = '$order_id'");
         //    EXIT( var_dump($OrderSQL));
             $OrderExcel = new PHPExcel();
             $active_sheet_index = $OrderExcel->setActiveSheetIndex(0);
@@ -127,6 +127,7 @@
             //return $this->$OrderExcel;
         }
     }
+   
   /*      public function downloadAllProds() {
             $this->load->model("tool/excel");
             $flag = $this->request->get['flag'];
