@@ -62,6 +62,10 @@
                 <label class="control-label" for="input-donor">Донор</label>
                 <input type="text" name="filter_donor" value="<?php echo $filter_donor; ?>" placeholder="Донор" id="input-donor" class="form-control" />
               </div>
+              <div class="form-group">
+                <label class="control-label" for="input-type">Состояние товара</label>
+                <select name="filter_type" id="input-type" class="form-control"><option value=""> </option><option value="1" <?php if($filter_type==='1'){echo 'selected';} ?>>Новый</option><option value="0" <?php if($filter_type==='0'){echo 'selected';} ?>>Б/У</option></select>
+              </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group col-sm-6">
@@ -396,8 +400,12 @@ $('#button-filter').on('click', function() {
 	if (filter_drom) {
 		url += '&filter_drom=' + encodeURIComponent(filter_drom);
 	}
+       
+        var filter_type = $('select[name=\'filter_type\']').val();
 
-	
+	if (filter_type) {
+		url += '&filter_type=' + encodeURIComponent(filter_type);
+	}
 
   var filter_image = $('select[name=\'filter_image\']').val();
 
