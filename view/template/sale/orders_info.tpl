@@ -87,6 +87,7 @@
                                 </span>
                             </div>
                       </div>
+                      <div id="ship_href"><a target="_blank" HREF="index.php?route=common/excelTool_SE/FormNewOrderShiping&order_id=<?php echo $order_id; ?>" class="bnt btn-sm btn-info">Отправить данные на печать</a></div>
                   </div>
               </div>
               <div class="col-md-5">

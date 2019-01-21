@@ -82,9 +82,10 @@ class ControllerDonorList extends Controller {
             
             $table.='<tr>';
             $table.='<td>'
+                    . '<a href="'.$this->url->link('donor/show', 'numb='.$donor['numb'], true).'" class="btn btn-warning"><i class="fa fa-eye"></i></a>'
                     . '<a href="'.$this->url->link('donor/edit', 'donor_id='.$donor['id'], true).'" class="btn btn-primary"><i class="fa fa-pencil"></i></a>'
                     . '<a href="'.$this->url->link('donor/list/delete', 'donor_id='.$donor['id'], true).'" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>'
-                    . '</td>';
+                  . '</td>';
             $table.='<td class="text-center"><img src="'.$image.'"></td>';
             $table.='<td>'.$donor['name'].'</td>';
             $table.='<td>'.$donor['numb'].'</td>';

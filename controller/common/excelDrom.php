@@ -5,11 +5,11 @@
 
             $this->load->model("tool/layout");
             $this->load->model("common/excel");
-            $this->load->model("tool/excel");
+        //    $this->load->model("tool/excel");
             $this->load->model("common/excelDrom");
             $data = $this->model_tool_layout->getLayout($this->request->get['route']);
       
-          //  $OrderExcel = new PHPExcel();
+            $OrderExcel = new PHPExcel();
             $active_sheet_index = $OrderExcel->setActiveSheetIndex(0);
             $active_sheet = $OrderExcel->getActiveSheet(0);
             $active_sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
@@ -76,11 +76,10 @@
                                         $active_sheet->setCellValue('K'.$lp.'',''.$sqlr['quant'].'');
                                         $lp = $lp+1;
                                         }
-          
-          }
-            foreach ($complects_bd as $sqlrt) {
-                foreach ($exlxe->rows as $sqlr){
-                if ((($sqlr['comp'] === $sqlrt['head'])or($sqlr['comp'] === $sqlrt['cid']))||($sqlrt['c_whole'] === 0)){
+                 else {
+           foreach ($complects_bd as $sqlrt) {
+              if ($sqlrt['c_whole'] === '0'){
+                             if (($sqlr['comp'] === $sqlrt['head'])or($sqlr['comp'] === $sqlrt['cid'])){
                     //$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
                                       //$description = $this->model_common_excelDrom->getDromDescription($sqlr);
                                         $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
@@ -90,13 +89,15 @@
                                         $active_sheet->setCellValue('E'.$lp.'',''.$sqlr['vin'].'');
                                       //$active_sheet->setCellValue('F'.$lp.'',''..'');
                                         $active_sheet->setCellValue('G'.$lp.'',''.$sqlr['price'].'');
-                                      //$active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
+                                      //$active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');s
                                       //$active_sheet->setCellValue('I'.$lp.'',''.$description.'');
                                         $active_sheet->setCellValue('K'.$lp.'',''.$sqlr['quant'].'');
+                                        $active_sheet->setCellValue('L'.$lp.'',''.$sqlr['quant'].'');
                                         $lp = $lp+1;
-                }
-                else { 
-                    if (($sqlrt['cid'] === $sqlr['comp']) || ($sqlrt['c_whole'] === 1)) {
+                } 
+              }
+             else { 
+                   if ($sqlrt['cid'] === $sqlr['comp'])  {
                                       //$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
                                       //$description = $this->model_common_excelDrom->getDromDescription($sqlr);
                                         $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
@@ -109,12 +110,15 @@
                                       //$active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
                                       //$active_sheet->setCellValue('I'.$lp.'',''.$description.'');
                                         $active_sheet->setCellValue('K'.$lp.'',''.$sqlr['quant'].'');
+                                        $active_sheet->setCellValue('L'.$lp.'','2');
+                                        $active_sheet->setCellValue('M'.$lp.'',''.$sqlr['price'].'');
                                         $lp = $lp+1; 
                     }
                     
                     }
-            }
-            }
+                            }
+           }
+              }
             header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Cache-Control: no-cache, must-revalidate" );

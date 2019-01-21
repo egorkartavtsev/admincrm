@@ -68,6 +68,14 @@ class ModelCatalogProduct extends Model {
                     }
                 }
                 
+                if (isset($data['filter_type'])) {
+                    if($data['filter_type']==='1'){ 
+                        $sql .= " AND p.type = 'НОВЫЙ' ";
+                    } elseif ($data['filter_type']==='0'){
+                        $sql .= " AND  p.type = 'Б/У' ";
+                    }
+                }
+                
                 if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
                     $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.numb)";
                 }
@@ -385,7 +393,14 @@ class ModelCatalogProduct extends Model {
                         $sql .= " AND p.drom = '' ";
                     }
                 }
-                
+                   
+                if (isset($data['filter_type'])) {
+                    if($data['filter_type']==='1'){ 
+                        $sql .= " AND p.type ='НОВЫЙ' ";
+                    } elseif ($data['filter_type']==='0'){
+                        $sql .= " AND p.type = 'Б/У' ";
+                    }
+                }
                 if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
                     $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.numb)";
                 }

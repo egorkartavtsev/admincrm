@@ -1,7 +1,6 @@
 <?php
 class ControllerCommonDashboard extends Controller {
 	public function index() {
-		$this->load->language('common/dashboard');
                 $this->load->model('tool/layout');
                 $this->load->model('tool/image');
                 if(!isset($this->request->get['route']) || $this->request->get['route']===''){

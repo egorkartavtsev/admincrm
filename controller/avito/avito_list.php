@@ -18,6 +18,7 @@ class ControllerAvitoAvitoList extends Controller{
             'date'      => '1976-01-01',
             'modbr'     => '',
             'model'     => '',
+            'donor'     => '',
             'podcat'     => '',
             'stock'     => '',
             'vin'     => '',
@@ -42,7 +43,13 @@ class ControllerAvitoAvitoList extends Controller{
             $data['url'].= '&filter_model='.$data['filter']['model'];
             $url.= '&filter_model='.$data['filter']['model'];
             $filter['model'] = $this->request->get['filter_model'];
-        }
+        } 
+        if(isset($this->request->get['filter_donor'])){
+            $data['filter']['donor'] = $this->request->get['filter_donor'];
+            $data['url'].= '&filter_donor='.$data['filter']['donor'];
+            $url.= '&filter_donor='.$data['filter']['donor'];
+            $filter['donor'] = $this->request->get['filter_donor'];
+        } 
         if(isset($this->request->get['filter_podcat'])){
             $data['filter']['podcat'] = $this->request->get['filter_podcat'];
             $data['url'].= '&filter_podcat='.$data['filter']['podcat'];

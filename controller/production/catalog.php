@@ -63,6 +63,9 @@ class ControllerProductionCatalog extends Controller {
                         if (isset($this->request->get['filter_drom'])) {
 				$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 			}
+                        if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
 
 			if (isset($this->request->get['filter_quantity'])) {
 				$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -135,6 +138,9 @@ class ControllerProductionCatalog extends Controller {
                         if (isset($this->request->get['filter_drom'])) {
 				$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 			}
+                        if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
 
 			if (isset($this->request->get['filter_quantity'])) {
 				$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -189,6 +195,11 @@ class ControllerProductionCatalog extends Controller {
 		} else {
 			$filter_drom = null;
 		}
+		if (isset($this->request->get['filter_type'])) {
+			$filter_type = trim($this->request->get['filter_type']);
+		} else {
+			$filter_type = null;
+		}
 		if (isset($this->request->get['filter_catn'])) {
 			$filter_catn = trim($this->request->get['filter_catn']);
 		} else {
@@ -237,6 +248,11 @@ class ControllerProductionCatalog extends Controller {
 			$filter_drom = trim($this->request->get['filter_drom']);
 		} else {
 			$filter_drom = null;
+		}
+                if (isset($this->request->get['filter_type'])) {
+			$filter_type = trim($this->request->get['filter_type']);
+		} else {
+			$filter_type = null;
 		}
 
 		if (isset($this->request->get['filter_quantity'])) {
@@ -316,6 +332,9 @@ class ControllerProductionCatalog extends Controller {
                 if (isset($this->request->get['filter_drom'])) {
 			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 		}
+                if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
 
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -356,6 +375,7 @@ class ControllerProductionCatalog extends Controller {
 			'filter_vin'	  => $filter_vin,
 			'filter_brand'	  => $filter_brand,
 			'filter_drom'	  => $filter_drom,
+			'filter_type'	  => $filter_type,
 			'filter_quantity' => $filter_quantity,
                         'filter_category' => $filter_category,
                         'filter_wocat' => $filter_wocat,
@@ -539,6 +559,9 @@ class ControllerProductionCatalog extends Controller {
                 if (isset($this->request->get['filter_drom'])) {
 			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 		}
+                if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
 
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -613,6 +636,9 @@ class ControllerProductionCatalog extends Controller {
                 if (isset($this->request->get['filter_drom'])) {
 			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 		}
+                if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
                 
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -653,6 +679,7 @@ class ControllerProductionCatalog extends Controller {
 		$data['filter_vin'] = $filter_vin;
 		$data['filter_brand'] = $filter_brand;
 		$data['filter_drom'] = $filter_drom;
+		$data['filter_type'] = $filter_type;
 		$data['filter_quantity'] = $filter_quantity;
 		$data['filter_category'] = $filter_category;
 		$data['filter_wocat'] = $filter_wocat;
@@ -705,6 +732,9 @@ class ControllerProductionCatalog extends Controller {
             }
             if (isset($this->request->get['filter_drom'])) {
                     $url .= '&filter_drom=' . $this->request->get['filter_drom'];
+            }
+            if (isset($this->request->get['filter_type'])) {
+                    $url .= '&filter_type=' . $this->request->get['filter_type'];
             }
 
             if (isset($this->request->get['filter_quantity'])) {
@@ -1034,6 +1064,9 @@ class ControllerProductionCatalog extends Controller {
         }
         if (isset($this->request->get['filter_drom'])) {
                 $url .= '&filter_drom=' . $this->request->get['filter_drom'];
+        }
+        if (isset($this->request->get['filter_type'])) {
+                $url .= '&filter_type=' . $this->request->get['filter_type'];
         }
 
         if (isset($this->request->get['filter_quantity'])) {

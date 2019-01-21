@@ -41,6 +41,7 @@ class ModelToolXml extends Model {
         }
         $weekend = $adress['name']=='пр. Карла Маркса, 179'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
         $phone = $adress['name']=='пр. Карла Маркса, 179'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
+        $img = ($adress['name']!=='пр. Карла Маркса, 179')?'shop.jpg':'KM.jpg';
         $podcateg = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['podcateg']['value']."'");
         $brand = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['brand']['value']."'");
         $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['modR']['value']."'");
@@ -126,6 +127,8 @@ class ModelToolXml extends Model {
                 }
             }
         }
+        $image = $images->addChild('Image');
+        $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
         
         $xmls->saveXML('Avito/ads.xml');
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_avito WHERE vin = '".$data['vin']."' ");
@@ -149,6 +152,7 @@ class ModelToolXml extends Model {
         $weekend = $adress['name']=='пр. Карла Маркса, 179'?'СБ 11:00-16:00 , ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
         $phone = $adress['name']=='пр. Карла Маркса, 179'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
         $podcateg = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['podcateg']['value']."'");
+        $img = ($adress['name']!=='пр. Карла Маркса, 179')?'shop.jpg':'KM.jpg';
         $brand = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['brand']['value']."'");
         $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['modR']['value']."'");
         //-----------------------------------------
@@ -232,13 +236,15 @@ class ModelToolXml extends Model {
                 $count=1;
                 if(!empty($photos)){
                     foreach ($photos as $photo) {
-                        if($photo['img']!=$data['image']['value'] && $count<=4){
+                        if($photo['img']!=$data['image']['value'] && $count<=3){
                             $image = $images->addChild('Image');
                             $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
                             ++$count;
                         }
                     }
                 }
+            $image = $images->addChild('Image');
+            $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
             $xmls->saveXML('Avito/ads.xml');
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_avito "
                     . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
