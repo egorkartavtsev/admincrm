@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 // Sizing shortcuts
 
 @mixin size($width, $height) {
@@ -8,3 +9,28 @@
 @mixin square($size) {
   @include size($size, $size);
 }
+=======
+<<<<<<< HEAD
+// Sizing shortcuts
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin square($size) {
+  @include size($size, $size);
+}
+=======
+// Sizing shortcuts
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin square($size) {
+  @include size($size, $size);
+}
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

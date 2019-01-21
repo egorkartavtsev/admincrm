@@ -205,4 +205,8 @@ class ModelExtensionPaymentSecureTradingPp extends Model {
 		$log = new Log('securetrading_pp.log');
 		$log->write($message);
 	}
+<<<<<<< Upstream, based on origin/master
 }
+=======
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

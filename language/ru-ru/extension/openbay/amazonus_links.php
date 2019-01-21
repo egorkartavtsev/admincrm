@@ -27,4 +27,8 @@ $_['button_load']                 	= 'Load';
 // Error
 $_['error_empty_sku']        		= 'Amazon SKU can not be empty!';
 $_['error_empty_name']       		= 'Product name can not be empty!';
+<<<<<<< Upstream, based on origin/master
 $_['error_no_product_exists']       = 'Product does not exist. Please use auto complete values.';
+=======
+$_['error_no_product_exists']       = 'Product does not exist. Please use auto complete values.';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

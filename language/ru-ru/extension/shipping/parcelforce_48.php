@@ -26,4 +26,8 @@ $_['help_display_insurance'] = 'Do you want to display the shipping insurance? (
 $_['help_display_time']      = 'Do you want to display the shipping time? (e.g. Ships within 3 to 5 days)';
 
 // Error
+<<<<<<< Upstream, based on origin/master
 $_['error_permission']        = 'Warning: You do not have permission to modify Parcelforce 48 shipping!';
+=======
+$_['error_permission']        = 'Warning: You do not have permission to modify Parcelforce 48 shipping!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

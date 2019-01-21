@@ -21,4 +21,8 @@ $_['column_date_added'] = 'Дата добавления';
 $_['entry_affiliate']   = 'Партнер:';
 $_['entry_ip']          = 'IP адрес';
 $_['entry_date_start']  = 'Дата начала:';
+<<<<<<< Upstream, based on origin/master
 $_['entry_date_end']    = 'Дата окончания:';
+=======
+$_['entry_date_end']    = 'Дата окончания:';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

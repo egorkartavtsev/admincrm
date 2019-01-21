@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 @function twbs-font-path($path) {
   @return font-path($path);
 }
@@ -7,3 +8,26 @@
 }
 
 $bootstrap-sass-asset-helper: true;
+=======
+<<<<<<< HEAD
+@function twbs-font-path($path) {
+  @return font-path($path);
+}
+
+@function twbs-image-path($path) {
+  @return image-path($path);
+}
+
+$bootstrap-sass-asset-helper: true;
+=======
+@function twbs-font-path($path) {
+  @return font-path($path);
+}
+
+@function twbs-image-path($path) {
+  @return image-path($path);
+}
+
+$bootstrap-sass-asset-helper: true;
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

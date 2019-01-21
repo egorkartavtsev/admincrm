@@ -46,4 +46,8 @@ $_['button_list'] 					= 'List';
 $_['error_product_sku'] 			= 'Product must have an SKU';
 $_['error_searchable_fields'] 		= 'Product must have ISBN, EAN, UPC or JAN field populated';
 $_['error_bulk_listing_permission'] = 'Bulk listing is not available on your plan, please upgrade to use this feature.';
+<<<<<<< Upstream, based on origin/master
 $_['error_select_items'] 			= 'You must select at least 1 item to search';
+=======
+$_['error_select_items'] 			= 'You must select at least 1 item to search';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

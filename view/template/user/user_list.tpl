@@ -91,4 +91,8 @@
     </div>
   </div>
 </div>
+<<<<<<< Upstream, based on origin/master
 <?php echo $footer; ?> 
+=======
+<?php echo $footer; ?> 
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

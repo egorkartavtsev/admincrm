@@ -30,4 +30,8 @@ $_['help_total']					= 'The checkout total the order must reach before this paym
 // Error
 $_['error_permission']				= 'Warning: You do not have permission to modify payment Web Payment Software!';
 $_['error_login']					= 'Login ID Required!';
+<<<<<<< Upstream, based on origin/master
 $_['error_key']						= 'Требуется ключ транзакций!';
+=======
+$_['error_key']						= 'Требуется ключ транзакций!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

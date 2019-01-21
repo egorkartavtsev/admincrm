@@ -95,4 +95,8 @@ class ModelExtensionPaymentCardinity extends Model {
 	public function uninstall() {
 		$this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "cardinity_order`;");
 	}
+<<<<<<< Upstream, based on origin/master
 }
+=======
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

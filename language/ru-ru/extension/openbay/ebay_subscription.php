@@ -25,4 +25,8 @@ $_['text_load_plans']           = 'Loading available plans';
 $_['text_subscription']         = 'Change your OpenBay Pro subscription';
 
 // Errors
+<<<<<<< Upstream, based on origin/master
 $_['error_ajax_load']      		= 'Sorry, could not get a response. Try later.';
+=======
+$_['error_ajax_load']      		= 'Sorry, could not get a response. Try later.';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

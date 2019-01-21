@@ -89,4 +89,8 @@ $_['button_void']					= 'Void';
 
 // Error
 $_['error_merchant_id']				= 'Merchant ID is required';
+<<<<<<< Upstream, based on origin/master
 $_['error_secret']					= 'Shared secret is required';
+=======
+$_['error_secret']					= 'Shared secret is required';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

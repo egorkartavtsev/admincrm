@@ -41,4 +41,8 @@ $_['help_maximal_order']     = 'Если сумма заказа больше у
 // Error
 $_['error_permission']       = 'У Вас нет прав для управления модулем "%s"!';
 $_['error_form']             = 'Поле "%s" должно быть заполнено!';
+<<<<<<< Upstream, based on origin/master
 ?>
+=======
+?>
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

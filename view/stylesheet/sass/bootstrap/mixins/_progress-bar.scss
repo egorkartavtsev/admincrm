@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 // Progress bars
 
 @mixin progress-bar-variant($color) {
@@ -8,3 +9,28 @@
     @include gradient-striped;
   }
 }
+=======
+<<<<<<< HEAD
+// Progress bars
+
+@mixin progress-bar-variant($color) {
+  background-color: $color;
+
+  // Deprecated parent class requirement as of v3.2.0
+  .progress-striped & {
+    @include gradient-striped;
+  }
+}
+=======
+// Progress bars
+
+@mixin progress-bar-variant($color) {
+  background-color: $color;
+
+  // Deprecated parent class requirement as of v3.2.0
+  .progress-striped & {
+    @include gradient-striped;
+  }
+}
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

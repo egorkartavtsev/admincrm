@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 // Single side border-radius
 
 @mixin border-top-radius($radius) {
@@ -16,3 +17,44 @@
   border-bottom-left-radius: $radius;
      border-top-left-radius: $radius;
 }
+=======
+<<<<<<< HEAD
+// Single side border-radius
+
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+}
+=======
+// Single side border-radius
+
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+}
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

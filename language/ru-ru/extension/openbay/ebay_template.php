@@ -24,4 +24,8 @@ $_['text_edit']      				= 'Edit profile';
 // Error
 $_['error_name']               		= 'You must enter a template name';
 $_['error_permission']            	= 'You do not have permission to edit templates';
+<<<<<<< Upstream, based on origin/master
 $_['error_no_template']             = 'Template ID does not exist';
+=======
+$_['error_no_template']             = 'Template ID does not exist';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

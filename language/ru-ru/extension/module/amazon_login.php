@@ -31,4 +31,8 @@ $_['entry_status'] = 'Status';
 $_['entry_sort_order'] = 'Sort Order';
 
 //Error
+<<<<<<< Upstream, based on origin/master
 $_['error_permission'] = 'Warning: You do not have permission to modify module Login with Amazon!';
+=======
+$_['error_permission'] = 'Warning: You do not have permission to modify module Login with Amazon!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

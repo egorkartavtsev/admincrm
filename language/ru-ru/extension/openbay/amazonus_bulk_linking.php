@@ -24,4 +24,8 @@ $_['column_quantity'] 				= 'Quantity';
 $_['column_combination'] 			= 'Combination';
 
 // Error
+<<<<<<< Upstream, based on origin/master
 $_['error_bulk_link_permission'] 	= 'Bulk linking is not available on your plan, please upgrade to use this feature.';
+=======
+$_['error_bulk_link_permission'] 	= 'Bulk linking is not available on your plan, please upgrade to use this feature.';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

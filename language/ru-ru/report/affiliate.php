@@ -16,4 +16,8 @@ $_['column_action']     = 'Действие';
 
 // Entry
 $_['entry_date_start']  = 'Дата начала:';
+<<<<<<< Upstream, based on origin/master
 $_['entry_date_end']    = 'Дата окончания:';
+=======
+$_['entry_date_end']    = 'Дата окончания:';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

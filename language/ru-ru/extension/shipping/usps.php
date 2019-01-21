@@ -85,4 +85,8 @@ $_['error_postcode']        = 'Zip Code Required!';
 $_['error_width']        	= 'Width Required!';
 $_['error_length']        	= 'Length Required!';
 $_['error_height']        	= 'Height Required!';
+<<<<<<< Upstream, based on origin/master
 $_['error_girth']        	= 'Girth Required!';
+=======
+$_['error_girth']        	= 'Girth Required!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

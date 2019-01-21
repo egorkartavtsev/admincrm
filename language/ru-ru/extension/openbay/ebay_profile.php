@@ -107,4 +107,8 @@ $_['error_missing_settings'] 			= 'You cannot add,edit or delete profiles until 
 
 //Help
 $_['help_shipping_promotion_discount']  = 'Offer national buyers a discount on shipping if they buy multiple items. Discounts must have been setup in eBay to take effect.';
+<<<<<<< Upstream, based on origin/master
 $_['help_shipping_promotion_discount_international']  = 'Offer international buyers a discount on shipping if they buy multiple items. Discounts must have been setup in eBay to take effect.';
+=======
+$_['help_shipping_promotion_discount_international']  = 'Offer international buyers a discount on shipping if they buy multiple items. Discounts must have been setup in eBay to take effect.';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

@@ -26,4 +26,8 @@ $_['help_total']					= 'Сумма заказа должна быть выше, 
 // Error
 $_['error_permission']				= 'Внимание: Вы не имеете разрешения на изменение оплаты Paymate!';
 $_['error_username']				= 'Paymate имя пользователя обязательно!';
+<<<<<<< Upstream, based on origin/master
 $_['error_password']				= 'Требуется пароль!';
+=======
+$_['error_password']				= 'Требуется пароль!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

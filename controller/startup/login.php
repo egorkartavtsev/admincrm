@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <?php
 class ControllerStartupLogin extends Controller {
 	public function index() {
@@ -36,3 +37,84 @@ class ControllerStartupLogin extends Controller {
 		}
 	}
 }
+=======
+<<<<<<< HEAD
+<?php
+class ControllerStartupLogin extends Controller {
+	public function index() {
+		$route = isset($this->request->get['route']) ? $this->request->get['route'] : '';
+
+		$ignore = array(
+			'common/login',
+			'common/forgotten',
+			'common/reset'
+		);
+
+		// User
+		$this->registry->set('user', new Cart\User($this->registry));
+
+		if (!$this->user->isLogged() && !in_array($route, $ignore)) {
+			return new Action('common/login');
+		}
+
+		if (isset($this->request->get['route'])) {
+			$ignore = array(
+				'common/login',
+				'common/logout',
+				'common/forgotten',
+				'common/reset',
+				'error/not_found',
+				'error/permission'
+			);
+
+			if (!in_array($route, $ignore) && (!isset($this->request->cookie['token']) || !isset($this->session->data['token']) || ($this->request->cookie['token'] != $this->session->data['token']))) {
+				return new Action('common/login');
+			}
+		} else {
+			if (!isset($this->request->cookie['token']) || !isset($this->session->data['token']) || ($this->request->cookie['token'] != $this->session->data['token'])) {
+				return new Action('common/login');
+			}
+		}
+	}
+}
+=======
+<?php
+class ControllerStartupLogin extends Controller {
+	public function index() {
+		$route = isset($this->request->get['route']) ? $this->request->get['route'] : '';
+
+		$ignore = array(
+			'common/login',
+			'common/forgotten',
+			'common/reset'
+		);
+
+		// User
+		$this->registry->set('user', new Cart\User($this->registry));
+
+		if (!$this->user->isLogged() && !in_array($route, $ignore)) {
+			return new Action('common/login');
+		}
+
+		if (isset($this->request->get['route'])) {
+			$ignore = array(
+				'common/login',
+				'common/logout',
+				'common/forgotten',
+				'common/reset',
+				'error/not_found',
+				'error/permission'
+			);
+
+			if (!in_array($route, $ignore) && (!isset($this->request->cookie['token']) || !isset($this->session->data['token']) || ($this->request->cookie['token'] != $this->session->data['token']))) {
+				return new Action('common/login');
+			}
+		} else {
+			if (!isset($this->request->cookie['token']) || !isset($this->session->data['token']) || ($this->request->cookie['token'] != $this->session->data['token'])) {
+				return new Action('common/login');
+			}
+		}
+	}
+}
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

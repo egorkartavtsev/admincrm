@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <?php
 // Heading
 $_['heading_title']    = 'Feeds';
@@ -13,3 +14,37 @@ $_['column_action']    = 'Action';
 
 // Error
 $_['error_permission'] = 'Warning: You do not have permission to modify feeds!';
+=======
+<<<<<<< HEAD
+<?php
+// Heading
+$_['heading_title']    = 'Feeds';
+
+// Text
+$_['text_success']     = 'Success: You have modified feeds!';
+$_['text_list']        = 'Feed List';
+
+// Column
+$_['column_name']      = 'Product Feed Name';
+$_['column_status']    = 'Status';
+$_['column_action']    = 'Action';
+
+// Error
+=======
+<?php
+// Heading
+$_['heading_title']    = 'Feeds';
+
+// Text
+$_['text_success']     = 'Success: You have modified feeds!';
+$_['text_list']        = 'Feed List';
+
+// Column
+$_['column_name']      = 'Product Feed Name';
+$_['column_status']    = 'Status';
+$_['column_action']    = 'Action';
+
+// Error
+>>>>>>> origin/master
+$_['error_permission'] = 'Warning: You do not have permission to modify feeds!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

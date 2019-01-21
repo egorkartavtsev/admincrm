@@ -14,6 +14,31 @@ class ControllerReportPlaning extends Controller{
         foreach ($plan as $key => $value) {
             $curFact = $this->model_report_planing->getCurrentFact($key);
             $current = $this->model_report_planing->getCurrentPlan($key);
+<<<<<<< Upstream, based on origin/master
+            if ($current === "" ||  $current === '0'){
+                $currentFloor = floor($curFact*100/1);
+            }
+            else {
+                $currentFloor = floor($curFact*100/$current);
+            }
+=======
+<<<<<<< HEAD
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019
+            $plan[$key] = [
+                'id'            => $value,
+                'current'       => $current,
+                'curFact'       => $curFact,
+                'totalPercent'  => $currentFloor,
+                'history'       => $this->getTotalHistory($key),
+                'planPerDay'    => $current?$this->planPerDay($key, $current):[],
+                'currHist'      => $this->model_report_planing->getPlanChangeHistory($key)
+            ];
+        }
+<<<<<<< Upstream, based on origin/master
+        //exit(var_dump($plan));
+=======
+        
+=======
             if ($current === "" ||  $current === '0'){
                 $currentFloor = floor($curFact*100/1);
             }
@@ -31,6 +56,8 @@ class ControllerReportPlaning extends Controller{
             ];
         }
         //exit(var_dump($plan));
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019
         $data['plans'] = $plan;
         $this->response->setOutput($this->load->view('report/planing', $data));
     }

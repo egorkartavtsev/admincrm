@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <?php
 // Heading
 $_['heading_title']    = 'Captcha';
@@ -13,3 +14,38 @@ $_['column_action']    = 'Действие';
 
 // Error
 $_['error_permission'] = 'У вас нет прав для управления этим модулем!';
+=======
+<<<<<<< HEAD
+<?php
+// Heading
+$_['heading_title']    = 'Captcha';
+
+// Text
+$_['text_success']     = 'Настройки службы успешно обновлены';
+$_['text_list']        = 'Список доступных CAPTCHA';
+
+// Column
+$_['column_name']      = 'Название службы';
+$_['column_status']    = 'Статус';
+$_['column_action']    = 'Действие';
+
+// Error
+$_['error_permission'] = 'У вас нет прав для управления этим модулем!';
+=======
+<?php
+// Heading
+$_['heading_title']    = 'Captcha';
+
+// Text
+$_['text_success']     = 'Настройки службы успешно обновлены';
+$_['text_list']        = 'Список доступных CAPTCHA';
+
+// Column
+$_['column_name']      = 'Название службы';
+$_['column_status']    = 'Статус';
+$_['column_action']    = 'Действие';
+
+// Error
+$_['error_permission'] = 'У вас нет прав для управления этим модулем!';
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

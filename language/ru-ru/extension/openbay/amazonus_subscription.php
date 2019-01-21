@@ -32,4 +32,8 @@ $_['column_price']                    	= 'Price';
 
 // Buttons
 $_['button_change_plan']              	= 'Change plan';
+<<<<<<< Upstream, based on origin/master
 $_['button_register']                 	= 'Register';
+=======
+$_['button_register']                 	= 'Register';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

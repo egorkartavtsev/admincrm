@@ -15,4 +15,8 @@ $_['column_name']              		= 'Name';
 $_['column_model']             		= 'Model';
 $_['column_sku']               		= 'SKU';
 $_['column_amazon_sku']        		= 'Amazon item SKU';
+<<<<<<< Upstream, based on origin/master
 $_['column_action']           		= 'Action';
+=======
+$_['column_action']           		= 'Action';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

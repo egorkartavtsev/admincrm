@@ -22,4 +22,8 @@ $_['help_total']					= 'The checkout total the order must reach before this paym
 // Error
 $_['error_permission']				= 'Warning: You do not have permission to modify payment SagePay!';
 $_['error_merchant_id']				= 'Merchant ID Required!';
+<<<<<<< Upstream, based on origin/master
 $_['error_merchant_key']			= 'Merchant Key Required!';
+=======
+$_['error_merchant_key']			= 'Merchant Key Required!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <?php
 
 class controllerReportAdded extends Controller {
@@ -23,3 +24,58 @@ class controllerReportAdded extends Controller {
     }
 }
 
+=======
+<<<<<<< HEAD
+<?php
+
+class controllerReportAdded extends Controller {
+    public function index() {
+        $this->load->model('tool/layout');
+        $this->load->model('tool/reports');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        $data['sales'] = $this->model_tool_reports->getDefaultSales();
+        $this->response->setOutput($this->load->view('report/added', $data));
+    }
+    
+    public function getData() {
+        $filter = [];
+        if(isset($this->request->post['filter'])){
+            $filter_data = $this->request->post['filter'];
+            foreach($filter_data as $filter_item){
+                $filter[$filter_item['name']] = $filter_item['val'];
+            }
+        }
+        $this->load->model('tool/reports');       
+        $data = $this->model_tool_reports->getAdded($filter);
+        echo json_encode($data);
+    }
+}
+
+=======
+<?php
+
+class controllerReportAdded extends Controller {
+    public function index() {
+        $this->load->model('tool/layout');
+        $this->load->model('tool/reports');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        $data['sales'] = $this->model_tool_reports->getDefaultSales();
+        $this->response->setOutput($this->load->view('report/added', $data));
+    }
+    
+    public function getData() {
+        $filter = [];
+        if(isset($this->request->post['filter'])){
+            $filter_data = $this->request->post['filter'];
+            foreach($filter_data as $filter_item){
+                $filter[$filter_item['name']] = $filter_item['val'];
+            }
+        }
+        $this->load->model('tool/reports');       
+        $data = $this->model_tool_reports->getAdded($filter);
+        echo json_encode($data);
+    }
+}
+
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

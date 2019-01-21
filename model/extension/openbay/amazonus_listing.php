@@ -194,4 +194,8 @@ class ModelExtensionOpenBayAmazonusListing extends Model {
 
 		$response = $this->openbay->amazonus->call('productv3/bulkSearch', $request_data);
 	}
+<<<<<<< Upstream, based on origin/master
 }
+=======
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

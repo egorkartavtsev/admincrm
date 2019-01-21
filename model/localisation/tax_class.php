@@ -102,4 +102,8 @@ class ModelLocalisationTaxClass extends Model {
 
 		return $query->row['total'];
 	}
+<<<<<<< Upstream, based on origin/master
 }
+=======
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

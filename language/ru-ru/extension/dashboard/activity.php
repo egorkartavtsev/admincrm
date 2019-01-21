@@ -32,4 +32,8 @@ $_['entry_sort_order']             = 'Сортировка';
 $_['entry_width']                  = 'Ширина';
 
 // Error
+<<<<<<< Upstream, based on origin/master
 $_['error_permission']             = 'У Вас нет прав для управления этим модулем!';
+=======
+$_['error_permission']             = 'У Вас нет прав для управления этим модулем!';
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

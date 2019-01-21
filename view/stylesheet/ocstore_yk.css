@@ -1,6 +1,23 @@
+<<<<<<< Upstream, based on origin/master
 div.even, tr.even {
 	background: #FFFFFF;
 }
 div.odd, tr.odd {
 	background: #E4EEF7;
 }
+=======
+<<<<<<< HEAD
+div.even, tr.even {
+	background: #FFFFFF;
+}
+div.odd, tr.odd {
+	background: #E4EEF7;
+=======
+div.even, tr.even {
+	background: #FFFFFF;
+}
+div.odd, tr.odd {
+	background: #E4EEF7;
+>>>>>>> origin/master
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

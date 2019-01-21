@@ -232,4 +232,8 @@ class ModelExtensionPaymentBluePayHosted extends Model {
 			$log->write($message);
 		}
 	}
+<<<<<<< Upstream, based on origin/master
 }
+=======
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

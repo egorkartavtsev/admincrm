@@ -103,4 +103,8 @@ class ModelExtensionOpenBayEbayProfile extends Model{
 	private function clearDefault($type) {
 		$this->db->query("UPDATE `" . DB_PREFIX . "ebay_profile` SET `default` = '0' WHERE `type` = '" . (int)$type . "'");
 	}
+<<<<<<< Upstream, based on origin/master
 }
+=======
+}
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

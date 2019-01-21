@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <script>
 
 // Prevent from DOM clobbering.
@@ -11,3 +12,34 @@ if ( typeof window.opener._cke_htmlToLoad == 'string' ) {
 }
 
 </script>
+=======
+<<<<<<< HEAD
+<script>
+
+// Prevent from DOM clobbering.
+if ( typeof window.opener._cke_htmlToLoad == 'string' ) {
+	var doc = document;
+	doc.open();
+	doc.write( window.opener._cke_htmlToLoad );
+	doc.close();
+
+	delete window.opener._cke_htmlToLoad;
+}
+
+</script>
+=======
+<script>
+
+// Prevent from DOM clobbering.
+if ( typeof window.opener._cke_htmlToLoad == 'string' ) {
+	var doc = document;
+	doc.open();
+	doc.write( window.opener._cke_htmlToLoad );
+	doc.close();
+
+	delete window.opener._cke_htmlToLoad;
+}
+
+</script>
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019

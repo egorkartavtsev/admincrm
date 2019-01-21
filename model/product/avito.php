@@ -78,7 +78,14 @@ class ModelProductAvito extends Model {
                     . "AND LOCATE('".$filter['model']."', p.model) "
                     . "AND LOCATE('".$filter['stock']."', p.adress) "
                     . "AND LOCATE('".$filter['vin']."', p.vin) "
+<<<<<<< Upstream, based on origin/master
                     . "AND LOCATE('".$filter['donor']."', p.numb) "
+=======
+<<<<<<< HEAD
+=======
+                    . "AND LOCATE('".$filter['donor']."', p.numb) "
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019
                     . "AND p.price>=".(int)$filter['priceFrom']." "
                     . "AND p.price<=".(int)$filter['priceTo']." "
                     . "AND p2a.dateEnd>='".$filter['date']."' ";

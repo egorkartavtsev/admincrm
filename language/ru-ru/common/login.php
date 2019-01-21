@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <?php
 // header
 $_['heading_title']  	  = 'Авторизация';
@@ -17,3 +18,46 @@ $_['button_login']        = 'Войти';
 // Error
 $_['error_login']         = 'Неправильный логин и/или пароль!';
 $_['error_token']         = 'Неправильная токен-сессия. Авторизуйтесь снова.';
+=======
+<<<<<<< HEAD
+<?php
+// header
+$_['heading_title']  	  = 'Авторизация';
+
+// Text
+$_['text_heading']        = 'Авторизация';
+$_['text_login']          = 'Введите логин и пароль';
+$_['text_forgotten']      = 'Забыли пароль?';
+
+// Entry
+$_['entry_username']      = 'Логин';
+$_['entry_password']      = 'Пароль';
+
+// Button
+$_['button_login']        = 'Войти';
+
+// Error
+$_['error_login']         = 'Неправильный логин и/или пароль!';
+$_['error_token']         = 'Неправильная токен-сессия. Авторизуйтесь снова.';
+=======
+<?php
+// header
+$_['heading_title']  	  = 'Авторизация';
+
+// Text
+$_['text_heading']        = 'Авторизация';
+$_['text_login']          = 'Введите логин и пароль';
+$_['text_forgotten']      = 'Забыли пароль?';
+
+// Entry
+$_['entry_username']      = 'Логин';
+$_['entry_password']      = 'Пароль';
+
+// Button
+$_['button_login']        = 'Войти';
+
+// Error
+$_['error_login']         = 'Неправильный логин и/или пароль!';
+$_['error_token']         = 'Неправильная токен-сессия. Авторизуйтесь снова.';
+>>>>>>> origin/master
+>>>>>>> 0ccdbb6 Фиксация 21,01,2019
