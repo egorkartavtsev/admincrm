@@ -9,7 +9,7 @@
             $this->load->model("common/excelDrom");
             $data = $this->model_tool_layout->getLayout($this->request->get['route']);
       
-            $OrderExcel = new PHPExcel();
+          //  $OrderExcel = new PHPExcel();
             $active_sheet_index = $OrderExcel->setActiveSheetIndex(0);
             $active_sheet = $OrderExcel->getActiveSheet(0);
             $active_sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
