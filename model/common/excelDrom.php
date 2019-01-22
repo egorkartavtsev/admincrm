@@ -15,6 +15,7 @@
             $templ = str_replace('%podcat%', $data['podcat'], $templ);
             $templ = str_replace('%brand%', $data['brand'], $templ);
             $templ = str_replace('%modrow%', $data['modRow'], $templ);
+            $templ = str_replace('%complect%','', $templ);
             $templ = str_replace('%trbrand%', '', $templ);
             $templ = str_replace('%trmodrow%', '', $templ);
             $templ = str_replace('%stock%', isset($stock->row['adress'])?$stock->row['adress']:'г. Магнитогорск, ул. Магнитная 109/1', $templ);
@@ -95,17 +96,18 @@
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
-                $data['modRow'] = ''.$data['modRow'].'<br><strong> В комплекте:</strong>'; 
+                $data['complect'] = ''.$data['complect'].'<br><strong> В комплекте:</strong>'; 
         $datacomp = $this->model_common_excelDrom->getCompDrom();
         foreach ($datacomp as $datasqr) {
             if ($datasqr['comp'] === $data['vin']) {
-                $data['modRow'] = ''.$data['modRow'].'<br> - '.$datasqr['podcat'].'  '.$datasqr['vin'].'  '.$datasqr['catN'].''; 
+                $data['complect'] = ''.$data['complect'].'<br> - '.$datasqr['podcat'].'  '.$datasqr['vin'].'  '.$datasqr['catN'].''; 
             }
         }
         
             $templ = str_replace('%podcat%', $data['podcat'], $templ);
             $templ = str_replace('%brand%', $data['brand'], $templ);
             $templ = str_replace('%modrow%', $data['modRow'], $templ);
+            $templ = str_replace('%complect%', $data['complect'], $templ);
             $templ = str_replace('%trbrand%', '', $templ);
             $templ = str_replace('%trmodrow%', '', $templ);
             $templ = str_replace('%stock%', isset($stock->row['adress'])?$stock->row['adress']:'г. Магнитогорск, ул. Магнитная 109/1', $templ);
