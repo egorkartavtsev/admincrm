@@ -5,7 +5,7 @@
 
             $this->load->model("tool/layout");
             $this->load->model("common/excel");
-            $this->load->model("tool/excel");
+        //    $this->load->model("tool/excel");
             $this->load->model("common/excelDrom");
             $data = $this->model_tool_layout->getLayout($this->request->get['route']);
       
@@ -62,59 +62,60 @@
             $lp=2;
               foreach ($exlxe->rows as $sqlr) {
               if ($sqlr['comp'] === '') {
-                                      //$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
-                                      //$description = $this->model_common_excelDrom->getDromDescription($sqlr);
+                                        $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
+                                        $description = $this->model_common_excelDrom->getDromDescription($sqlr);
                                         $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
                                         $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
                                         $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
                                         $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
                                         $active_sheet->setCellValue('E'.$lp.'',''.$sqlr['vin'].'');
-                                      //$active_sheet->setCellValue('F'.$lp.'',''..'');
                                         $active_sheet->setCellValue('G'.$lp.'',''.$sqlr['price'].'');
-                                      //$active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
-                                      //$active_sheet->setCellValue('I'.$lp.'',''.$description.'');
+                                        $active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
+                                        $active_sheet->setCellValue('I'.$lp.'',''.$description.'');
+                                        $active_sheet->setCellValue('J'.$lp.'',''.$sqlr['catN'].'');
                                         $active_sheet->setCellValue('K'.$lp.'',''.$sqlr['quant'].'');
                                         $lp = $lp+1;
                                         }
-          
-          }
-            foreach ($complects_bd as $sqlrt) {
-                foreach ($exlxe->rows as $sqlr){
-                if ((($sqlr['comp'] === $sqlrt['head'])or($sqlr['comp'] === $sqlrt['cid']))||($sqlrt['c_whole'] === 0)){
-                    //$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
-                                      //$description = $this->model_common_excelDrom->getDromDescription($sqlr);
+                 else {
+           foreach ($complects_bd as $sqlrt) {
+              if ($sqlrt['c_whole'] === '0'){
+                             if (($sqlr['comp'] === $sqlrt['head'])or($sqlr['comp'] === $sqlrt['cid'])){
+                                        $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
+                                        $description = $this->model_common_excelDrom->getDromDescription($sqlr);
                                         $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
                                         $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
                                         $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
                                         $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
                                         $active_sheet->setCellValue('E'.$lp.'',''.$sqlr['vin'].'');
-                                      //$active_sheet->setCellValue('F'.$lp.'',''..'');
                                         $active_sheet->setCellValue('G'.$lp.'',''.$sqlr['price'].'');
-                                      //$active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
-                                      //$active_sheet->setCellValue('I'.$lp.'',''.$description.'');
+                                        $active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
+                                        $active_sheet->setCellValue('I'.$lp.'',''.$description.'');
+                                        $active_sheet->setCellValue('J'.$lp.'',''.$sqlr['catN'].'');
                                         $active_sheet->setCellValue('K'.$lp.'',''.$sqlr['quant'].'');
                                         $lp = $lp+1;
-                }
-                else { 
-                    if (($sqlrt['cid'] === $sqlr['comp']) || ($sqlrt['c_whole'] === 1)) {
-                                      //$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
-                                      //$description = $this->model_common_excelDrom->getDromDescription($sqlr);
+                } 
+              }
+             else { 
+                   if ($sqlrt['cid'] === $sqlr['comp'])  {
+                                        $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
+                                        $description = $this->model_common_excelDrom->getDromDescriptionCompl($sqlr);
                                         $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
                                         $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
                                         $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
                                         $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
                                         $active_sheet->setCellValue('E'.$lp.'',''.$sqlr['vin'].'');
-                                      //$active_sheet->setCellValue('F'.$lp.'',''..'');
                                         $active_sheet->setCellValue('G'.$lp.'',''.$sqlrt['c_price'].'');
-                                      //$active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
-                                      //$active_sheet->setCellValue('I'.$lp.'',''.$description.'');
+                                        $active_sheet->setCellValue('H'.$lp.'',''.$photoDrom.'');
+                                        $active_sheet->setCellValue('I'.$lp.'',''.$description.'');
+                                        $active_sheet->setCellValue('J'.$lp.'',''.$sqlr['catN'].'');
                                         $active_sheet->setCellValue('K'.$lp.'',''.$sqlr['quant'].'');
                                         $lp = $lp+1; 
                     }
                     
                     }
-            }
-            }
+                            }
+           }
+              }
             header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Cache-Control: no-cache, must-revalidate" );
