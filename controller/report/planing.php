@@ -13,17 +13,21 @@ class ControllerReportPlaning extends Controller{
         $plan = $this->model_report_planing->getAdresses();
         foreach ($plan as $key => $value) {
             $curFact = $this->model_report_planing->getCurrentFact($key);
+            $curEvDay= $this->model_report_planing->getCurFact($key);
             $current = $this->model_report_planing->getCurrentPlan($key);
             if ($current === "" ||  $current === '0'){
                 $currentFloor = floor($curFact*100/1);
             }
             else {
                 $currentFloor = floor($curFact*100/$current);
-            }
+            $sumLast = ($current-$curFact);
+            $curEvDay = ($curFact-$curEvDay);
             $plan[$key] = [
                 'id'            => $value,
                 'current'       => $current,
                 'curFact'       => $curFact,
+                'curEvDay'      => $curEvDay,
+                'sumLast'       => $sumLast,
                 'totalPercent'  => $currentFloor,
                 'history'       => $this->getTotalHistory($key),
                 'planPerDay'    => $current?$this->planPerDay($key, $current):[],
@@ -34,7 +38,7 @@ class ControllerReportPlaning extends Controller{
         $data['plans'] = $plan;
         $this->response->setOutput($this->load->view('report/planing', $data));
     }
-    
+    }
     public function saveCurr() {
         $plan = $this->request->post['curr'];
         $addr = $this->request->post['addr'];
@@ -53,9 +57,13 @@ class ControllerReportPlaning extends Controller{
         $perDay = floor($plan/date('t'));
         $res = [];
         $i = 1;
+        $fuckday = 0;
         for(; $i<date('t'); $i++){
+            $fuckday = ($fuckday + 1);
             $day = (strlen($i)===1)?'0'.$i:$i;
+            $sumevday = $this->model_report_planing->getCurrentFact($addr, $fuckday);
             $fact = $this->model_report_planing->getCurrentFact($addr, $day);
+            $sumday = $this->model_report_planing->getCurFact($addr, $i);
             $perc = floor($fact*100/($perDay*$i));
             if($perc>=100){
                 $class = 'success';
@@ -71,6 +79,8 @@ class ControllerReportPlaning extends Controller{
                 'date'      => $day.".".date("m.Y"),
                 'plan'      => $perDay*$i,
                 'fact'      => $fact,
+                'sumday'      => $sumday,
+                'sumfp'     => ($perDay*$i-$fact),
                 //'percent'   => $perc
                 'percent'   => $div
             ];
@@ -91,6 +101,8 @@ class ControllerReportPlaning extends Controller{
                 'date'      => $i.".".date("m.Y"),
                 'plan'      => $plan,
                 'fact'      => $fact,
+                'sumday'    => $sumday,
+                'sumfp'     => ($plan-$fact),
                 //'percent'   => $perc
                 'percent'   => $div
             ];

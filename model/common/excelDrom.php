@@ -48,7 +48,7 @@
     /******************************************************************/
         return $templ; 
     }
-    public function getPhotoDrom($pid) {
+   public function getPhotoDrom($pid) {
        $templ= '';
          $qphot = $this->db->query("SELECT * FROM ".DB_PREFIX."product_image WHERE product_id = '".$pid."' ORDER BY sort_order ");
                         $photos = '';
@@ -57,6 +57,14 @@
                             $templ = trim($photos);
                         }
                        
+       return $templ;
+    }
+    public function getPhoto($photos) {
+       $templ= '';
+                    if ($photos !== ''){
+                            $photos= HTTP_SHOWCASE.'image/'.$photos.'';
+                            $templ = trim($photos);
+                        }
        return $templ;
     }
     public function getComplectDrom() {
@@ -95,14 +103,15 @@
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
-                $data['modRow'] = ''.$data['modRow'].'<br><strong> В комплекте:</strong>'; 
+        $data['const']= $data['cond'];
+        $data['cond']= '<br><strong> В комплекте:</strong>'; 
         $datacomp = $this->model_common_excelDrom->getCompDrom();
         foreach ($datacomp as $datasqr) {
             if ($datasqr['comp'] === $data['vin']) {
-                $data['modRow'] = ''.$data['modRow'].'<br> - '.$datasqr['podcat'].'  '.$datasqr['vin'].'  '.$datasqr['catN'].''; 
+                $data['cond'] = ''.$data['cond'].'<br> - '.$datasqr['podcat'].'  '.$datasqr['vin'].'  '.$datasqr['catN'].''; 
             }
         }
-        
+        $data['cond'] = ' '.$data['cond'].'<br>Состояние: '.$data['const'].'';
             $templ = str_replace('%podcat%', $data['podcat'], $templ);
             $templ = str_replace('%brand%', $data['brand'], $templ);
             $templ = str_replace('%modrow%', $data['modRow'], $templ);
@@ -116,7 +125,7 @@
                 $templ = str_replace('%catn%', '', $templ);
             }
             if(trim($data['cond'])!=='-'){
-                $templ = str_replace('%condit%', '<li>Состояние: '.$data['cond'].'</li>', $templ);
+                $templ = str_replace('%condit%', ''.$data['cond'].'', $templ);
             } else {
                 $templ = str_replace('%condit%', '', $templ);
             }
@@ -138,5 +147,6 @@
             $templ = str_replace('%weekend%', $weekend, $templ);
     /******************************************************************/
         return $templ; 
+    
     }
     }

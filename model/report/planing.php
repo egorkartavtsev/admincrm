@@ -29,6 +29,17 @@ class ModelReportPlaning extends Model {
         }
         return $summ;
     }
+    public function getCurFact($addr, $fuckday) {
+        
+        $tmp = $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_info si "
+                                . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku "
+                             . "WHERE date >= '" . date("Y-m") . "-" . $fuckday . " 00:00:00' AND date <= '" . date("Y-m") . "-" . $fuckday . " 23:59:59' AND p.adress = '".$addr."' ");
+        $summ = 0;
+        foreach ($tmp->rows as $sale) {
+            $summ = ($summ + $sale['saleprice']);
+        }
+        return $summ;
+    }
 
     public function getPlanChangeHistory($addr) {
         $this->db->query("DELETE FROM " . DB_PREFIX . "sales_planing_history WHERE date<'" . date("Y-m") . "-01'");
