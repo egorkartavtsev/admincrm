@@ -19,24 +19,13 @@ class ModelReportPlaning extends Model {
         return $res;
     }
 
-    public function getCurrentFact($addr, $day = '31') {
+    public function getCurrentFact($addr, $dayStart = '01', $dayEnd = '31') {
         $tmp = $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_info si "
                                 . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku "
-                             . "WHERE date >= '" . date("Y-m") . "-01 00:00:00' AND date <= '" . date("Y-m") . "-" . $day . " 23:59:59' AND p.adress = '".$addr."' ");
+                             . "WHERE date >= '" . date("Y-m") . "-" . $dayStart . " 00:00:00' AND date <= '" . date("Y-m") . "-" . $dayEnd . " 23:59:59' AND p.adress = '".$addr."' ");
         $summ = 0;
         foreach ($tmp->rows as $sale) {
             $summ += $sale['saleprice'];
-        }
-        return $summ;
-    }
-    public function getCurFact($addr, $fuckday) {
-        
-        $tmp = $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_info si "
-                                . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku "
-                             . "WHERE date >= '" . date("Y-m") . "-" . $fuckday . " 00:00:00' AND date <= '" . date("Y-m") . "-" . $fuckday . " 23:59:59' AND p.adress = '".$addr."' ");
-        $summ = 0;
-        foreach ($tmp->rows as $sale) {
-            $summ = ($summ + $sale['saleprice']);
         }
         return $summ;
     }

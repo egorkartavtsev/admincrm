@@ -72,4 +72,5 @@ class ModelCommonAvito extends Model {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."text_template WHERE id = 2 ");
         return $sup->row['text'];
     }
+     
 }

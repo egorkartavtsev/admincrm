@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-lg-12">
                         <h4><b>История выполнения планов за предыдущие месяцы:</b></h4>
-                            <table class="table table-striped table-bordered">
+                            <table >
                                 <thead>
                                     <tr>
                                         <th class="col-sm-1">Месяц</th>
