@@ -47,15 +47,19 @@
                                         <th class="col-sm-1">День</th>
                                         <th class="col-sm-1">План</th>
                                         <th class="col-sm-1">Факт</th>
-                                        <th class="col-sm-9">%</th>
+                                        <th class="col-sm-1">Продажы за данный день, руб.</th>
+                                        <th class="col-sm-1">Сумма для выполнения плана, руб.</th>
+                                        <th class="col-sm-7">%</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ppd">
                                     <?php foreach($plan['planPerDay'] as $ppd){ ?>
-                                    <tr style="<?php echo ($ppd['date']===date('d.m.Y')?'background-color: #f89f9f;':'')?>">
+                                    <tr style="<?php echo ($ppd['date']===date('d.m.Y')?'background-color: #d9edf7;':'')?>">
                                             <td><?php echo $ppd['date'];?></td>
                                             <td><?php echo $ppd['plan'];?></td>
                                             <td><?php echo $ppd['fact'];?></td>
+                                            <td><?php echo $ppd['sumday'];?></td>
+                                            <td><?php echo $ppd['sumfp'];?></td>
                                             <td><?php echo $ppd['percent'];?></td>
                                         </tr>
                                     <?php }?>
@@ -68,6 +72,8 @@
                             <h4>На текущий день план отбит на <b><span id="totalPerc"><?php echo $plan['totalPercent'];?></span>%</b></h4>
                             <p>План: <b><span id="current"><?php echo $plan['current'];?></span></b> руб.</p>
                             <p>Факт: <b><span id="curFact"><?php echo $plan['curFact'];?></span></b> руб.</p>
+                            <p>Продажы за текущий день: <b><span id="curEvDay"><?php echo $plan['curEvDay'];?></span></b> руб.</p>
+                            <p>Необходимая сумма для выполнения плана: <b><span id="sumLast"><?php echo $plan['sumLast'];?></span></b> руб.</p>
                             <div id="tp-bar">
                                 <div class="progress">
                                   <div class="progress-bar progress-bar-<?php echo ($plan['totalPercent']>=100)?'success':'danger';?> progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $plan['totalPercent'];?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo ($plan['totalPercent']>100)?'100':$plan['totalPercent'];?>%">
@@ -91,7 +97,7 @@
                     </div>
                     <div class="col-lg-12">
                         <h4><b>История выполнения планов за предыдущие месяцы:</b></h4>
-                            <table class="table table-striped table-bordered">
+                            <table >
                                 <thead>
                                     <tr>
                                         <th class="col-sm-1">Месяц</th>
