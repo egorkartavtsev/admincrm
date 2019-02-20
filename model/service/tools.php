@@ -1,6 +1,7 @@
 <?php
 
 class ModelServiceTools extends Model{
+    
     public function findLocate($req, $kladr, $lvl) {
         $sql = "SELECT * FROM ".DB_PREFIX."kladr WHERE LOCATE('".$req."', name) ";
         if($kladr!='0'){
@@ -73,7 +74,14 @@ class ModelServiceTools extends Model{
         return $sup->rows;
     }
     public function getHandlTypes() {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 35 ORDER BY name");
-        return $sup->rows;
+        return $this->db->query("SELECT * FROM ".DB_PREFIX."handling_library_type ORDER BY name")->rows;
+    }
+    
+    public function getCity() {
+        return $this->db->query("SELECT * FROM ".DB_PREFIX."captured_cities ORDER BY city_id")->rows;
+    }
+    
+    public function getAgents($ht, $city) {
+        return $this->db->query("SELECT * FROM ".DB_PREFIX."handling_library_agent WHERE handling_type = ".(int)$ht." AND city = ".(int)$city)->rows;
     }
 }
