@@ -63,8 +63,6 @@
                 <input type="text" name="filter_donor" value="<?php echo $filter_donor; ?>" placeholder="Донор" id="input-donor" class="form-control" />
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-type">Состояние товара</label>
-                <select name="filter_type" id="input-type" class="form-control"><option value=""> </option><option value="1" <?php if($filter_type==='1'){echo 'selected';} ?>>Новый</option><option value="0" <?php if($filter_type==='0'){echo 'selected';} ?>>Б/У</option></select>
               </div>
             </div>
             <div class="col-sm-4">
@@ -83,10 +81,6 @@
               <div class="form-group">
                 <label class="control-label" for="input-brand">Марка, модель, модельный ряд</label>
                 <input type="text" name="filter_brand" value="<?php echo $filter_brand; ?>" placeholder="Марка, модель, модельный ряд" id="input-brand" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="input-drom">Наличие на дром</label>
-                <select name="filter_drom" id="input-drom" class="form-control"><option value=""> </option><option value="1" <?php if($filter_drom==='1'){echo 'selected';} ?>>Есть</option><option value="0" <?php if($filter_drom==='0'){echo 'selected';} ?>>Нет</option></select>
               </div>
             </div>
             <div class="col-sm-4">
@@ -112,31 +106,20 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
-                <select name="filter_image" id="input-image" class="form-control">
-                  <option value="*"></option>
-                  <?php if ($filter_image) { ?>
-                  <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                  <?php } else { ?>
-                  <option value="1"><?php echo $text_enabled; ?></option>
-                  <?php } ?>
-                  <?php if (!$filter_image && !is_null($filter_image)) { ?>
-                  <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                  <?php } else { ?>
-                  <option value="0"><?php echo $text_disabled; ?></option>
-                  <?php } ?>
-                </select>
+                <label class="control-label" for="input-type">Состояние товара</label>
+                <select name="filter_type" id="input-type" class="form-control"><option value=""> </option><option value="1" <?php if($filter_type==='1'){echo 'selected';} ?>>Новый</option><option value="0" <?php if($filter_type==='0'){echo 'selected';} ?>>Б/У</option></select>
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-catn">Каталожный номер</label>
                 <input type="text" name="filter_catn" value="<?php echo $filter_catn; ?>" placeholder="Каталожный номер" id="input-catn" class="form-control" />
               </div>
-              <button type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-filter"></i> Применить <?php echo $button_filter; ?></button>
-              <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-left"> Применить <?php echo $button_filter; ?></button>
+              <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"> Очистить фильтры</button>
+        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
+              <button type="submit" id='btn-save-price' class="btn btn-success pull-right">Сохранить цены</button>
             </div>
           </div>
         </div>
-        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
           <div class="table-responsive">
             <table class="table table-bordered table-hover table-responsive">
               <thead>
@@ -165,8 +148,8 @@
                     <a href="<?php echo $sort_price; ?>"><?php echo $column_price; ?></a>
                     <?php } ?></td>
                   
-                  <td class="text-left">Примечание</td>
-                  <td class="text-left">Допинфо</td>
+                  <td class="text-left col-sm-2">Примечание</td>
+                  <td class="text-left col-sm-2">Допинфо</td>
                   
                   <td>Донор</td>
                   
@@ -180,21 +163,6 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
-                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td>Дата продажи</td><?php } ?>
-                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?>
-                  <td class="text-left"><?php if ($sort == 'p.manager') { ?>
-                    <a href="<?php echo $sort_manager; ?>" class="<?php echo strtolower($order); ?>">Менеджер</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_manager; ?>">Менеджер</a>
-                    <?php } ?>
-                  </td>
-                  <?php }?>
-                  <td class="text-left"><?php if ($sort == 'p.date_added') { ?>
-                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>">Дата создания</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_date_added; ?>">Дата создания</a>
-                    <?php } ?></td>
-                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-left">Дней на складе</td><?php }?>
                 </tr>
               </thead>
               <tbody>
@@ -251,16 +219,10 @@
 
                   <td><?php echo $product['vin']; ?></td>
                   <td><?php echo $product['stock'].'/'.$product['stell'].'/'.$product['jar'].'/'.$product['shelf'].'/'.$product['box']; ?></td>
-                  <td class="text-right"><?php echo $product['price']; ?></td>
-                  <td class="text-left">
-                      <?php if ($product['stock'] !== '') { ?>
-                      <div class="alert alert-danger" role="alert">
-                        <i class="fa fa-fire-extinguisher"></i> 
-                        <span class="sr-only">ВНИМАНИЕ:</span>
-                        Заметки для менеджеров
-                      </div>
-                      <?php } ?>  
-                      <?php echo htmlspecialchars_decode($product['note']); ?></td>
+                  <th class="form-control col-xs-4">
+                      <input type="text" class="form-control " placeholder="<?php echo $product['price']; ?>" aria-label="" name="price['<?php echo $product['vin']; ?>']" aria-describedby="basic-addon1">
+                  </th>
+                  <td class="text-left"><?php echo htmlspecialchars_decode($product['note']); ?></td>
                   <td class="text-left"><?php echo htmlspecialchars_decode($product['dop']);?></td>
                   <td class="text-left"><?php echo $product['donor'];?></td>
                   
@@ -273,24 +235,9 @@
                     <span class="label label-success"><?php echo $product['quantity']; ?></span>
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
-                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-left"><?php echo $product['saled']; ?></td><?php }?>
-                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-left"><?php echo $product['manager']; ?></td><?php }?>
-                  <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
-                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?>
-                    <td class="text-left">
-                        <?
-                            if($product['dateDif']>=361){$class='label label-danger';}
-                            elseif($product['dateDif']<361 && $product['dateDif']>=181){$class='label label-warning';}
-                            elseif($product['dateDif']<181 && $product['dateDif']>=91){$class='label label-info';}
-                            elseif($product['dateDif']<91 && $product['dateDif']>=0){$class='';}
-                        ?>
-                        <span class="<?php echo $class; ?>"><?php echo $product['dateDif'];?></span>
-                    </td><?php }?>
-                </tr>
-                <?php } ?>
-                <?php } else { ?>
-                <tr>
-                  <td class="text-center" colspan="8"><?php echo $text_no_results; ?></td>
+               
+                    
+                  <?php }?>
                 </tr>
                 <?php } ?>
               </tbody>
@@ -331,8 +278,11 @@
     </script>     
   <script type="text/javascript"><!--
       
+      $('#btn-save-price').on('click', function(){
+       
+      });
       $('#btn-clear-filters').on('click', function(){
-        var url = 'index.php?route=production/catalog';
+        var url = 'index.php?route=production/stock_discounts';
         location = url;
       });
       
@@ -340,7 +290,7 @@
         $('#panel-body-f').toggle('slow', function(){});
       });
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=production/catalog';
+	var url = 'index.php?route=production/stock_discounts';
 
 	var filter_name = $('input[name=\'filter_name\']').val();
         var filter_name = filter_name.replace(/\s+/g," ");
@@ -415,12 +365,7 @@ $('#button-filter').on('click', function() {
 		url += '&filter_type=' + encodeURIComponent(filter_type);
 	}
 
-  var filter_image = $('select[name=\'filter_image\']').val();
 
-  if (filter_image != '*') {
-    url += '&filter_image=' + encodeURIComponent(filter_image);
-  }
-  
   var filter_status = $('select[name=\'filter_status\']').val();
 
   if (filter_status != '*') {
@@ -434,7 +379,7 @@ $('#button-filter').on('click', function() {
 $('input[name=\'filter_name\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
-			url: 'index.php?route=production/catalog/autocomplete&filter_name=' +  encodeURIComponent(request),
+			url: 'index.php?route=production/stock_discounts/autocomplete&filter_name=' +  encodeURIComponent(request),
 			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {
@@ -454,7 +399,7 @@ $('input[name=\'filter_name\']').autocomplete({
 $('input[name=\'filter_model\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
-			url: 'index.php?route=production/catalog/autocomplete&filter_model=' +  encodeURIComponent(request),
+			url: 'index.php?route=production/stock_discounts/autocomplete&filter_model=' +  encodeURIComponent(request),
 			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {

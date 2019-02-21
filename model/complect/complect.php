@@ -93,7 +93,7 @@
             }
             $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$heading."' ");
             $price+= $sup->row['price'];
-            $sale = $sale==0?15:$sale;
+            $sale = $sale==0?0.000001:$sale;
             $supsale = 100 - $sale;
             $supsale = $supsale/100;
             $price = ceil($price*$supsale);

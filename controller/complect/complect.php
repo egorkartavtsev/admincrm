@@ -46,7 +46,7 @@ class ControllerComplectComplect extends Controller {
         $heading = $this->request->post['heading'];
         $complect = explode(",", $this->request->post['complect']);
         $whole = $this->request->post['whole'];
-        $sale = $this->request->post['sale']!=0?$this->request->post['sale']:15;
+        $sale = $this->request->post['sale']!=0?$this->request->post['sale']:0.000001;
         
         $this->model_complect_complect->create($name, $price, $heading, $complect, $whole, $sale);
         
@@ -62,7 +62,7 @@ class ControllerComplectComplect extends Controller {
         $heading = $this->request->post['heading'];
         $complect = explode(",", $this->request->post['complect']);
         $whole = $this->request->post['whole'];
-        $sale = $this->request->post['sale']!=0?$this->request->post['sale']:15;
+        $sale = $this->request->post['sale']!=0?$this->request->post['sale']:0.000001;
         $this->model_complect_complect->editComplect($id, $name, $price, $heading, $complect, $whole, $sale);
         
         echo $name.' - комплект успешно сохранён!';
