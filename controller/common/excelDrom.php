@@ -66,7 +66,7 @@
                 . "p.stock AS stock, "
                 . "p.drom AS drom "
                 . "FROM ".DB_PREFIX."product p "
-                . "WHERE (p.quantity > 0) AND (p.podcateg != '') AND (p.price > 0) AND (p.price <= 1000)" );
+                . "WHERE (p.quantity > 0) AND (p.podcateg != '') AND (p.price > 0)" );
            $complects_bd = $this->model_common_excelDrom->getComplectDrom();
             //exit(var_dump($exlxe));
             $lp=2;

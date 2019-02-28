@@ -65,15 +65,15 @@ class ModelToolProduct extends Model {
         $res = array();
         $res['vin'] = array(
             'excel' => 0,
-            'text'  => 'Внутренний номер'
+            'text'  => 'Р’РЅСѓС‚СЂРµРЅРЅРёР№ РЅРѕРјРµСЂ'
         );
         $res['price'] = array(
             'excel' => 1,
-            'text'  => 'Цена'
+            'text'  => 'Р¦РµРЅР°'
         );
         $res['quantity'] = array(
             'excel' => 2,
-            'text'  => 'Количество'
+            'text'  => 'РљРѕР»РёС‡РµСЃС‚РІРѕ'
         );
         $i=3;
         foreach ($sup->rows as $lib) {
@@ -85,22 +85,22 @@ class ModelToolProduct extends Model {
         }
         $res['comp'] = array(
             'excel' => $i,
-            'text'  => 'Комплектность'
+            'text'  => 'РљРѕРјРїР»РµРєС‚РЅРѕСЃС‚СЊ'
         );
         ++$i;
         $res['comp_price'] = array(
             'excel' => $i,
-            'text'  => 'Цена комплекта'
+            'text'  => 'Р¦РµРЅР° РєРѕРјРїР»РµРєС‚Р°'
         );
         ++$i;
         $res['comp_whole'] = array(
             'excel' => $i,
-            'text'  => 'Способ покупки'
+            'text'  => 'РЎРїРѕСЃРѕР± РїРѕРєСѓРїРєРё'
         );
         ++$i;
         $res['date_added'] = array(
             'excel' => $i,
-            'text'  => 'Дата фотографии'
+            'text'  => 'Р”Р°С‚Р° С„РѕС‚РѕРіСЂР°С„РёРё'
         );
         ++$i;
         
@@ -516,7 +516,18 @@ class ModelToolProduct extends Model {
     public function searchingProds($request) {
         $reqwords = explode(" ", $request);
         $tmp = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE searching = 1")->rows;
-
+//        foreach($reqwords as $key => $word){
+//            $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE LOCATE('".$this->db->escape($word)."', translate)");
+//        }
+//        $sql = "SELECT "
+//                . "lf.name "
+//                . "FROM ".DB_PREFIX."lib_fills lf "
+//                . "WHERE ";
+//        foreach ($reqwords as $word){
+//            $sql.="LOCATE('".$this->db->escape($word)."', lf.translate) OR ";
+//        }
+//        $sql .= "0";
+//        $sinonym = $this->db->query($sql);
         $query = "SELECT "
                   . "pd.name AS name, "
                   . "p.stock AS stock, "
@@ -525,20 +536,36 @@ class ModelToolProduct extends Model {
                   . "p.quantity AS quantity, "
                   . "p.vin AS vin, "
                   . "p.product_id "
-                . "FROM ".DB_PREFIX."product_description pd "
-                    . "LEFT JOIN ".DB_PREFIX."product p "
-                        . "ON pd.product_id = p.product_id "
+                . "FROM ".DB_PREFIX."product p "
+                . "LEFT JOIN ".DB_PREFIX."product_description pd "
+                        . "ON p.product_id = pd.product_id "
                     . "WHERE !LOCATE('complect', p.vin) AND p.status>0 ";
-        foreach ($reqwords as $word){
-            $query.="AND (p.vin = '".$this->db->escape($word)."' "
-                       . "OR LOCATE('" . $this->db->escape($word) . "', pd.name) ";
-               foreach ($tmp as $field) {
-                   $query.="OR LOCATE('" . $this->db->escape($word) . "', p.".$field['name'].") ";
-               }
-           $query.=") ";
-        }
-        $result = $this->db->query($query);
-        return $result->rows;
+            foreach ($reqwords as $word){
+                $query.="AND (p.vin = '".$this->db->escape($word)."' ";
+                   foreach ($tmp as $field) {
+                       $query.="OR LOCATE('" . $this->db->escape($word) . "', p.".$field['name'].") ";
+                   }
+               $query.=") ";
+            }
+//*************************************************** sinonimy *********************************************************
+//        if($sinonym->num_rows){
+//            foreach($sinonym->rows as $var){
+//                $query .= "AND (LOCATE('".$var['name']."', pd.name) ";
+//                   foreach ($tmp as $field) {
+//                       $query.="OR LOCATE('" . $this->db->escape($var['name']) . "', p.".$field['name'].") ";
+//                   }
+//                $query .= ") ";
+//            }
+//        } else {
+//            foreach ($reqwords as $word){
+//                $query.="AND (p.vin = '".$this->db->escape($word)."' ";
+//                   foreach ($tmp as $field) {
+//                       $query.="OR LOCATE('" . $this->db->escape($word) . "', p.".$field['name'].") ";
+//                   }
+//               $query.=") ";
+//            }
+//        }
+        return $this->db->query($query)->rows;
     }
     
     public function getProdInfo($id) {
@@ -563,7 +590,7 @@ class ModelToolProduct extends Model {
             'quantity' => $sup->row['quantity'],
             'edit' => $this->url->link('production/catalog/edit', 'product_id='.$sup->row['product_id']),
             'go_site' => HTTP_SHOWCASE.'index.php?route=catalog/product&product_id='.$sup->row['product_id'],
-            //опциональная строчка!!!!! Удалить для дальнейшей эксплуатации!!!!
+            //РѕРїС†РёРѕРЅР°Р»СЊРЅР°СЏ СЃС‚СЂРѕС‡РєР°!!!!! РЈРґР°Р»РёС‚СЊ РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ СЌРєСЃРїР»СѓР°С‚Р°С†РёРё!!!!
             'location' => $sup->row['stock'].'/'.$sup->row['stell'].'/'.$sup->row['jar'].'/'.$sup->row['shelf'].'/'.$sup->row['box']
         );
         
@@ -698,5 +725,8 @@ class ModelToolProduct extends Model {
         }
         return $this->db->query("SELECT ".$sup->row['similar']." FROM ".DB_PREFIX.$req['target']." WHERE ".$tmp." ")->row;
         
+    }
+    public function savePriceCell($vin, $priceCell){
+         $this->db->query("UPDATE ".DB_PREFIX."product SET price = ".$priceCell." WHERE vin = ".$vin);
     }
 }

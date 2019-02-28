@@ -54,7 +54,7 @@
                                 </thead>
                                 <tbody id="ppd">
                                     <?php foreach($plan['planPerDay'] as $ppd){ ?>
-                                    <tr style="<?php echo ($ppd['date']===date('d.m.Y')?'background-color: #f89f9f;':'')?>">
+                                    <tr style="<?php echo ($ppd['date']===date('d.m.Y')?'background-color: #d9edf7;':'')?>">
                                             <td><?php echo $ppd['date'];?></td>
                                             <td><?php echo $ppd['plan'];?></td>
                                             <td><?php echo $ppd['fact'];?></td>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-lg-12">
                         <h4><b>История выполнения планов за предыдущие месяцы:</b></h4>
-                            <table class="table table-striped table-bordered">
+                            <table >
                                 <thead>
                                     <tr>
                                         <th class="col-sm-1">Месяц</th>

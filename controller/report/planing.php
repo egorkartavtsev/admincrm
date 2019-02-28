@@ -11,33 +11,33 @@ class ControllerReportPlaning extends Controller{
         $this->load->model('report/planing');
         $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $plan = $this->model_report_planing->getAdresses();
+        //exit(var_dump($plan));
         foreach ($plan as $key => $value) {
             $curFact = $this->model_report_planing->getCurrentFact($key);
-            $curEvDay= $this->model_report_planing->getCurFact($key);
             $current = $this->model_report_planing->getCurrentPlan($key);
-            if ($current === "" ||  $current === '0'){
+            if ($current === "" ||  $current == '0' ||  $current == 0){
                 $currentFloor = floor($curFact*100/1);
             }
             else {
                 $currentFloor = floor($curFact*100/$current);
+            }
             $sumLast = ($current-$curFact);
-            $curEvDay = ($curFact-$curEvDay);
+            //$curEvDay = ($curFact-$curEvDay);
             $plan[$key] = [
                 'id'            => $value,
                 'current'       => $current,
                 'curFact'       => $curFact,
-                'curEvDay'      => $curEvDay,
                 'sumLast'       => $sumLast,
+                'curEvDay'      => $this->model_report_planing->getCurrentFact($key, date('d'), date('d')),
                 'totalPercent'  => $currentFloor,
                 'history'       => $this->getTotalHistory($key),
                 'planPerDay'    => $current?$this->planPerDay($key, $current):[],
                 'currHist'      => $this->model_report_planing->getPlanChangeHistory($key)
             ];
+            //exit(var_dump($plan));
         }
-        //exit(var_dump($plan));
         $data['plans'] = $plan;
         $this->response->setOutput($this->load->view('report/planing', $data));
-    }
     }
     public function saveCurr() {
         $plan = $this->request->post['curr'];
@@ -59,11 +59,9 @@ class ControllerReportPlaning extends Controller{
         $i = 1;
         $fuckday = 0;
         for(; $i<date('t'); $i++){
-            $fuckday = ($fuckday + 1);
             $day = (strlen($i)===1)?'0'.$i:$i;
-            $sumevday = $this->model_report_planing->getCurrentFact($addr, $fuckday);
-            $fact = $this->model_report_planing->getCurrentFact($addr, $day);
-            $sumday = $this->model_report_planing->getCurFact($addr, $i);
+            $fact = $this->model_report_planing->getCurrentFact($addr, '01', $day);
+            $sumday = $this->model_report_planing->getCurrentFact($addr, $day, $day);
             $perc = floor($fact*100/($perDay*$i));
             if($perc>=100){
                 $class = 'success';

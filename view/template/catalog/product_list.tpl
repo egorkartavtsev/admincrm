@@ -252,7 +252,15 @@
                   <td><?php echo $product['vin']; ?></td>
                   <td><?php echo $product['stock'].'/'.$product['stell'].'/'.$product['jar'].'/'.$product['shelf'].'/'.$product['box']; ?></td>
                   <td class="text-right"><?php echo $product['price']; ?></td>
-                  <td class="text-left"><?php echo htmlspecialchars_decode($product['note']); ?></td>
+                  <td class="text-left">
+                      <?php if ($product['stock'] !== '') { ?>
+                      <div class="alert alert-danger" role="alert">
+                        <i class="fa fa-fire-extinguisher"></i> 
+                        <span class="sr-only">ВНИМАНИЕ:</span>
+                        Заметки для менеджеров
+                      </div>
+                      <?php } ?>  
+                      <?php echo htmlspecialchars_decode($product['note']); ?></td>
                   <td class="text-left"><?php echo htmlspecialchars_decode($product['dop']);?></td>
                   <td class="text-left"><?php echo $product['donor'];?></td>
                   
@@ -276,7 +284,7 @@
                             elseif($product['dateDif']<181 && $product['dateDif']>=91){$class='label label-info';}
                             elseif($product['dateDif']<91 && $product['dateDif']>=0){$class='';}
                         ?>
-                        <span class="<?php echo $class;?>"><?php echo $product['dateDif'];?></span>
+                        <span class="<?php echo $class; ?>"><?php echo $product['dateDif'];?></span>
                     </td><?php }?>
                 </tr>
                 <?php } ?>
