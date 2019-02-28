@@ -131,6 +131,75 @@ $(document).ready(function() {
             }
         });
     });
+    
+    $(document).on('click', '[btn-type=showServices]', function(){
+        var agent = $(this).attr('data-target');
+        var btn = $(this);
+        $(this).parent().find('button').removeClass('active');
+        $(this).addClass('active');
+        $.ajax({
+            url: 'index.php?route=service/settings/showServices',
+            method: 'post',
+            data: {agent:agent},
+            success: function (data) {
+                btn.parent().parent().parent().find('#services').html(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn-type=saveServDets]', function(){
+        var serv = $(this).attr('data-source');
+        var btn = $(this);
+        $.ajax({
+            url: 'index.php?route=service/settings/saveServDets',
+            method: 'post',
+            data: {
+                serv:serv,
+                name:btn.parent().parent().find('[data-field=serv_name]').val(),
+                doc:btn.parent().parent().find('[data-field=doc]').val(),
+                link:btn.parent().parent().find('[data-field=link]').val()
+            },
+            success: function (data) {
+                alert(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn-type=showServDetails]', function(){
+        var serv = $(this).attr('data-source');
+        var btn = $(this);
+        $.ajax({
+            url: 'index.php?route=service/settings/showServiceDetails',
+            method: 'post',
+            data: {serv:serv},
+            success: function (data) {
+                $('#s_sets').html(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn-type=saveAgentReqs]', function(){
+        var agent = $(this).attr('data-target');
+        var btn = $(this);
+        $.ajax({
+            url: 'index.php?route=service/settings/saveAgentReqs',
+            method: 'post',
+            data: {
+                agent:agent,
+                legal_adr:btn.parent().parent().find('[data-field=field-legal_adr]').val(),
+                ogrn:btn.parent().parent().find('[data-field=field-ogrn]').val(),
+                inn:btn.parent().parent().find('[data-field=field-inn]').val(),
+                check_acc:btn.parent().parent().find('[data-field=field-check_acc]').val(),
+                bank:btn.parent().parent().find('[data-field=field-bank]').val(),
+                bik:btn.parent().parent().find('[data-field=field-bik]').val(),
+                cor_acc:btn.parent().parent().find('[data-field=field-cor_acc]').val()
+            },
+            success: function (data) {
+                console.log(data);
+                alert(data);
+            }
+        });
+    });
     /*******************************************/
     
     

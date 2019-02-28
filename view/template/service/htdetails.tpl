@@ -12,7 +12,7 @@
                 <div role="tabpanel" class="tab-pane <?php echo ($ct['city_id']=='1')?'active':''?>" id="<?php echo $ct['city_code'];?>">
                     <h4><?php echo $ct['city_name'];?></h4>
                     <hr>
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <div class="btn-group-vertical" role="group">
                             <?php foreach($ct['agents'] as $agent){ ?>
                                 <button class="btn btn-primary" btn-type="showServices" data-target="<?php echo $agent['agent_id'];?>">
@@ -24,10 +24,11 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-sm-6" id="HTInfo">
+                    <div class="col-sm-8" id="services">
                     </div>
                 </div>
             <?php }?>
         </div>
     </div>
 </div>
+<?php echo $clearModal;?>

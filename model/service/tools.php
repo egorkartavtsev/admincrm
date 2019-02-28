@@ -84,4 +84,49 @@ class ModelServiceTools extends Model{
     public function getAgents($ht, $city) {
         return $this->db->query("SELECT * FROM ".DB_PREFIX."handling_library_agent WHERE handling_type = ".(int)$ht." AND city = ".(int)$city)->rows;
     }
+    
+    public function getServices($agent){
+        return $this->db->query("SELECT * FROM ".DB_PREFIX."handling_library_service WHERE agent_id = ".(int)$agent)->rows;
+    }
+    
+    public function getReqs($agent){
+        return $this->db->query("SELECT legal_adr, ogrn, inn, check_acc, bank, bik, cor_acc FROM ".DB_PREFIX."handling_library_agent WHERE agent_id = ".(int)$agent)->row;
+    }
+    
+    public function saveReqs($data){
+        $sql = "UPDATE ".DB_PREFIX."handling_library_agent SET ";
+        foreach ($data as $key => $value) {
+            if($key!=='agent'){
+                $sql.= $key." = '".$value."', ";
+            }
+        }
+        $sql.= "agent_id = ".(int)$data['agent']." WHERE agent_id = ".(int)$data['agent'];
+        $this->db->query($sql);
+    }
+    
+    public function getServDetails($serv){
+        return $this->db->query("SELECT s.service_id,s.name, dt.name as doc, s.link "
+                . "FROM ".DB_PREFIX."handling_library_service s "
+                . "LEFT JOIN ".DB_PREFIX."doc_to_service d2s ON d2s.service_id = s.service_id "
+                . "LEFT JOIN ".DB_PREFIX."document_template dt ON dt.doc_id = d2s.doc_id "
+                . "WHERE s.service_id = ".(int)$serv)->row;
+    }
+    
+    public function getTotalAgents() {
+        return $this->db->query("SELECT a.agent_id, a.name as agent, ht.name as htype, c.city_name "
+                . "FROM ".DB_PREFIX."handling_library_agent a "
+                . "LEFT JOIN ".DB_PREFIX."captured_cities c ON a.city = c.city_id "
+                . "LEFT JOIN ".DB_PREFIX."handling_library_type ht ON a.handling_type = ht.ht_id ")->rows;
+    }
+    
+    public function saveServ($data) {
+        if(isset($data['doc']) && (int)$data['doc']>0){
+            $this->db->query("DELETE FROM ".DB_PREFIX."doc_to_service WHERE service_id = ".(int)$data['serv']);
+            $this->db->query("INSERT INTO ".DB_PREFIX."doc_to_service (doc_id, service_id) VALUES (".$data['doc'].", ".$data['serv'].") ");
+        }
+        
+        $this->db->query("UPDATE ".DB_PREFIX."handling_library_service SET name = '".$data['name']."', link = '".$data['link']."' WHERE service_id = ".(int)$data['serv']);
+        
+        
+    }
 }
