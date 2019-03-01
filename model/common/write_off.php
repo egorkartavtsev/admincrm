@@ -85,7 +85,6 @@ class ModelCommonWriteoff extends Model {
             $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE vin = '".$data['vin']."'");
             $product_id = $query->row['product_id'];
             $heading = $query->row['comp'];
-
             $this->db->query("INSERT INTO ".DB_PREFIX."sales_info "
                     . "SET "
                         . "name = '".$data['name']."', "
@@ -141,8 +140,8 @@ class ModelCommonWriteoff extends Model {
             } else {
                 $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");
             }
-        }
         return $results;
+        }
     }
     
     public function getSales(){
