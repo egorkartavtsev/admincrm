@@ -346,9 +346,6 @@
         
         public function constructSaleArray($info) {
             $prodinfo = array();
-//            exit(var_dump($info));
-            $query = $this->db->query("SELECT firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."'");
-            $manager = $query->row['firstname'].' '.$query->row['lastname'];
             
             foreach ($info['products'] as $vin => $prod) {
                 $prodinfo[] = array(
@@ -365,7 +362,7 @@
                     'price'     =>  $prod['price'],
                     'reason'    =>  $prod['reason'],
                     'date'      =>  $info['date'],
-                    'manager'   =>  $manager
+                    'manager'   =>  $this->user->getId()
                 );
             }
             return $prodinfo;

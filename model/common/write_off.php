@@ -134,7 +134,7 @@ class ModelCommonWriteoff extends Model {
                 if($reqComplect && $this->model_tool_complect->checkCompl($reqComplect['complect']['heading'])){
                     $this->model_tool_complect->compReprice($reqComplect['complect']['heading']);
                 }
-                $APinfo = array('vin' => $data['vin'], 'write_off' => 1, 'price' => $data['price'], 'structure' => 1);
+                $APinfo = ['vin' => $data['vin'], 'write_off' => 1, 'price' => $data['price'], 'structure' => 1, 'options' => []];
                 $this->model_tool_xml->avitoFind($APinfo);
                 $this->model_tool_xml->ARUFind($APinfo);
             } else {

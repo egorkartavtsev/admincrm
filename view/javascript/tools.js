@@ -507,7 +507,7 @@ $(document).ready(function() {
     
     $(document).on('click', '[btn_type=showProd]', function(){
         var prod = $(this).attr('target');
-        $("#prodinfocard").html('<img src="wait.gif" style="width: 100px;" class="center-block">');;
+        $("#prodinfocard").html('<img src="wait.gif" style="width: 100px;" class="center-block">');
         ajax({
             url:"index.php?route=tool/formTool/getProdCard",
             method:"POST",

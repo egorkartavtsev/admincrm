@@ -169,6 +169,9 @@ class ControllerToolFormTool extends Controller {
         $this->load->model("tool/product");
         $data = $this->model_tool_product->getProdInfo($this->request->post['prod']);
         $photos = $this->model_tool_product->getProdImg($this->request->post['prod']);
+        if(isset($data['options']['numb'])){
+            $data['options']['numb']['value'] = HTTPS_CATALOG.'/index.php?route=donor/show&numb='.$data['options']['numb']['value'];
+        }
         $local_id = 0; 
         $images = array();
         foreach($photos as $img){

@@ -79,6 +79,7 @@ class ControllerReportOrdersInfo extends Controller{
                     $comp = $this->model_common_write_off->isCompl($prod['vin']);
                     if($comp){
                         foreach($comp as $compl){
+                            $this->model_tool_order->isSaled($compl['vin']);
                             $list[] = array(
                                 'name' => $compl['name'],
                                 'vin' => $compl['vin'],
@@ -97,6 +98,7 @@ class ControllerReportOrdersInfo extends Controller{
                             );
                         }
                     } else {
+                        $this->model_tool_order->isSaled($prod['vin']);
                         $list[] = array(
                             'name' => $prod['name'],
                             'vin' => $prod['vin'],
@@ -114,6 +116,7 @@ class ControllerReportOrdersInfo extends Controller{
                             'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']
                         );                        
                     }
+                    
                 }
                 $this->model_common_write_off->sale($list, $invoice);
             break;
