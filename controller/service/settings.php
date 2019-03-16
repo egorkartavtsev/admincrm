@@ -96,7 +96,9 @@ class ControllerServiceSettings extends Controller {
         $this->load->model('service/tools');
         $data = [];
         $data['details'] = $this->model_service_tools->getServDetails($this->request->post['serv']);
-        $data['agents'] = $this->model_service_tools->getTotalAgents();
+        $data['agents'] = $this->model_service_tools->getTotalAgents();        
+        $data['docs'] = $this->model_service_tools->getDocuments();
+
         
         echo $this->load->view('form/serv_dets', $data);
     }

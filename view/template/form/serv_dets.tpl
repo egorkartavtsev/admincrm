@@ -6,7 +6,11 @@
     <div class="form-group col-sm-12">
         <label>Документ</label>
         <select class="form-control" data-field="doc">
-            <option>Выберите связанный документ</option>
+            <option disabled>Выберите связанный документ</option>
+            <option value="">Нет связанных документов</option>
+            <?php foreach($docs as $val){ ?>
+                <option <?php echo ($val['doc_id']==$details['doc_id'])?'selected':''; ?> value="<?php echo $val['doc_id'];?>"><?php echo $val['name'];?></option>
+            <?php }?>
         </select>
     </div>
     <div class="form-group col-sm-12">
@@ -14,7 +18,7 @@
         <select class="form-control" data-field="link">
             <option value="0">С клиентом</option>
             <?php foreach($agents as $val){ ?>
-            <option <?php echo ($val['agent_id']==$details['link'])?'selected':''; ?> value="<?php echo $val['agent_id'];?>"><?php echo $val['agent'];?> (<?php echo $val['htype'];?>) (<?php echo $val['city_name'];?>)</option>
+                <option <?php echo ($val['agent_id']==$details['link'])?'selected':''; ?> value="<?php echo $val['agent_id'];?>"><?php echo $val['agent'];?> (<?php echo $val['htype'];?>) (<?php echo $val['city_name'];?>)</option>
             <?php }?>
         </select>
     </div>

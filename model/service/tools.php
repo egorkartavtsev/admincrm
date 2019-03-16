@@ -105,7 +105,7 @@ class ModelServiceTools extends Model{
     }
     
     public function getServDetails($serv){
-        return $this->db->query("SELECT s.service_id,s.name, dt.name as doc, s.link "
+        return $this->db->query("SELECT s.service_id, s.name, dt.doc_id, dt.name as doc, s.link "
                 . "FROM ".DB_PREFIX."handling_library_service s "
                 . "LEFT JOIN ".DB_PREFIX."doc_to_service d2s ON d2s.service_id = s.service_id "
                 . "LEFT JOIN ".DB_PREFIX."document_template dt ON dt.doc_id = d2s.doc_id "
@@ -120,13 +120,71 @@ class ModelServiceTools extends Model{
     }
     
     public function saveServ($data) {
-        if(isset($data['doc']) && (int)$data['doc']>0){
+        if($data['doc']!=''){
             $this->db->query("DELETE FROM ".DB_PREFIX."doc_to_service WHERE service_id = ".(int)$data['serv']);
             $this->db->query("INSERT INTO ".DB_PREFIX."doc_to_service (doc_id, service_id) VALUES (".$data['doc'].", ".$data['serv'].") ");
+        } else {
+            $this->db->query("DELETE FROM ".DB_PREFIX."doc_to_service WHERE service_id = ".(int)$data['serv']);
         }
         
         $this->db->query("UPDATE ".DB_PREFIX."handling_library_service SET name = '".$data['name']."', link = '".$data['link']."' WHERE service_id = ".(int)$data['serv']);
-        
-        
+    }
+    
+    public function getDocuments() {
+        return $this->db->query("SELECT * FROM ".DB_PREFIX."document_template WHERE 1")->rows;
+    }
+    
+    public function getDocDetails($doc) {
+        if($doc == ''){
+            return [
+                'doc_id' => '',
+                'name' => '',
+                'file' => ''
+            ];
+        } else {
+            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."document_template WHERE doc_id = ".(int)$doc)->row;
+            return [
+                'doc_id' => $doc,
+                'name' => $sup['name'],
+                'file' => $sup['file']
+            ];
+        }
+    }
+    
+    public function saveDocDetails($doc) {
+        if($doc['doc_id']=='new-doc'){
+            $this->db->query("INSERT INTO ".DB_PREFIX."document_template (name, file) VALUES ('".$doc['name']."', '".$doc['file']."')");
+        } else {
+            $this->db->query("UPDATE ".DB_PREFIX."document_template SET name = '".$doc['name']."', file = '".$doc['file']."' WHERE doc_id = ".(int)$doc['doc_id']);
+        }
+    }
+    
+    public function getItems($data) {
+        $result = [];
+        switch ($data['child']) {
+            case 'subagent':
+                $sup = $this->db->query("SELECT a.agent_id, a.name, c.city_name as city "
+                        . "FROM ".DB_PREFIX."handling_library_agent a "
+                        . "LEFT JOIN ".DB_PREFIX."captured_cities c ON c.city_id = a.city "
+                        . "WHERE a.handling_type = ".(int)$data['sel'])->rows;
+                // pozghe ogranichit' po gorodu menedghera
+                foreach($sup as $row){
+                    $result[] = [
+                        'id' => $row['agent_id'],
+                        'name' => $row['name'].' ('.$row['city'].')'
+                    ];
+                }
+                break;
+            case 'service':
+                $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."handling_library_service WHERE agent_id = ".(int)$data['sel'])->rows;
+                foreach($sup as $row){
+                    $result[] = [
+                        'id' => $row['agent_id'],
+                        'name' => $row['name']
+                    ];
+                }
+                break;
+        }
+        return $result;
     }
 }
