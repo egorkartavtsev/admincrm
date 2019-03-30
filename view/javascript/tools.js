@@ -637,6 +637,19 @@ $(document).ready(function() {
         }
     });
     
+    
+    $(document).on('click', '[btn-type=contDownload]', function(){
+        ajax({
+            url:"index.php?route=tool/wordTool",
+            method:"POST",
+            datatype:"json",
+            data: {},
+            success:function(data){
+                window.open(data);
+            }
+        });
+    });
+    
     $(document).on('click', '[btn-type=contEdit]', function(){
         var btn = $(this);
         var row = btn.parent().parent();
