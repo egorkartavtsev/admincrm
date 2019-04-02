@@ -106,12 +106,17 @@
                                                     <div class="">
                                                         <label>Способ продажи комплекта</label>
                                                         <select id="whole" class="form-control">
-                                                            <option value="0">Обычная продажа</option>
+                                                            <?php if ($wholecomp != '0') { ?>
                                                             <option value="1">Только комплект целиком</option>
+                                                            <option value="0">Обычная продажа</option
+                                                            <?php } else { ?>
+                                                            <option value="0">Обычная продажа</option
+                                                            <option value="1">Только комплект целиком</option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="">
-                                                        <label>Скидка(в процентах. при значении 0, скидка = 15%)</label>
+                                                        <label>Скидка(в процентах. при значении 0, скидка = 0.000001%)</label>
                                                         <div class="input-group">
                                                             <input class="form-control" name="sale" id="sale" value="<?php echo $kit['sale']?>"/>
                                                             <div class="input-group-addon">%</div>
@@ -147,7 +152,7 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class="well well-lg">
+                        <div class="well col-sm-12">
                             <label class="h4">Описание продукта:</label>
                             <textarea name="description" data-lang="1" class="form-control summernote"><?php echo $description; ?></textarea>
                         </div>                      

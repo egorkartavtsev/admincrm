@@ -63,8 +63,6 @@
                 <input type="text" name="filter_donor" value="<?php echo $filter_donor; ?>" placeholder="Донор" id="input-donor" class="form-control" />
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-type">Состояние товара</label>
-                <select name="filter_type" id="input-type" class="form-control"><option value=""> </option><option value="1" <?php if($filter_type==='1'){echo 'selected';} ?>>Новый</option><option value="0" <?php if($filter_type==='0'){echo 'selected';} ?>>Б/У</option></select>
               </div>
             </div>
             <div class="col-sm-4">
@@ -83,10 +81,6 @@
               <div class="form-group">
                 <label class="control-label" for="input-brand">Марка, модель, модельный ряд</label>
                 <input type="text" name="filter_brand" value="<?php echo $filter_brand; ?>" placeholder="Марка, модель, модельный ряд" id="input-brand" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="input-drom">Наличие на дром</label>
-                <select name="filter_drom" id="input-drom" class="form-control"><option value=""> </option><option value="1" <?php if($filter_drom==='1'){echo 'selected';} ?>>Есть</option><option value="0" <?php if($filter_drom==='0'){echo 'selected';} ?>>Нет</option></select>
               </div>
             </div>
             <div class="col-sm-4">
@@ -112,32 +106,20 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
-                <select name="filter_image" id="input-image" class="form-control">
-                  <option value="*"></option>
-                  <?php if ($filter_image) { ?>
-                  <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                  <?php } else { ?>
-                  <option value="1"><?php echo $text_enabled; ?></option>
-                  <?php } ?>
-                  <?php if (!$filter_image && !is_null($filter_image)) { ?>
-                  <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                  <?php } else { ?>
-                  <option value="0"><?php echo $text_disabled; ?></option>
-                  <?php } ?>
-                </select>
+                <label class="control-label" for="input-type">Состояние товара</label>
+                <select name="filter_type" id="input-type" class="form-control"><option value=""> </option><option value="1" <?php if($filter_type==='1'){echo 'selected';} ?>>Новый</option><option value="0" <?php if($filter_type==='0'){echo 'selected';} ?>>Б/У</option></select>
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-catn">Каталожный номер</label>
                 <input type="text" name="filter_catn" value="<?php echo $filter_catn; ?>" placeholder="Каталожный номер" id="input-catn" class="form-control" />
               </div>
-              <button type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-filter"></i> Применить <?php echo $button_filter; ?></button>
-              <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-left"> Применить <?php echo $button_filter; ?></button>
+              <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"> Очистить фильтры</button>
+        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
+              <button type="submit" id='btn-save-price' class="btn btn-success pull-right">Сохранить цены</button>
             </div>
           </div>
         </div>
-        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
-         <button type="submit" id='btn-save-price' class="btn btn-danger pull-left">saveprice</button>
           <div class="table-responsive">
             <table class="table table-bordered table-hover table-responsive">
               <thead>
@@ -166,8 +148,8 @@
                     <a href="<?php echo $sort_price; ?>"><?php echo $column_price; ?></a>
                     <?php } ?></td>
                   
-                  <td class="text-left">Примечание</td>
-                  <td class="text-left">Допинфо</td>
+                  <td class="text-left col-sm-2">Примечание</td>
+                  <td class="text-left col-sm-2">Допинфо</td>
                   
                   <td>Донор</td>
                   
@@ -237,8 +219,8 @@
 
                   <td><?php echo $product['vin']; ?></td>
                   <td><?php echo $product['stock'].'/'.$product['stell'].'/'.$product['jar'].'/'.$product['shelf'].'/'.$product['box']; ?></td>
-                  <th class="form-control col-xs-2">
-                      <input type="text" class="form-control col-xs-2" placeholder="<?php echo $product['price']; ?>" aria-label="" name="price['<?php echo $product['vin']; ?>']" aria-describedby="basic-addon1">
+                  <th class="form-control col-xs-4">
+                      <input type="text" class="form-control " placeholder="<?php echo $product['price']; ?>" aria-label="" name="price['<?php echo $product['vin']; ?>']" aria-describedby="basic-addon1">
                   </th>
                   <td class="text-left"><?php echo htmlspecialchars_decode($product['note']); ?></td>
                   <td class="text-left"><?php echo htmlspecialchars_decode($product['dop']);?></td>
@@ -383,12 +365,7 @@ $('#button-filter').on('click', function() {
 		url += '&filter_type=' + encodeURIComponent(filter_type);
 	}
 
-  var filter_image = $('select[name=\'filter_image\']').val();
 
-  if (filter_image != '*') {
-    url += '&filter_image=' + encodeURIComponent(filter_image);
-  }
-  
   var filter_status = $('select[name=\'filter_status\']').val();
 
   if (filter_status != '*') {

@@ -75,6 +75,7 @@
                         <option value="wherefrom">Источник</option>
                         <option value="manager">Менеджер заводивший товар</option>
                         <option value="adress">Склад</option>
+                        <title><option value="numb">Донор</option></title>
                         <option value="city">Город назначения(текущий/доставка)</option>
                         <option value="type">Тип товара</option>
                         <option value="brand">Марка</option>

@@ -271,5 +271,11 @@ class ModelToolOrder extends Model{
         return $sup->rows;
     }
     
+    public function isSaled($vin){
+        if($this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$vin."' ")->num_rows){
+            $this->db->query("DELETE FROM ".DB_PREFIX."sales_info WHERE sku = '".$vin."' ");
+        }
+    }
+    
 }
 

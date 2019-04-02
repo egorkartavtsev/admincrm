@@ -225,7 +225,7 @@ class ControllerProductionCatalog extends Controller {
 		if (isset($this->request->get['filter_price_from'])) {
 			$filter_price_from = trim($this->request->get['filter_price_from']);
 		} else {
-			$filter_price_from = null;
+			$filter_price_from = 0;
 		}
 		if (isset($this->request->get['filter_price_to'])) {
 			$filter_price_to = trim($this->request->get['filter_price_to']);
@@ -816,13 +816,14 @@ class ControllerProductionCatalog extends Controller {
             $this->load->model('tool/complect');
             $data['comp_price'] = $product['comp_price'];  
             if($this->model_tool_complect->isCompl($product['vin'])) {
-                $sup = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$product['comp']."' OR heading = '".$product['vin']."'");
+                $sup = $this->db->query("SELECT id, whole FROM ".DB_PREFIX."complects WHERE heading = '".$product['comp']."' OR heading = '".$product['vin']."'");
                 $kit = $this->model_complect_complect->getComplect($sup->row['id']);
                 $data['cname'] = $kit['name'];
                 $data['clink'] = $this->url->link('complect/complect/edit', 'complect=' . $kit['id'], true);
                 $data['plink'] = $this->url->link('production/catalog/edit', 'product_id=' . $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$kit['heading']."'")->row['product_id']);
                 $data['kit'] = $kit;
                 $data['complect'] = $product['comp'];
+                $data['wholecomp'] = $sup->row['whole'];
                 $data['isHead'] = $this->model_tool_complect->isHeading($product['vin']);
             } else {
                 $data['complect'] = $product['comp'];

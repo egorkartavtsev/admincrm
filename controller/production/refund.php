@@ -103,6 +103,7 @@ class ControllerProductionRefund extends Controller {
         if(strlen($_FILES['photo']['name'][0])!=0){ 
             $this->model_common_refund->setPhoto($this->request->post['sku']);
         }
+        $this->db->query("DELETE FROM ".DB_PREFIX."sales_info WHERE sku = '".$this->request->post['sku']."' ");
         $result = $this->model_common_refund->updateDataBase($info);
         $this->response->redirect($this->url->link('production/refund', 'token='.$this->session->data['token'].'&result='.$result, TRUE));
     }

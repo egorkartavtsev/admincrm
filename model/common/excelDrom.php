@@ -15,6 +15,7 @@
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_excelDrom->getDromTempl());
         /************************/
+        if (trim($data['dsh'])!=='') {
             $templ = str_replace('%podcateg%', $data['podcat'], $templ);
             $templ = str_replace('%brand%', $data['brand'], $templ);
             $templ = str_replace('%modR%', $data['modRow'], $templ);
@@ -47,6 +48,28 @@
             } else {
                 $templ = str_replace('%dop%', ' ', $templ);
             }
+        } else {
+            $templ = str_replace('%podcateg%',  '', $templ);
+            $templ = str_replace('%brand%',  '', $templ);
+            $templ = str_replace('%modR%',  '', $templ);
+            $templ = str_replace('%trbrand%', '', $templ);
+            $templ = str_replace('%trmodrow%', '', $templ);
+            $templ = str_replace('%stock%', isset($stock->row['adress'])?$stock->row['adress']:' г. Магнитогорск, ул. Магнитная 109/1 ', $templ);
+            $templ = str_replace('%vin%', '', $templ);
+            if(trim($data['catN'])!==''){
+                $templ = str_replace('%catn%', ' Каталожный номер: '.$data['catN'].' ', $templ);
+            } else {
+                $templ = str_replace('%catn%', ' ', $templ);
+            }
+            if(trim($data['cond'])!=='-'){
+                $templ = str_replace('%cond%', ' Состояние: '.$data['cond'].' ', $templ);
+            } else {
+                $templ = str_replace('%cond%', ' ', $templ);
+            }
+                $templ = str_replace('%compability%', ' ', $templ);
+                $templ = str_replace('%note%', ' ', $templ);
+                $templ = str_replace('%dop%', ' ', $templ);
+        }
             //$templ = str_replace('%weekend%', $weekend, $templ);
     /******************************************************************/
         return $templ; 

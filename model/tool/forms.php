@@ -147,7 +147,7 @@ class ModelToolForms extends Model {
                     if($item['parent_id']){
                         $this->form[$option['field_type']].='<div class="col-lg-4" id="'.$item['name'].'"></div>';
                     } else {
-                        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']);
+                        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']." ORDER BY name");
                         $this->form[$option['field_type']].='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" alert_triger="prompt"  child="'.$item['child'].'">';
                         $this->form[$option['field_type']].= '<option value="-">-</option>';
                         foreach ($query->rows as $value) {

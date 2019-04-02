@@ -86,6 +86,7 @@ class ControllerProductionWriteoff extends Controller {
                 $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
             }        
             $complect = $this->model_common_write_off->isComplect($vin);
+          //  exit(var_dump($prod_info));
             $product = '<div class="alert alert-success">';
                 $product.= '<h4><span id="name">'.$prod_info['name'].'</span></h4>';
                 $product.= '<div class="col-lg-6">';
@@ -95,6 +96,7 @@ class ControllerProductionWriteoff extends Controller {
                     $product.= '<h4><span class="text-muted">Цена: </span><span id="price">'.$prod_info['price'].'</h4>';
                     $product.= '<h4><span class="text-muted">Количество: </span><span id="quan">'.$prod_info['quantity'].'</h4>';
                     $product.= '<h4><span class="text-muted">Расположение: </span><span id="loc">'.$prod_info['stock'].'/'.$prod_info['location'].'</h4>';
+                    $product.= '<h4><span class="text-muted">Заметки для менеджера: </span><span id="zam">'.$prod_info['zаmetki'].'</h4>';
                     if($complect){
                         $product.= '<h4><span class="label label-warning">КОМПЛЕКТ</span></h4>';
                     }

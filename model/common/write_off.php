@@ -85,7 +85,6 @@ class ModelCommonWriteoff extends Model {
             $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE vin = '".$data['vin']."'");
             $product_id = $query->row['product_id'];
             $heading = $query->row['comp'];
-
             $this->db->query("INSERT INTO ".DB_PREFIX."sales_info "
                     . "SET "
                         . "name = '".$data['name']."', "
@@ -135,14 +134,14 @@ class ModelCommonWriteoff extends Model {
                 if($reqComplect && $this->model_tool_complect->checkCompl($reqComplect['complect']['heading'])){
                     $this->model_tool_complect->compReprice($reqComplect['complect']['heading']);
                 }
-                $APinfo = array('vin' => $data['vin'], 'write_off' => 1, 'price' => $data['price'], 'structure' => 1);
+                $APinfo = ['vin' => $data['vin'], 'write_off' => 1, 'price' => $data['price'], 'structure' => 1, 'options' => []];
                 $this->model_tool_xml->avitoFind($APinfo);
                 $this->model_tool_xml->ARUFind($APinfo);
             } else {
                 $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");
             }
-        }
         return $results;
+        }
     }
     
     public function getSales(){

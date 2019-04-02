@@ -81,6 +81,7 @@
                                         $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
                                         $active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
                                         $active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
+                                        $sqlr['price'] =  ceil(104*$sqlr['price']/5000) * 50 ; 
                                         $active_sheet->setCellValue('O'.$lp.'',''.$sqlr['price'].'');
                                         $active_sheet->setCellValue('P'.$lp.'','RUR');
                                         $active_sheet->setCellValue('Q'.$lp.'','В наличии');
@@ -100,6 +101,7 @@
                                         $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
                                         $active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
                                         $active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
+                                        $sqlr['price'] =  ceil(104*$sqlr['price']/5000) * 50 ; 
                                         $active_sheet->setCellValue('O'.$lp.'',''.$sqlr['price'].'');
                                         $active_sheet->setCellValue('P'.$lp.'','RUR');
                                         $active_sheet->setCellValue('Q'.$lp.'','В наличии');
@@ -119,6 +121,7 @@
                                         $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
                                         $active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
                                         $active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
+                                        $sqlrt['c_price'] =  ceil(104*$sqlrt['c_price']/5000) * 50 ; 
                                         $active_sheet->setCellValue('O'.$lp.'',''.$sqlrt['c_price'].'');
                                         $active_sheet->setCellValue('P'.$lp.'','RUR');
                                         $active_sheet->setCellValue('Q'.$lp.'','В наличии');
@@ -132,7 +135,7 @@
            }
               }
             
-            header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
+           // header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Cache-Control: no-cache, must-revalidate" );
             header ( "Pragma: no-cache" );

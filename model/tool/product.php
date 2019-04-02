@@ -611,38 +611,39 @@ class ModelToolProduct extends Model {
             $result['complect']['accs'] = $comp['accessories'];
         }
         
-        $histsup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_history ph "
+        $histsup = $this->db->query("SELECT ph.date_added, ph.date_modify, ph.date_sale, ph.date_refund, ph.sku, u.lastname, u.firstname, ph.type_modify FROM ".DB_PREFIX."product_history ph "
                 . "LEFT JOIN ".DB_PREFIX."user u ON u.user_id = ph.manager "
                 . "WHERE sku = '".$result['vin']."' ");
         $result['history'] = array();
+//        exit(var_dump($histsup));
         foreach ($histsup->rows as $hItem) {
-            if((string)$hItem['date_added']!=='0000-00-00 00:00:00'){
+            if($hItem['date_added']!=='0000-00-00 00:00:00'){
                 $result['history'][] = array(
                     'date'      => date("d.m.Y H:i", strtotime($hItem['date_added'])),
                     'label'     => '<span class="btn btn-info btn-sm" style="cursor: auto!important;"><i class="fa fa-plus"></i></span>',
                     'type'      => $hItem['type_modify'],
                     'manager'   => $hItem['lastname'].' '.$hItem['firstname']
                 );
-            } elseif((string)$hItem['date_sale']!=='0000-00-00 00:00:00'){
+            } elseif($hItem['date_sale']!=='0000-00-00 00:00:00'){
                 $result['history'][] = array(
-                    'date'      => date("d.m.Y", strtotime($hItem['date_sale'])),
+                    'date'      => date("d.m.Y H:i", strtotime($hItem['date_sale'])),
                     'label'     => '<span class="btn btn-success btn-sm" style="cursor: auto!important;"><i class="fa fa-recycle"></i></span>',
                     'type'      => $hItem['type_modify'],
                     'manager'   => $hItem['lastname'].' '.$hItem['firstname']
                 );
-            } elseif((string)$hItem['date_refund']!=='0000-00-00 00:00:00'){
+            } elseif($hItem['date_refund']!=='0000-00-00 00:00:00'){
                 $result['history'][] = array(
-                    'date'      => date("d.m.Y", strtotime($hItem['date_refund'])),
+                    'date'      => date("d.m.Y H:i", strtotime($hItem['date_refund'])),
                     'label'     => '<span class="btn btn-warning btn-sm" style="cursor: auto!important;"><i class="fa fa-frown-o"></i></span>',
                     'type'      => $hItem['type_modify'],
-                    'manager'   => $hItem['manager']
+                    'manager'   => $hItem['lastname'].' '.$hItem['firstname']
                 );
-            } elseif((string)$hItem['date_modify']!=='0000-00-00 00:00:00'){
+            } elseif($hItem['date_modify']!=='0000-00-00 00:00:00'){
                 $result['history'][] = array(
-                    'date'      => date("d.m.Y", strtotime($hItem['date_modify'])),
+                    'date'      => date("d.m.Y H:i", strtotime($hItem['date_modify'])),
                     'label'     => '<span class="btn btn-primary btn-sm" style="cursor: auto!important;"><i class="fa fa-upload"></i></span>',
                     'type'      => $hItem['type_modify'],
-                    'manager'   => $hItem['manager']
+                    'manager'   => $hItem['lastname'].' '.$hItem['firstname']
                 );
             }
         }
@@ -725,5 +726,8 @@ class ModelToolProduct extends Model {
         }
         return $this->db->query("SELECT ".$sup->row['similar']." FROM ".DB_PREFIX.$req['target']." WHERE ".$tmp." ")->row;
         
+    }
+    public function savePriceCell($vin, $priceCell){
+         $this->db->query("UPDATE ".DB_PREFIX."product SET price = ".$priceCell." WHERE vin = ".$vin);
     }
 }

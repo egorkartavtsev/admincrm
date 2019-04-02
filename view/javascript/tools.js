@@ -116,7 +116,91 @@ function addOption(){
 $(document).ready(function() {
     
     checkEventes();
+    /*******************service setting tools************************/
+    $(document).on('click', '[btn-type=showHTInfo]', function(){
+        var ht = $(this).attr('data-target');
+        $(this).parent().find('button').removeClass('active');
+        $(this).addClass('active');
+        $(document).find('#HTInfo').html('<img class="center-block" src="wait.gif">');
+        $.ajax({
+            url: 'index.php?route=service/settings/showHTDetails',
+            method: 'post',
+            data: {ht:ht},
+            success: function (data) {
+                $(document).find('#HTInfo').html(data);
+            }
+        });
+    });
     
+    $(document).on('click', '[btn-type=showServices]', function(){
+        var agent = $(this).attr('data-target');
+        var btn = $(this);
+        $(this).parent().find('button').removeClass('active');
+        $(this).addClass('active');
+        $.ajax({
+            url: 'index.php?route=service/settings/showServices',
+            method: 'post',
+            data: {agent:agent},
+            success: function (data) {
+                btn.parent().parent().parent().find('#services').html(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn-type=saveServDets]', function(){
+        var serv = $(this).attr('data-source');
+        var btn = $(this);
+        $.ajax({
+            url: 'index.php?route=service/settings/saveServDets',
+            method: 'post',
+            data: {
+                serv:serv,
+                name:btn.parent().parent().find('[data-field=serv_name]').val(),
+                doc:btn.parent().parent().find('[data-field=doc]').val(),
+                link:btn.parent().parent().find('[data-field=link]').val()
+            },
+            success: function (data) {
+                alert(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn-type=showServDetails]', function(){
+        var serv = $(this).attr('data-source');
+        var btn = $(this);
+        $.ajax({
+            url: 'index.php?route=service/settings/showServiceDetails',
+            method: 'post',
+            data: {serv:serv},
+            success: function (data) {
+                $('#s_sets').html(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn-type=saveAgentReqs]', function(){
+        var agent = $(this).attr('data-target');
+        var btn = $(this);
+        $.ajax({
+            url: 'index.php?route=service/settings/saveAgentReqs',
+            method: 'post',
+            data: {
+                agent:agent,
+                legal_adr:btn.parent().parent().find('[data-field=field-legal_adr]').val(),
+                ogrn:btn.parent().parent().find('[data-field=field-ogrn]').val(),
+                inn:btn.parent().parent().find('[data-field=field-inn]').val(),
+                check_acc:btn.parent().parent().find('[data-field=field-check_acc]').val(),
+                bank:btn.parent().parent().find('[data-field=field-bank]').val(),
+                bik:btn.parent().parent().find('[data-field=field-bik]').val(),
+                cor_acc:btn.parent().parent().find('[data-field=field-cor_acc]').val()
+            },
+            success: function (data) {
+                console.log(data);
+                alert(data);
+            }
+        });
+    });
+    /*******************************************/
     
     
     $(document).on('click', '[btn_type=showToggle]', function(){
@@ -423,7 +507,7 @@ $(document).ready(function() {
     
     $(document).on('click', '[btn_type=showProd]', function(){
         var prod = $(this).attr('target');
-        $("#prodinfocard").html('<img src="wait.gif" style="width: 100px;" class="center-block">');;
+        $("#prodinfocard").html('<img src="wait.gif" style="width: 100px;" class="center-block">');
         ajax({
             url:"index.php?route=tool/formTool/getProdCard",
             method:"POST",
@@ -502,48 +586,100 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '[btn_type=addcontract]', function(){
-        var form = '';
+        var formData = '';
+        var allow = true;
         $(this).parent().find('select').each(function(){
-            form = form + $(this).attr('id') + ":" + $(this).val()+";"
-        })
-        $(this).parent().find('input').each(function(){
-            form = form + $(this).attr('id') + ":" + $(this).val()+";"
-        })
-        /*ajax({
-            url:"index.php?route=service/client_handling/showContract"+"&handling="+getURLVar('handling'),
-            statbox:"status",
-            method:"POST",
-            data: {contract: contract},
-            success:function(data){
-                $('#contract').html(data);
+            if($(this).val()!=='' && $(this).val()!=='-'){
+                formData+= $(this).parent().attr('name')+":="+$(this).val()+";;";
+            } else {
+                allow = false;
             }
-        });*/
+        });
+        $(this).parent().find('input').each(function(){
+            if($(this).val()!==''){
+                formData+= $(this).attr('name')+":="+$(this).val()+";;";
+            } else {
+                allow = false;
+            }
+        });
+        if(allow){
+            ajax({
+                url:"index.php?route=service/client_handling/createContract",
+                method:"POST",
+                datatype:"json",
+                data: {contract: formData},
+//                data: {contract: formData},
+                success:function(data){
+                    var row = JSON.parse(data);
+                    console.log(row);                    
+                    $('#contracts').append('<tr cont="'+row['id']+'"><td>'+row['contn']+'</td><td>'+row['handl_type']+'</td><td>'+row['agent']+'</td><td>'+row['serv_type']+'</td><td target-data="stat"><h5><span style="font-size: 100%;" class="label label-'+row['cont_stat_class']+'">'+row['cont_stat']+'</h5></td><td target-data="paystat"><h5><span style="font-size: 100%;" class="label label-'+row['payment_stat_class']+'">'+row['payment_stat']+'</h5></td><td target-data="note">'+row['note']+'</td><td><button class="btn btn-primary" btn-type="contEdit"><i class="fa fa-pencil"></i></button><button class="btn btn-success" btn-type="contDownload"><i class="fa fa-download"></i></button></td></tr>');
+                }
+            });
+        } else {
+            alert("Заполните все поля!");
+        }
     });
-    $(document).on('click', '[btn_type=contract]', function(){
-        var contract = $(this).attr('target-contract')
+    $(document).on('click', '[btn-type=contEdit]', function(){
+        var btn = $(this);
+        var row = btn.parent().parent();
         ajax({
-            url:"index.php?route=service/client_handling/showContract"+"&handling="+getURLVar('handling'),
+            url:"index.php?route=service/client_handling/getStats",
+            method:"POST",
+            datatype:"json",
+            data: {contract: row.attr('cont')},
+            success:function(data){
+                var stats = JSON.parse(data);
+                row.find('[target-data=note]').html(stats['note']);
+                row.find('[target-data=paystat]').html(stats['paystat']);
+                row.find('[target-data=stat]').html(stats['stat']);
+                btn.html('<i class="fa fa-floppy-o"></i>');
+                btn.removeClass('btn-primary');
+                btn.addClass('btn-warning');
+                btn.attr('btn-type', "contUpd");
+            }
+        });
+        
+    });
+    
+    $(document).on('click', '[btn-type=contUpd]', function(){
+        var btn = $(this);
+        var row = btn.parent().parent();
+        ajax({
+            url:"index.php?route=service/client_handling/updateContract",
+            method:"POST",
+            datatype:"json",
+            data: {
+                contract: row.attr('cont'),
+                stat: row.find('[target-data=stat]').find('select').val(),
+                paystat: row.find('[target-data=paystat]').find('select').val(),
+                note: row.find('[target-data=note]').find('input').val()
+            },
+            success:function(data){
+                var stats = JSON.parse(data);
+                row.find('[target-data=note]').html(stats['note']);
+                row.find('[target-data=paystat]').html(stats['paystat']);
+                row.find('[target-data=stat]').html(stats['stat']);
+                btn.html('<i class="fa fa-pencil"></i>');
+                btn.removeClass('btn-warning');
+                btn.addClass('btn-primary');
+                btn.attr('btn-type', "contEdit");
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn_type=contract]', function(){
+        var handling = $(this).attr('target-contract');
+        ajax({
+            url:"index.php?route=service/client_handling/showContract",
             statbox:"status",
             method:"POST",
-            data: {contract: contract},
+            data: {handling: handling},
             success:function(data){
                 $('#contract').html(data);
             }
         });
     });
     
-    $(document).on('click', '[btn_type=contract]', function(){
-        var contract = $(this).attr('contract')
-        ajax({
-            url:"index.php?route=service/client_handling/showContract"+"&handling="+getURLVar('handling'),
-            statbox:"status",
-            method:"POST",
-            data: {contract: contract},
-            success:function(data){
-                $('#contract').html(data);
-            }
-        });
-    });
     $(document).on('click', '[div_type=client]', function(){
         $(document).find('[div_type=client]').removeClass('client_item_choosen');
         $(this).addClass('client_item_choosen');
