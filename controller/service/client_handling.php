@@ -15,7 +15,7 @@ class ControllerServiceClientHandling extends Controller {
             $handl= $this->model_service_handling->getHandlingInfo($this->request->get['handling']);
             $data['handling'] = $handl['info'];
             $data['services'] = $handl['services'];
-            $data['action'] = "index.php?route=service/client_handling/updateHandling&token=".$data['token']."&handling=".$this->request->get['handling'];
+            $data['action'] = "index.php?route=service/client_handling/updateHandling&handling=".$this->request->get['handling'];
             if((int)$data['handling']['accident']){
                 $data['accident'] = $this->model_service_handling->getAccidentInfo($data['handling']['accident']);
                 $data['accident']['insurences'] = $this->model_service_tools->getInsurences();
@@ -105,6 +105,12 @@ class ControllerServiceClientHandling extends Controller {
         ];
         
         echo json_encode($res);
+    }
+    
+    public function changeCD(){
+        $this->load->model("service/tools");
+        $items = $this->model_service_tools->getItems($this->request->post);
+        echo json_encode($items);
     }
 }
 

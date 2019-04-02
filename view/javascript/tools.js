@@ -132,6 +132,21 @@ $(document).ready(function() {
         });
     });
     
+    $(document).on('click', '[btn-type=showDocInfo]', function(){
+        var btn = $(this);
+        var doc = btn.attr('data-target');
+        $.ajax({
+            url: 'index.php?route=service/docs/showDocDets',
+            method: 'post',
+            data:{
+                doc: doc
+            },
+            success:function(data){
+                $('#docInfo').html(data);
+            }
+        });
+    });
+    
     $(document).on('click', '[btn-type=showServices]', function(){
         var agent = $(this).attr('data-target');
         var btn = $(this);
@@ -610,15 +625,31 @@ $(document).ready(function() {
                 data: {contract: formData},
 //                data: {contract: formData},
                 success:function(data){
+                    console.log(data);
                     var row = JSON.parse(data);
                     console.log(row);                    
                     $('#contracts').append('<tr cont="'+row['id']+'"><td>'+row['contn']+'</td><td>'+row['handl_type']+'</td><td>'+row['agent']+'</td><td>'+row['serv_type']+'</td><td target-data="stat"><h5><span style="font-size: 100%;" class="label label-'+row['cont_stat_class']+'">'+row['cont_stat']+'</h5></td><td target-data="paystat"><h5><span style="font-size: 100%;" class="label label-'+row['payment_stat_class']+'">'+row['payment_stat']+'</h5></td><td target-data="note">'+row['note']+'</td><td><button class="btn btn-primary" btn-type="contEdit"><i class="fa fa-pencil"></i></button><button class="btn btn-success" btn-type="contDownload"><i class="fa fa-download"></i></button></td></tr>');
+                    $('[data-dismiss=modal]').trigger('click');
                 }
             });
         } else {
             alert("Заполните все поля!");
         }
     });
+    
+    
+    $(document).on('click', '[btn-type=contDownload]', function(){
+        ajax({
+            url:"index.php?route=tool/wordTool",
+            method:"POST",
+            datatype:"json",
+            data: {},
+            success:function(data){
+                window.open(data);
+            }
+        });
+    });
+    
     $(document).on('click', '[btn-type=contEdit]', function(){
         var btn = $(this);
         var row = btn.parent().parent();
@@ -678,6 +709,35 @@ $(document).ready(function() {
                 $('#contract').html(data);
             }
         });
+    });
+    
+    $(document).on('change', '[select_type=contDetSelect]', function(){
+        var sel = $(this);
+        var child = sel.attr('child');
+        console.log(child);
+        if(typeof(child) !== 'undefined'){
+            sel.parent().parent().find('[target='+child+']').html('');
+            $.ajax({
+                url: 'index.php?route=service/client_handling/changeCD',
+                method: 'post',
+                datatype: 'json',
+                data:{
+                    sel: sel.val(),
+                    child: child
+                },
+                success:function(data){
+                    sup = JSON.parse(data);
+                    console.log(sup);
+                    var tmp = "<option selected disabled>Выберите...</option>";;
+                    sel.parent().parent().find('[target='+child+']').append(tmp);
+                    sup.forEach(function(el){
+                        console.log(el);
+                        tmp = "<option value='"+el.id+"'>"+el.name+"</option>";
+                        sel.parent().parent().find('[target='+child+']').append(tmp);
+                    });
+                }
+            });
+        }
     });
     
     $(document).on('click', '[div_type=client]', function(){

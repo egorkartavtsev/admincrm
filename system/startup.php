@@ -99,6 +99,9 @@ require_once(modification(DIR_SYSTEM . 'engine/proxy.php'));
 require_once(modification(DIR_SYSTEM . 'PHPExcel/Classes/PHPExcel.php'));
 // Подключаем класс для вывода данных в формате excel
 require_once(modification(DIR_SYSTEM . 'PHPExcel/Classes/PHPExcel/Writer/Excel5.php'));
+// Подключаем всё, что через комповсер
+require_once(modification(DIR_SYSTEM . 'vendor/autoload.php'));
+
 // Helper
 require_once(DIR_SYSTEM . 'helper/general.php');
 require_once(DIR_SYSTEM . 'helper/utf8.php');
