@@ -5,13 +5,13 @@ class ControllerToolWordTool extends Controller {
         $PHPWord = new \PhpOffice\PhpWord\PhpWord();
         $document = $PHPWord->loadTemplate(DIR_DOCS.'Template.docx');
         
-        $document->setValue('d_num', '9999999999'); //номер договора
-        $document->setValue('d_date', '04.10.2014'); //дата договора
-        $document->setValue('last_name', 'Никоненко'); //фамилия
-        $document->setValue('name', 'Сергей');// имя
-        $document->setValue('surname', 'Васильевич');// отчество
-        $document->saveAs(DIR_DOCS.'Template_full.docx'); //имя заполненного шаблона
+        $this->load->model('service/service');
+        $service_data = $this->model_service_service->getData($this->request->post['target']);
+        foreach($service_data as $var => $value){
+            $document->setValue($var, $value); // номер договора
+        }
+        $document->saveAs(DIR_DOCS.'Template_ddd.docx'); // имя заполненного шаблона
         
-        echo HTTP_DOCS.'Template_full.docx'; //имя заполненного шаблона
+        echo HTTP_DOCS.'Template_ddd.docx'; //имя заполненного шаблона
     }
 }
