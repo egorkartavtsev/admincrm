@@ -628,7 +628,7 @@ $(document).ready(function() {
                     console.log(data);
                     var row = JSON.parse(data);
                     console.log(row);                    
-                    $('#contracts').append('<tr cont="'+row['id']+'"><td>'+row['contn']+'</td><td>'+row['handl_type']+'</td><td>'+row['agent']+'</td><td>'+row['serv_type']+'</td><td target-data="stat"><h5><span style="font-size: 100%;" class="label label-'+row['cont_stat_class']+'">'+row['cont_stat']+'</h5></td><td target-data="paystat"><h5><span style="font-size: 100%;" class="label label-'+row['payment_stat_class']+'">'+row['payment_stat']+'</h5></td><td target-data="note">'+row['note']+'</td><td><button class="btn btn-primary" btn-type="contEdit"><i class="fa fa-pencil"></i></button><button class="btn btn-success" btn-type="contDownload"><i class="fa fa-download"></i></button></td></tr>');
+                    $('#contracts').append('<tr cont="'+row['id']+'"><td>'+row['contn']+'</td><td>'+row['handl_type']+'</td><td>'+row['agent']+'</td><td>'+row['serv_type']+'</td><td target-data="stat"><h5><span style="font-size: 100%;" class="label label-'+row['cont_stat_class']+'">'+row['cont_stat']+'</h5></td><td target-data="paystat"><h5><span style="font-size: 100%;" class="label label-'+row['payment_stat_class']+'">'+row['payment_stat']+'</h5></td><td target-data="note">'+row['note']+'</td><td><button class="btn btn-primary" btn-type="contEdit"><i class="fa fa-pencil"></i></button><button class="btn btn-success" btn-type="contDownload" data-target="'+row['id']+'"><i class="fa fa-download"></i></button></td></tr>');
                     $('[data-dismiss=modal]').trigger('click');
                 }
             });
@@ -639,13 +639,15 @@ $(document).ready(function() {
     
     
     $(document).on('click', '[btn-type=contDownload]', function(){
+        var target = $(this).attr('data-target');
         ajax({
             url:"index.php?route=tool/wordTool",
             method:"POST",
             datatype:"json",
-            data: {},
+            data: {target:target},
             success:function(data){
                 window.open(data);
+                console.log(data);
             }
         });
     });
@@ -1716,8 +1718,6 @@ $(document).ready(function() {
             datatype: "json",
             data:{filter:req.filter},
             success:function(resp){
-                console.log(resp);
-                console.log(req.filter);
                 var res = JSON.parse(resp);
                 var options = {
                     //lineSmooth: Chartist.Interpolation.monotoneCubic(),
@@ -1735,6 +1735,11 @@ $(document).ready(function() {
                 
                 $('#salesChart').find('h3').remove();
                 $('#salesChart').find('img').remove();
+                
+                $('#saleRowsTable').html('');
+                res['saleRows'].forEach(function(row){
+                    $('#saleRowsTable').append('<tr><td>'+row['name']+'</td><td>'+row['vin']+'</td><td>'+row['saleprice']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td></tr>');
+                });
             }
         });
     });

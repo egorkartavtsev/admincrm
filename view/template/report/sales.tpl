@@ -100,21 +100,15 @@
               <table class="table-bordered table-responsive table-striped col-lg-12">
                   <thead>
                       <tr>
-                          <th rowspan="2" class="col-lg-3 text-center">Показатель</th>
-                          <th colspan="9" class="text-center">Результаты</th>
-                      </tr>
-                      <tr>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
-                          <th>#</th>
+                          <th>Наименование</th>
+                          <th>Внутр.номер</th>
+                          <th>Цена продажи</th>
+                          <th>Адрес</th>
+                          <th>Дата продажи</th>
                       </tr>
                   </thead>
+                  <tbody id="saleRowsTable">
+                  </tbody>
               </table>
           </div>
       </div>

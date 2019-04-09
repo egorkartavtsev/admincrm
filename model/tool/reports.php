@@ -26,10 +26,11 @@ class ModelToolReports extends Model {
         $sql = '';
         $sql = "SELECT "
                 . "p.manager, si.saleprice, si.wherefrom, si.date, si.city,"
-                . "p.type, p.category, p.brand, p.model, p.adress "
+                . "p.type, p.category, p.brand, p.model, p.adress, pd.name, p.vin "
             . "FROM ".DB_PREFIX."sales_info si "
             . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku "
-            . "WHERE 1 ";
+            . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
+            . "WHERE si.saleprice>0 ";
         if(isset($filter['startdate'])){
             $sql.= "AND si.date>='".date("Y-m-d H:i:s", strtotime($filter['startdate']))."' ";
         } else {
@@ -73,6 +74,7 @@ class ModelToolReports extends Model {
             $res['labels'][] = $key;
             $res['series'][0][] = $value;
         }
+        $res['saleRows'] = $tmp;
 //        $res = ['01' => 0, '02' => 0, '03' => 0,
 //            '04' => 0, '05' => 0, '06' => 0,
 //            '07' => 0, '08' => 0, '09' => 0,
@@ -231,11 +233,11 @@ class ModelToolReports extends Model {
                 break;
             }
         } else {
-            if($flag){
-                return "ORDER BY p.date_added ";
-            } else {
-                return "ORDER BY si.date";
-            }
+            return "ORDER BY si.date";
+//            if($flag){
+//                return "ORDER BY p.date_added ";
+//            } else {
+//            }
         }
     }
     

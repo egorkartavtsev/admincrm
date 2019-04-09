@@ -88,7 +88,7 @@
                             <td target-data="note"><?php echo $serv['note'];?></td>
                             <td>
                                 <button class="btn btn-primary" btn-type="contEdit"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-success" btn-type="contDownload"><i class="fa fa-download"></i></button>
+                                <button class="btn btn-success" btn-type="contDownload" data-target="<?php echo $serv['id'];?>"><i class="fa fa-download"></i></button>
                             </td>
                         </tr>
                     <?php }?>
