@@ -70,7 +70,7 @@
                 . "p.stock AS stock, "
                 . "p.drom AS drom "
                 . "FROM ".DB_PREFIX."product p "
-                . "WHERE  ((p.structure = 2) OR (p.structure = 3))" );
+                . "WHERE (p.quantity > '0') AND (p.price > '0') AND ((p.structure = 2) OR (p.structure = 3))" );
            $complects_bd = $this->model_common_excelDrom->getComplectDrom();
             //exit(var_dump($exlxe));
             $lp=2;
