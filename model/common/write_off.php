@@ -140,8 +140,8 @@ class ModelCommonWriteoff extends Model {
             } else {
                 $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");
             }
-        return $results;
         }
+        return $results;
     }
     
     public function getSales(){
