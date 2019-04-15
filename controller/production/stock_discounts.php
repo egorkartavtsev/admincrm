@@ -71,7 +71,7 @@ class ControllerProductionStockDiscounts extends Controller {
 
 			if (isset($this->request->get['filter_quantity'])) {
 				$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
-			}C:\Users\Crayming\Downloads\open_server\OSPanel\domains\admin.mgnauto\controller\production\stock_discounts.php
+			}
 
       if (isset($this->request->get['filter_category'])) {
         $url .= '&filter_category=' . $this->request->get['filter_category'];
