@@ -13,6 +13,7 @@ class ControllerProductionWriteoff extends Controller {
             $tools = new ControllerCommonExcelTools($this->registry);
             $info = $tools->constructSaleArray($this->request->post);
             $id_invoice = uniqid('r_');
+            
             $prods = $this->model_common_write_off->sale($info, $id_invoice);
         }
         $this->response->setOutput($this->load->view('common/write_off_form', $data));
