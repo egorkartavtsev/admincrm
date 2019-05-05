@@ -92,7 +92,7 @@ class ModelToolReports extends Model {
         $sql = '';
         $sql = "SELECT *, p.date_added as date "
             . "FROM ".DB_PREFIX."product p "
-            . "WHERE 1 ";
+            . "WHERE p.manager != '' ";
         if(isset($filter['startdate'])){
             $sql.= "AND p.date_added>='".date("Y-m-d H:i:s", strtotime($filter['startdate']))."' ";
         } else {

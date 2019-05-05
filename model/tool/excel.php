@@ -62,9 +62,9 @@ class ModelToolExcel extends Model {
 
     private $extent = array('whole', 'cprice', 'date_added');
     private $files = array(
-        'prodList'  => DIR_DWNXL.'prodList.xls',
-        'drom'      => DIR_DWNXL.'auto-parts-MGNAUTO.xls',
-        'aru'       => DIR_DWNXL.'autoru_parts.xlsx'
+        'prodList'  => 'prodList.xls',
+        'drom'      => 'auto-parts-MGNAUTO.xls',
+        'aru'       => 'autoru_parts.xlsx'
     );
 
 /*---------------------------------- tools -----------------------------------*/

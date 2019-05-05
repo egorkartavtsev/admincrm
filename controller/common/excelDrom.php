@@ -71,6 +71,7 @@
             //exit(var_dump($exlxe));
             $lp=2;
               foreach ($exlxe->rows as $sqlr) {
+                  $sqlr['dsh'] = 'Запчасть';
               if ($sqlr['comp'] === '') {
                                         $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
                                         $getnote = $this->model_common_excelDrom->getDromDescription($sqlr);
