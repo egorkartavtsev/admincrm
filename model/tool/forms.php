@@ -22,10 +22,17 @@ class ModelToolForms extends Model {
         $this->load->model('tool/complect');
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$id." ORDER BY sort_order");
         foreach ($this->systems as $key => $field) {
+            if($key === 'podcateg'){
+            $this->form['system'].= '<div class="form-group-sm col-md-4">'
+                                . '<label>'.$field['text'].'</label>'
+                                . '<input class="form-control" name="input-'.$key.'" required placeholder="Ваше имя" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
+                             . '</div>';
+        } else{
             $this->form['system'].= '<div class="form-group-sm col-md-4">'
                                 . '<label>'.$field['text'].'</label>'
                                 . '<input class="form-control" name="input-'.$key.'" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
                              . '</div>';
+        }
         }
         foreach($sup->rows as $option){
             $this->getOptionField($option);
@@ -87,9 +94,10 @@ class ModelToolForms extends Model {
                 }
             break;
             case 'select':
+                    $attrss= $option['required']==='1'?' required="required" aria-required="true"':'';
                 $this->form[$option['field_type']].='<div class="form-group-sm  col-md-4" link="'.$option['name'].'">'
                         . '<label>'.$option['text'].'</label>';
-                    $this->form[$option['field_type']].='<select class="form-control" name="input-'.$option['name'].'">';
+                    $this->form[$option['field_type']].='<select class="form-control" name="input-'.$option['name'].'" '.$attrss.'>';
                     $vals = explode(';', $option['vals']);
                     $this->form[$option['field_type']].='<option value="-">-</option>';
                     foreach ($vals as $value) {
@@ -99,12 +107,16 @@ class ModelToolForms extends Model {
                 $this->form[$option['field_type']].= '</div>';
             break;
             case 'library':
+                $attrss= $option['required']==='1'?' required="required" aria-required="true"':'';
                 $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['libraries'].") AS child, (SELECT l.smart FROM ".DB_PREFIX."libraries l WHERE l.library_id = ls.library_id) AS smart FROM ".DB_PREFIX."lib_struct ls WHERE ls.item_id = ".(int)$option['libraries']);
+                            if ($option['text'] == 'Подкатегория') {
+                                $option['text']='Подкатегория (!!ОБЯЗАТЕЛЬНО ДЛЯ ЗАПОЛНЕНИЯ!!)';
+                            }
                     if((int)$sup->row['smart']){
                         if(!(int)$sup->row['isparent']){
                             $this->form[$option['field_type']].='<div class="form-group-sm col-md-4" link="'.$option['name'].'" id="'.$option['name'].'">'
                                     . '<label>'.$option['text'].'</label>'
-                                    . '<input class="form-control" inp_type="smart" type="text" item="'.$option['libraries'].'">'
+                                    . '<input class="form-control" inp_type="smart" type="text" item="'.$option['libraries'].'" value '.$attrss.'>'
                                     . '<ul class="dropdown-menu" id="dropD" style="left: 15px; display: none;">'
                                       . '<li class="dropdown-header">Выберите значение</li>'
                                       . '<li class="devider"></li>'
@@ -123,7 +135,7 @@ class ModelToolForms extends Model {
                             $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']." ORDER BY name ");
                             $this->form[$option['field_type']].='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
                                     . '<label>'.$option['text'].'</label>'
-                                    . '<select class="form-control" name="input-'.$option['name'].'" select_type="librSelect" alert_triger="prompt" child="'.$sup->row['child'].'">'
+                                    . '<select class="form-control" name="input-'.$option['name'].'" select_type="librSelect" alert_triger="prompt" child="'.$sup->row['child'].'" '.$attrss.'>'
                                     . '<option value="-">-</option>';
                             foreach ($fillsquer->rows as $fill) {
                                 $this->form[$option['field_type']].='<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'">'.trim($fill['name']).'</option>';
@@ -622,12 +634,12 @@ class ModelToolForms extends Model {
                                 <h4 class="modal-title" id="myModalLabel">'.$option['description'].'</h4>
                               </div>
                               <div class="modal-body"><div class="row" num="compability">';
-                                $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct ls2 WHERE ls2.parent_id = ls1.item_id) AS child FROM ".DB_PREFIX."lib_struct ls1 WHERE library_id = ".(int)$option['library']);
+                                $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct ls2 WHERE ls2.parent_id = ls1.item_id) AS child FROM ".DB_PREFIX."lib_struct ls1 WHERE library_id = ".(int)$option['library']."");
                                 foreach ($sup->rows as $item) {
                                     if($item['parent_id']){
                                         $modal.='<div class="col-lg-4" id="'.$item['name'].'"></div>';
                                     } else {
-                                        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']);
+                                        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']." ORDER BY name");
                                         $modal.='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" child="'.$item['child'].'">';
                                         $modal.= '<option value="-">-</option>';
                                         foreach ($query->rows as $value) {

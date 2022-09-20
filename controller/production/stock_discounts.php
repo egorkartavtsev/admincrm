@@ -382,6 +382,7 @@ class ControllerProductionStockDiscounts extends Controller {
                                     'manager'    => $result['manager'],
                                     'name'       => $result['name'],
                                     'vin'        => $result['vin'],
+                                    'catn'        => $result['catn'],
                                     'stell'      => (isset($result['stell'])) && ($result['stell']!=='')?$result['stell']:'-',
                                     'jar'        => (isset($result['jar'])) && ($result['jar']!=='')?$result['jar']:'-',
                                     'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='')?$result['shelf']:'-',
@@ -957,6 +958,7 @@ class ControllerProductionStockDiscounts extends Controller {
             $info['options']['pid'] = $this->request->get['product_id'];
             $info['allowavito'] = $this->request->post['allowavito'];           
             $this->model_tool_xml->avitoFind($info);
+            $this->model_tool_xml->yulaFind($info);
             $this->model_tool_xml->ARUFind($info);
         /*******************************/
         $url = '';
@@ -1042,16 +1044,16 @@ class ControllerProductionStockDiscounts extends Controller {
         $this->load->model('tool/forms');
         $this->load->model('tool/product');
         $trill = $this->request->post;
-        foreach ($trill as $price) {
-            foreach ($price as $vin => $priceCell) {
+        $trillPrice = $trill['price'];
+            foreach ($trillPrice as $vin => $priceCell) {
             if ($priceCell != '') {
              $this->model_tool_product->savePriceCell($vin, $priceCell);
-            //print_r($trill);
+          
             }
-            }
+            
         }
         $this->response->redirect($this->url->link('production/stock_discounts'));
 
-       // exit(var_dump($trill));
+        //exit(var_dump($trill));
     }
 }

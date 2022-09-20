@@ -25,8 +25,8 @@ class ModelToolReports extends Model {
     public function getSales($filter) {
         $sql = '';
         $sql = "SELECT "
-                . "p.manager, si.saleprice, si.wherefrom, si.date, si.city,"
-                . "p.type, p.category, p.brand, p.model, p.adress, pd.name, p.vin "
+                . "p.manager, si.saleprice, si.wherefrom, si.summ, si.date, si.city, si.opl_type,"
+                . "p.type, p.category, p.brand, p.model, p.adress, pd.name, p.numb, p.postаvsik, p.podcateg, p.vin "
             . "FROM ".DB_PREFIX."sales_info si "
             . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku "
             . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "

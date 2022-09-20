@@ -250,7 +250,7 @@ $(document).ready(function() {
         var req = {form:[]};
         var vin = $(this).parent().parent().find("[field=vin]").val();
         $(this).parent().parent().find("[name^='input-']").each(function(){
-            var attr = $(this).attr('required');
+            var attr = $(this).attr('aria-required');
             if (typeof attr !== typeof undefined && attr !== false) {
                 if($(this).val()!==''){
 //                    form = form + $(this).attr('name') + ':' + $(this).val() + ';';
@@ -274,7 +274,7 @@ $(document).ready(function() {
                 });
                 allow = 1;
             }
-        });
+        });  
         if(allow){
             $(this).replaceWith('<div class="alert alert-success" id="result-box"><h4>Сохранение товара:</h4><p><img src="wait.gif" width="25">1. Загрузка фотографий.<p></div>');
 //            $(this).after('<div class="alert alert-success" id="result-box"><h4>Сохранение товара:</h4><p><img src="wait.gif" width="25">1. Загрузка фотографий.<p></div>');
@@ -918,6 +918,76 @@ $(document).ready(function() {
         var btn = $(this);
         ajax({
             url:"index.php?route=avito/avito_tool/deact",
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.parent().parent().addClass('elderAD');
+                btn.remove();
+            }
+        })
+    })
+        $(document).on('click', '[btn_type=hidenoticeYula]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/yula_tool/hideNoticeYulap",
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.parent().parent().removeClass('elderAD');
+                btn.remove();
+            }
+        })
+    })
+    
+    $(document).on('click', '[btn_type=reactYula]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/yula_tool/reactYulap",
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.remove();
+            }
+        })
+    })
+    
+    $(document).on('click', '[btn_type=dropYula]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/yula_tool/dropYulap",
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.parent().parent().remove();
+                console.log(data);
+            }
+        })
+    })
+    
+    $(document).on('click', '[btn_type=deactYula]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/yula_tool/deactYulap",
             statbox:"status",
             method:"POST",
             data:
@@ -1737,8 +1807,13 @@ $(document).ready(function() {
                 $('#salesChart').find('img').remove();
                 
                 $('#saleRowsTable').html('');
+                var itogo = 0;
+                var summ = 0;
                 res['saleRows'].forEach(function(row){
-                    $('#saleRowsTable').append('<tr><td>'+row['name']+'</td><td>'+row['vin']+'</td><td>'+row['saleprice']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td></tr>');
+                    summ = Number.parseInt(row['summ']);
+                    itogo = itogo + summ; 
+                    document.getElementById("itogo_sales").innerHTML = itogo;
+                    $('#saleRowsTable').append('<tr><td>'+row['podcateg']+'</td><td>'+row['brand']+'</td><td>'+row['model']+'</td><td>'+row['numb']+'</td><td>'+row['vin']+'</td><td>'+row['summ']+'</td><td>'+row['postаvsik']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td><td>'+row['opl_type']+'</td><td>'+row['wherefrom']+'</td><td>'+row['city']+'</td></tr>');
                 });
             }
         });

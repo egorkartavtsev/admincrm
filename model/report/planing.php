@@ -3,7 +3,7 @@
 class ModelReportPlaning extends Model {
 
     public function getCurrentPlan($addr) {
-       $tmp = $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_planing WHERE date = '" . date("Y-m") . "-01' AND adress = '".$addr."' ");
+       $tmp = $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_planing WHERE date = '" . date("Y-m") . "-01' AND adress = '".$addr."' ORDER BY date DESC");
         if ($tmp->num_rows) {
             return $tmp->row['plan'];
         } else {
@@ -49,7 +49,9 @@ class ModelReportPlaning extends Model {
     }
 
     public function getTotalPlans($addr) {
-       return $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_planing WHERE adress = '".$addr."' ORDER BY date DESC ")->rows;
+       $tmp = $this->db->query("SELECT * FROM " . DB_PREFIX . "sales_planing WHERE adress = '".$addr."' ORDER BY date DESC ");
+       return $tmp->rows;
+       
     }
 
     public function getMonthFact($month, $addr) {

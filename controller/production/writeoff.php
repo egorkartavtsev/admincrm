@@ -16,6 +16,7 @@ class ControllerProductionWriteoff extends Controller {
             
             $prods = $this->model_common_write_off->sale($info, $id_invoice);
         }
+        
         $this->response->setOutput($this->load->view('common/write_off_form', $data));
     }
     

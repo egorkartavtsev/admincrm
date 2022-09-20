@@ -16,36 +16,35 @@
             $products = array();
             $this->load->model('common/excel');
             $template = $this->model_common_excel->getProductTemplate();
-            $brands = $this->model_common_excel->getbrands();
+            //$brands = $this->model_common_excel->getbrands();
+            
             foreach ($XLSrows as $row){
                 $product = array();
-                if($row[8]!=NULL){
+                if($row[1]!=NULL){
                     foreach ($template as $key => $cell) {
-                        $product[$cell['name']] = str_replace("\\", "", $row[(int)$key]);
+                        $product[$cell['name']] = str_replace("\\", " ", $row[(int)$key]);
                     }
-                    $product['quant'] = $product['quant']!=NULL?$product['quant']:0;
-                    $product['vnutn'] = str_replace("/", "-", $product['vnutn']);
-                    $product['price'] = $product['price']!=NULL?$product['price']:0;
-                    $product['modr']  = str_replace(">", "-", $product['modr']);
-//                  
-                    if($product['date']==(string)NULL){
+                    //$product['quant'] = $product['quant']!=NULL?$product['quant']:0;
+                    //['vnutn'] = str_replace("/", "-", $product['vnutn']);
+                    //$product['price'] = $product['price']!=NULL?$product['price']:0;
+                    //$product['modr']  = str_replace(">", "-", $product['modr']);
+//         дата под вопросом         
+     //               if($product['date']==(string)NULL){
                         $timestamp = date('Y-m-d H:i:s');
-                    } else {
-                        $timestamp = DateTime::createFromFormat('d.‌​m.Y', $product['date'])->format('Y-m-d H:i:s');
-                    }
+         //           } else {
+              //          $timestamp = DateTime::createFromFormat('d.‌​m.Y', $product['date'])->format('Y-m-d H:i:s');
+            //       }
                     $product['date']  = $timestamp;
                     
                     $success = $this->emptyCells($product, $template);
                     if($success){
                         $success = $this->undefinedCells($product, $template);
                         if($success){
-                            $success = $this->undefCompabil($product, $brands);
-                            if($success){
-                                $products[] = $product;
-                            }
+                            $products[] = $product;
                         }
                     }
                 }
+            //exit(var_dump($products));
             }
             return $products;           
         }
@@ -60,20 +59,20 @@
                         return FALSE;
                     }
                 }
+                
+                /* Проверка если поле $cell['unq']. */
             }
             return $result;
         }
-        
+        //переделать она не работает
         public function undefinedCells($product, $template) {
             foreach($template as $cell){
                 if($cell['important']){
+                    /* тут надо поменять тоблицу на lib_fills */
+                    $cond = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->getTrueName($product[$cell['name']])."' ");
+                    //$qcat = $this->db->query("SELECT * FROM ".DB_PREFIX."category_description WHERE name = '".$product[$cell['name']]."' ");
                     
-                    $qbrand = $this->db->query("SELECT * FROM ".DB_PREFIX."brand WHERE name = '".$this->getTrueName($product[$cell['name']])."' ");
-                    $qcat = $this->db->query("SELECT * FROM ".DB_PREFIX."category_description WHERE name = '".$product[$cell['name']]."' ");
-                    
-                    if(!empty($qbrand->row)){
-                        $result = TRUE;
-                    } elseif (!empty ($qcat->row)) {
+                    if($cond->num_rows){
                         $result = TRUE;
                     } else {
                         $this->errors[] = 'Для продукта <b>№'.$product['vnutn'].'</b> в поле <b>"'.$cell['text'].'"</b> указаны некорректные данные <b>('.trim($product[$cell['name']]).')</b>. ';
@@ -84,21 +83,21 @@
             return $result;
         }
         
-        public function undefCompabil($product, $brands) {
-            $result = TRUE;
-            if($product['comp']!=NULL){
-                $comp_arr = explode(";", $product['comp']);
-                foreach ($comp_arr as $modr){
-                    if(($modr!=" ")&&(!in_array($this->getTrueName($modr), $brands))){
-                        $this->errors[] = 'Для продукта <b>№ '.$product['vnutn'].'</b> в поле "Применимость" указаны некорректные данные <b>('.$modr.')</b>';
-                        return FALSE;
-                    }
-                }
-                return TRUE;
-            } else{
-                return TRUE;
-            }
-        }
+//        public function undefCompabil($product, $brands) {
+//            $result = TRUE;
+//            if($product['comp']!=NULL){
+//                $comp_arr = explode(";", $product['comp']);
+//                foreach ($comp_arr as $modr){
+//                    if(($modr!=" ")&&(!in_array($this->getTrueName($modr), $brands))){
+//                        $this->errors[] = 'Для продукта <b>№ '.$product['vnutn'].'</b> в поле "Применимость" указаны некорректные данные <b>('.$modr.')</b>';
+//                        return FALSE;
+//                    }
+//                }
+//                return TRUE;
+//            } else{
+//                return TRUE;
+//            }
+//        }
         
         public function getTrueName($cell) {
                 return mb_convert_case(trim($cell), MB_CASE_UPPER);
@@ -142,7 +141,7 @@
             $this->errors['wod'] = 'Предупреждение! У '.$this->wod.' товаров отсутствует папка с фотографиями.';
             return $images;
         }
-
+//сюда идет optype
         public function addProduct($products) {
             $this->load->model('common/excel');
             $listProds = $this->model_common_excel->getListProds();
@@ -152,7 +151,7 @@
             foreach ($products as $product) {
                 $vin = str_replace('/', '-', $product['vnutn']);
                 if(!in_array($vin, $listProds)){
-                    $comp = $this->getCompability($product['comp']);
+                    $comp = $this->getCompability($product['comp']);//Совместимость?
                     $images = $this->getImages($vin);
                     $this->model_common_excel->setToDB($product, $vin, $descripttemplate, $images, $comp, $this->session->data['username']);
                 } else {
@@ -356,6 +355,7 @@
                     'quanfact'  =>  $prod['quanfact'],
                     'client'    =>  $info['client'],
                     'wherefrom' =>  $info['wherefrom'],
+                    'opl-from'  =>  $info['opl-from'],
                     'summ'      =>  $prod['pricefact']*$prod['quanfact'],
                     'location'  =>  $prod['locate'],
                     'saleprice' =>  $prod['pricefact'],

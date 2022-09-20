@@ -68,6 +68,7 @@ class ModelToolOrder extends Model{
                 'telephone' => $isup->row['telephone'],
                 'zone' => $isup->row['payment_zone'],
                 'city' => $isup->row['payment_city'],
+                'opl-from' => $isup->row['opl_type'],
                 'address' => $isup->row['payment_address_1'],
                 'ship_comp' => $isup->row['ship_comp'],
                 'ship_date' => ($isup->row['ship_date']>0)?$isup->row['ship_date']:date('d.m.Y H:i:s'),
@@ -248,6 +249,7 @@ class ModelToolOrder extends Model{
                 . "ship_comp = '".$tmp->row['name']."', "
                 . "ship_href = '".$tmp->row['href']."', "
                 . "ship_date = '".date("Y-m-d H:i:s", strtotime($info['ship_date']))."', "
+                . "opl_type = '".$info['opl-from']."', "
                 . "track_id = '".$info['track_id']."' "
                 . "WHERE order_id = ".(int)$info['target']);
         $comment = 'Трансп.комп.: '.$tmp->row['name'].'<br>Дата отправки: '.$info['ship_date'].'<br>Трек-номер: '.$info['track_id'];

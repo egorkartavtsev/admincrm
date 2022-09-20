@@ -3,6 +3,15 @@ class ControllerCommonLogin extends Controller {
 	private $error = array();
 
 	public function index() {
+		
+		if (isset($this->request->get['route']) && 
+				($this->request->get['route'] == 'common/excelBibinet' 
+					|| $this->request->get['route'] == 'common/excelDromDisk' 
+					|| $this->request->get['route'] == 'common/excelDrom')
+			) {
+			$this->response->redirect($this->url->link($this->request->get['route'], true));	
+		}
+		
 		$this->load->language('common/login');
 
 		$this->document->setTitle($this->language->get('heading_title'));

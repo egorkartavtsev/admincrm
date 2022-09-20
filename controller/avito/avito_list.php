@@ -113,6 +113,8 @@ class ControllerAvitoAvitoList extends Controller{
 
         $data['pagination'] = $pagination->render();
         foreach ($ads as $ad) {
+            //Надо поменять запрос в базу, чтобы убрать это условие
+            if(!isset($data['ads'][$ad['product_id']])){
             $data['ads'][$ad['product_id']] = array(
                 'name' => $ad['name'],
                 'image' => $this->model_tool_image->resize($ad['image'], 70, 70),
@@ -122,6 +124,7 @@ class ControllerAvitoAvitoList extends Controller{
                 'price' => $ad['price'],
                 'class' => (int)$ad['message']?'elderAD':'noteld'
             );
+            }
         }
         $this->response->setOutput($this->load->view('avito/list', $data));
     }

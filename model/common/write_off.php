@@ -94,6 +94,7 @@ class ModelCommonWriteoff extends Model {
                         . "client = '".$data['client']."', "
                         . "summ = '".$data['summ']."', "
                         . "wherefrom = '".$data['wherefrom']."', "
+                        . "opl_type = '".$data['opl-from']."', "
                         . "loc = '".$data['location']."', "
                         . "saleprice = '".$data['saleprice']."', "
                         . "price = '".$data['price']."', "
@@ -136,6 +137,7 @@ class ModelCommonWriteoff extends Model {
                 }
                 $APinfo = ['vin' => $data['vin'], 'write_off' => 1, 'price' => $data['price'], 'structure' => 1, 'options' => []];
                 $this->model_tool_xml->avitoFind($APinfo);
+                $this->model_tool_xml->yulaFind($APinfo);
                 $this->model_tool_xml->ARUFind($APinfo);
             } else {
                 $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");

@@ -68,7 +68,6 @@ php_value max_execution_time 36900
 ### Display PHP errors 
 ### Uncomment the commands by removing the # sign in front of it.
 # php_flag display_startup_errors on
-# php_flag display_errors on
-# php_flag html_errors on
-# php_flag track_errors on
-# php_value error_reporting "E_ALL"
+# php_flag display_errors off
+# php_flag html_errors off
+# php_flag track_errors off

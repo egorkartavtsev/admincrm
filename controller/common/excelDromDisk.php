@@ -162,7 +162,7 @@
 
 
             $objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
-            $objWriter->save('php://output');
+            $objWriter->save('downloadXcelFiles/disk.xls');
             //return $this->$OrderExcel;
         }
     }

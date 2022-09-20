@@ -20,7 +20,13 @@ class ControllerReportSales extends Controller{
         }
         $this->load->model('tool/reports');       
         $data = $this->model_tool_reports->getSales($filter);
+        // $sumrow = 0;
+        // exit(var_dump($data));
+        // foreach($data as  $saleRows){
+        //     $sumrow = $sumrow + $saleRows['summ'];
+        // };
         echo json_encode($data);
+        
     }
     
 }

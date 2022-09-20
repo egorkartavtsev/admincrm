@@ -2,7 +2,6 @@
     class ControllerCommonExcelprodlist extends Controller {
         
            public function index($err = 0, $mat = 0) {
-
             $this->load->model("tool/layout");
             $this->load->model("common/excel");
         //    $this->load->model("tool/excel");
@@ -30,15 +29,21 @@
             $active_sheet->setCellValue('C1','vin');
             $active_sheet->setCellValue('D1','price');
             $active_sheet->setCellValue('E1','date');
+            $active_sheet->setCellValue('F1','city');
+            $active_sheet->setCellValue('G1','wherefrom');
+            $active_sheet->setCellValue('H1','opl_type');
             $exlxe = $this->db->query("SELECT "
                     . "si.id AS id, "
                     . "si.name AS name, "
                     . "si.sku AS vin, "
                     . "si.summ AS price, "
                     . "si.loc AS loc, "
+                    . "si.city AS city, "
+                    . "si.wherefrom AS wherefrom, "
+                    . "si.opl_type AS opl_type, "
                     . "si.date AS date "
                 . "FROM ".DB_PREFIX."sales_info si "
-                . "WHERE (si.id >= 2528 ) AND ( si.loc NOT LIKE '%KM%') AND (si.id <= 2692 )");
+                . "WHERE si.id >= 5190 ");
             //exit(var_dump($exlxe));
             $lp=2;
               foreach ($exlxe->rows as $sqlr) {
@@ -47,6 +52,9 @@
                                         $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['vin'].'');
                                         $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['price'].'');
                                         $active_sheet->setCellValue('E'.$lp.'',''.$sqlr['date'].'');
+                                        $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['city'].'');
+                                        $active_sheet->setCellValue('G'.$lp.'',''.$sqlr['wherefrom'].'');
+                                        $active_sheet->setCellValue('H'.$lp.'',''.$sqlr['opl_type'].'');
                                         $lp = $lp+1;
                                         }
             
@@ -56,11 +64,8 @@
             header ( "Pragma: no-cache" );
             header ( "Content-type: application/vnd.ms-excel" );
             header ( "Content-Disposition: attachment; filename=temp.xls" );
-
-
             $objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
             $objWriter->save('php://output');
             //return $this->$OrderExcel;
         }
     }
-    

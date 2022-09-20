@@ -42,6 +42,7 @@ class ModelCommonDonor extends Model {
                             . "priv = '".$data['privod']."', "
                             . "color = '".$data['color']."', "
                             . "price = '".$data['price']."' ");
+        
         $donor_id = $this->db->getLastId();
         if(strlen($_FILES['photo']['name'][0])!=0){         
             $dir = DIR_IMAGE . 'catalog/demo/donor/'.$data['number'];
@@ -120,7 +121,7 @@ class ModelCommonDonor extends Model {
     public function getProds($donor){
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "WHERE p.numb = '".$donor."'");
+                . "WHERE p.numb = '".$donor."' ORDER BY pd.name");
         
         $results = array();
         

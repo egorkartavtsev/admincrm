@@ -32,6 +32,7 @@ class ModelReportDonor extends Model{
                     . "p.product_id AS pid, "
                     . "p.image AS image, "
                     . "p.vin AS vin, "
+                    . "p.catn AS catn, "
                     . "p.stock AS stock, "
                     . "p.location AS location, "
                     . "p.price AS price, "
@@ -47,7 +48,7 @@ class ModelReportDonor extends Model{
                 ."FROM `".DB_PREFIX."product` p "
                 ."LEFT JOIN `".DB_PREFIX."sales_info` si ON si.sku = p.vin "
                 ."LEFT JOIN `".DB_PREFIX."product_description` pd ON pd.product_id = p.product_id "
-                ."WHERE p.numb = '".$request."'";
+                ."WHERE p.numb = '".$request."' ORDER BY pd.name" ;
         $iquer = $this->db->query($sql);
         $tableCurr = '<div class="clearfix"></div>
                       <div class="clearfix"><p></p></div>
@@ -59,6 +60,7 @@ class ModelReportDonor extends Model{
                               <td class="text-center">Изображение</td>
                               <td>Название</td>
                               <td>Внутренний номер</td>
+                              <td>Каталожный номер</td>
                               <td>Расположение</td>
                               <td>Цена</td>
                               <td>Категория</td>
@@ -79,6 +81,7 @@ class ModelReportDonor extends Model{
                               <td class="text-center">Изображение</td>
                               <td>Название</td>
                               <td>Внутренний номер</td>
+                              <td>Каталожный номер</td>
                               <td>Расположение</td>
                               <td>Цена</td>
                               <td>Категория</td>
@@ -106,7 +109,7 @@ class ModelReportDonor extends Model{
             elseif($dateRes<361 && $dateRes>=181){$class='label label-warning';}
             elseif($dateRes<181 && $dateRes>=91){$class='label label-info';}
             elseif($dateRes<91 && $dateRes>=0){$class='label label-success';}
-            if($item['svin']==NULL){
+            if(($item['svin']==NULL) or ($item['quant']>'0')){
                 $donor['currItem'][] = $item;
                 $totalItemPrice+=$item['price'];
                 ++$quant;
@@ -114,6 +117,7 @@ class ModelReportDonor extends Model{
                                 . '<td><img src="'.$image.'" alt="'.$item['itemname'].'" class="img-thumbnail" /></td>'
                                 . '<td>'.$item['itemname'].'</td>'
                                 . '<td>'.$item['vin'].'</td>'
+                                . '<td>'.$item['catn'].'</td>'
                                 . '<td>'.$item['stock'].'/'.$item['location'].'</td>'
                                 . '<td>'.$item['price'].'</td>'
                                 . '<td>'.$item['category'].'</td>'
@@ -130,6 +134,7 @@ class ModelReportDonor extends Model{
                                 . '<td><img src="'.$image.'" alt="'.$item['itemname'].'" class="img-thumbnail" /></td>'
                                 . '<td>'.$item['itemname'].'</td>'
                                 . '<td>'.$item['vin'].'</td>'
+                                . '<td>'.$item['catn'].'</td>'
                                 . '<td>'.$item['stock'].'/'.$item['location'].'</td>'
                                 . '<td>'.$item['price'].'</td>'
                                 . '<td>'.$item['category'].'</td>'

@@ -53,6 +53,20 @@
                                     <option value="drom">drom</option>
                                     <option value="autoru">Auto.ru</option>
                                     <option value="vk">vk</option>
+                                    <option value="bibinet">BIBINET</option>
+                                    <option value="telegram">Telegram</option>
+                                    <option value="viber">Viber</option>
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="phone_call">Телефоный звонок</option>
+                                    <option value="client">Постояный клиент</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <lable for="wherefrom" class="control-label">Способ оплаты</lable>
+                                <select class="form-control" name="opl-from" id="opl-from">
+                                    <option value="Наличные">Наличные</option>
+                                    <option value="Карта">Оплата по карте</option>
+                                    <option value="Расчетный счет">Расчетный счет</option>
                                 </select>
                             </div>
                         </div>

@@ -134,7 +134,7 @@
                 <h3>Загрузка товаров в магазин</h3>
                 <span class="label label-default">Загрузите eXcel файл на сервер для обновления базы товаров магазина</span>
                 <hr>
-                <button disabled title="Временно недоступно" type="button" class="btn btn-block btn-success" id="upload"><i class="fa fa-upload"></i>&nbsp;Загрузка товаров</button>
+                <button title="Временно недоступно" type="button" class="btn btn-block btn-success" id="upload"><i class="fa fa-upload"></i>&nbsp;Загрузка товаров</button>
                 <div class="alert alert-success" id="up_form" style="margin-top: 5px; display: none;">
                     <div class="col-lg-12">
                         <div class="col-lg-6">

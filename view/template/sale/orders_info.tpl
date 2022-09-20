@@ -72,6 +72,15 @@
                               <?php }?>
                           </select>
                       </div>
+                        <div class="form-group">
+                            <label for="wherefrom" class="control-label">Способ оплаты</label>
+                            <select class="form-control" name="opl-from" id="opl-from" info-target="shipinfo" value="<?php echo $order['opl-from']; ?>">
+                                <option value="<?php echo $order['opl-from']; ?>"><?php echo $order['opl-from']; ?></option>
+                                <option value="Наличные">Наличные</option>
+                                <option value="Карта">Оплата по карте</option>
+                                <option value="Расчетный счет">Расчетный счет</option>
+                            </select>
+                        </div>
                       <div id="ship_href"><a target="blank" href="<?php echo $order['ship_href']; ?>" class="bnt btn-sm btn-info">Отслеживание по трекномеру</a></div>
                       <div class="form-group">
                           <label>Трек-номер отправления:</label>

@@ -185,7 +185,7 @@
                   <td class="text-left"><?php if ($sort == 'p.manager') { ?>
                     <a href="<?php echo $sort_manager; ?>" class="<?php echo strtolower($order); ?>">Менеджер</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_manager; ?>">Менеджер</a>
+                    <a href="<?php echo $sort_manager; ?>">Каталожный номер</a>
                     <?php } ?>
                   </td>
                   <?php }?>
@@ -253,11 +253,11 @@
                   <td><?php echo $product['stock'].'/'.$product['stell'].'/'.$product['jar'].'/'.$product['shelf'].'/'.$product['box']; ?></td>
                   <td class="text-right"><?php echo $product['price']; ?></td>
                   <td class="text-left">
-                      <?php if ($product['stock'] !== '') { ?>
+                      <?php if ($product['zаmetki'] !== '') { ?>
                       <div class="alert alert-danger" role="alert">
                         <i class="fa fa-fire-extinguisher"></i> 
                         <span class="sr-only">ВНИМАНИЕ:</span>
-                        Заметки для менеджеров
+                        Заметки для менеджеров: <?php echo htmlspecialchars_decode($product['zаmetki']); ?>
                       </div>
                       <?php } ?>  
                       <?php echo htmlspecialchars_decode($product['note']); ?></td>

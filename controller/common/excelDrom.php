@@ -141,11 +141,11 @@
             header ( "Cache-Control: no-cache, must-revalidate" );
             header ( "Pragma: no-cache" );
             header ( "Content-type: application/vnd.ms-excel" );
-            header ( "Content-Disposition: attachment; filename=temp.xls" );
+            header ( "Content-Disposition: attachment; filename=auto-parts-MGNAUTO.xls" );
 
 
             $objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
-            $objWriter->save('php://output');
+            $objWriter->save('downloadXcelFiles/auto-parts-MGNAUTO.xls');
             //return $this->$OrderExcel;
         }
     }

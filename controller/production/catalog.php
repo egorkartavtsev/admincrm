@@ -453,7 +453,7 @@ class ControllerProductionCatalog extends Controller {
                                     'product_id' => $result['product_id'],
                                     'image'      => $image,
                                     'saled'      => $saleDate,
-                                    'manager'    => $result['manager'],
+                                    'manager'    => $result['catn'],
                                     'name'       => $result['name'],
                                     'vin'        => $result['vin'],
                                     'stell'      => (isset($result['stell'])) && ($result['stell']!=='')?$result['stell']:'-',
@@ -467,13 +467,16 @@ class ControllerProductionCatalog extends Controller {
                                     'price'      => $result['price'],
                                     'date_added' => $result['date_added'],
                                     'dateDif'    => $dateRes,
+                                    'zаmetki'    => $result['zаmetki'],
                                     'dop'        => $result['dop'],
                                     'quantity'   => $result['quantity'],
                                     'status'     => $stat,
                                     'edit'       => $this->url->link('production/catalog/edit', 'product_id=' . $result['product_id'] . $url, true)
                             );
+                            //exit(var_dump($result['zаmetki'] ));
                         }       
 		}  
+        
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
@@ -808,7 +811,8 @@ class ControllerProductionCatalog extends Controller {
             $brtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
             $mtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
             if($product['avitoname']=='' && (isset($mtr->row['name']) || isset($mtr->row['translate']))){
-                $data['avitoname'] = $product['podcateg'].' '.$mtr->row['name'].' '.$mtr->row['translate'];
+                $translatemane = str_replace(';','',$mtr->row['translate']);
+                $data['avitoname'] = $product['podcateg'].' '.$mtr->row['name'].' '.$translatemane;
             } else {
                 $data['avitoname'] = $product['avitoname'];
             }
@@ -828,6 +832,7 @@ class ControllerProductionCatalog extends Controller {
             } else {
                 $data['complect'] = $product['comp'];
             }
+           
             $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 200, 200);     
             $this->response->setOutput($this->load->view('product/product_edit', $data));
         }
@@ -1026,12 +1031,14 @@ class ControllerProductionCatalog extends Controller {
         $this->load->model('tool/product');
         $info = $this->model_tool_product->getProdStructure($this->request->post, $this->request->get['product_id']);
         $this->model_tool_forms->updateProduct($info, $this->request->get['product_id']);
+        //exit(var_dump($info));
         /************** - XML edit - *****************/
             $info['options']['avitoname'] = $this->request->post['info']['avitoname'];
             $info['options']['vin'] = $info['vin'];
             $info['options']['pid'] = $this->request->get['product_id'];
             $info['allowavito'] = $this->request->post['allowavito'];           
             $this->model_tool_xml->avitoFind($info);
+            $this->model_tool_xml->yulaFind($info);
             $this->model_tool_xml->ARUFind($info);
         /*******************************/
         $url = '';

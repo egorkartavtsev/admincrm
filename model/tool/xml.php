@@ -8,7 +8,7 @@ class ModelToolXml extends Model {
             $sup = 0;
             foreach($xmls->Ad as $ad){
                 if(in_array($data['vin'], (array)$ad)){
-                    if(isset($data['write_off']) || $data['options']['price']['value']<500){
+                    if((isset($data['write_off']) || ($data['options']['price']['value']<500) || ($data['options']['status']['value']=0))){
                         $dom=dom_import_simplexml($xmls->Ad[$sup]);
                         $dom->parentNode->removeChild($dom);
                         $xmls->saveXML('Avito/ads.xml');
@@ -23,10 +23,41 @@ class ModelToolXml extends Model {
             }
             if((!isset($data['write_off']) || $data['options']['price']['value']>=500)){
                 if($data['options']['price']['value']>=500){
-                    $this->avitoCreateAd($data['options'], $xmls);
+                    if(($data['options']['status']['value']=1)){
+                        $this->avitoCreateAd($data['options'], $xmls);
+                    }
                 }
             }
         }
+    }
+    public function yulaFind($data) {
+        if($data['structure']==1){
+            // Раскоментировать когда пойму как работает sav
+            // $xmlsyu = simplexml_load_file('Avito/yula.xml');
+            // $supyu = 0;
+            // foreach($xmlsyu->Ad as $ad){
+            //     if(in_array($data['vin'], (array)$ad)){
+            //         if((isset($data['write_off']) || ($data['options']['price']['value']<500) || ($data['options']['status']['value']=0))){
+            //             $domyu=dom_import_simplexml($xmls->Ad[$supyu]);
+            //             $domyu->parentNode->removeChild($domyu);
+            //             $xmlsyu->saveXML('Avito/yula.xml');
+            //             $this->db->query("DELETE FROM ".DB_PREFIX."product_to_yula WHERE vin = '".$data['vin']."' ");
+            //             return 0;
+            //         }
+            //         $this->yulaUpdateAd($data['options'], $supyu, $xmlsyu);
+            //         return 0;
+            //     } else { 
+            //         ++$supyu;
+            //     }
+            // }
+            // if((!isset($data['write_off']) || $data['options']['price']['value']>=500)){
+            //     if($data['options']['price']['value']>=500){
+            //         if(($data['options']['status']['value']=1)){
+            //             $this->yulaCreateAd($data['options'], $xmlsyu);
+            //         }
+            //     }
+            // }
+        }  
     }
     
     public function avitoUpdateAd($data, $id, $xmls) {
@@ -100,7 +131,7 @@ class ModelToolXml extends Model {
         $no   = $node->ownerDocument;
         $node->appendChild($no->createCDATASection($templ));
     //------------------------------------------------------------------
-        $xmls->Ad[$id]->ManagerName = 'MGN-AUTO';
+        $xmls->Ad[$id]->ManagerName = 'Даниил';
         $xmls->Ad[$id]->Price = $data['price']['value'];
         $xmls->Ad[$id]->ContactPhone = $phone;
         $xmls->Ad[$id]->Title = $data['avitoname'];
@@ -120,7 +151,7 @@ class ModelToolXml extends Model {
         $count=1;
         if(!empty($photos)){
             foreach ($photos as $photo) {
-                if($photo['img']!=$data['image']['value'] && $count<=3){
+                if($photo['img']!=$data['image']['value'] && $count<=8){
                     $image = $images->addChild('Image');
                     $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
                     ++$count;
@@ -129,7 +160,9 @@ class ModelToolXml extends Model {
         }
         $image = $images->addChild('Image');
         $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
-        
+        if($data['youtube']['value'] != ''){
+                                                $xmls->Ad[$id]->addChild('VideoURL','https://www.youtube.com/watch?v='.$data['youtube']['value']);
+        }
         $xmls->saveXML('Avito/ads.xml');
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_avito WHERE vin = '".$data['vin']."' ");
         if($sup->num_rows<1){
@@ -154,7 +187,7 @@ class ModelToolXml extends Model {
         $podcateg = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['podcateg']['value']."'");
         $img = ($adress['name']!=='пр. Карла Маркса, 179')?'shop.jpg':'KM.jpg';
         $brand = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['brand']['value']."'");
-        $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['modR']['value']."'");
+        $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['model']['value']."'");
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
@@ -212,9 +245,12 @@ class ModelToolXml extends Model {
                 $ad->addChild('ListingFee', $settings['listingfree']);
                 $ad->addChild('AdStatus', $settings['adstatus']);
                 $ad->addChild('AllowEmail', $settings['allowemail']);
-                $ad->addChild('ManagerName', 'MGN-AUTO');
-                $ad->addChild('Region', 'Челябинская область');
-                $ad->addChild('City', 'Магнитогорск');
+                $ad->addChild('ManagerName', 'Даниил');
+                if ($data['adress']!='Челябинск, ул.Троицкая 1В корпус2'){
+                    $ad->addChild('Address', 'Россия, Челябинская область, Магнитогорск, Магнитная улица, 109/1');
+                } else {
+                    $ad->addChild('Address', 'Россия, Челябинская область, Челябинск, Троицкая  улица, 1В корпус2');
+                }
                 $ad->addChild('ContactPhone', $phone);
                 $ad->addChild('Category', 'Запчасти и аксессуары');
                 $aid = $this->model_common_avito->getPCID($data['podcateg']['value']);
@@ -227,6 +263,14 @@ class ModelToolXml extends Model {
                 $node->appendChild($no->createCDATASection($templ));
 
                 $ad->addChild('Price', $data['price']['value']);
+				if($data['type']['value'] == "НОВОЕ")
+				{
+					$ad->addChild('Condition', "Новый");
+				}
+				else
+				{
+					$ad->addChild('Condition', "Б/у");
+				}
                 /******************************/
                 $images = $ad->addChild('Images');
                 $image = $images->addChild('Image');
@@ -236,7 +280,7 @@ class ModelToolXml extends Model {
                 $count=1;
                 if(!empty($photos)){
                     foreach ($photos as $photo) {
-                        if($photo['img']!=$data['image']['value'] && $count<=3){
+                        if($photo['img']!=$data['image']['value'] && $count<=8){
                             $image = $images->addChild('Image');
                             $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
                             ++$count;
@@ -245,11 +289,251 @@ class ModelToolXml extends Model {
                 }
             $image = $images->addChild('Image');
             $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
+            if($data['youtube']['value'] != ''){
+						$xmls->Ad[$id]->addChild('VideoURL','https://www.youtube.com/watch?v='.$data['youtube']['value']);
+                                                
+            }
             $xmls->saveXML('Avito/ads.xml');
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_avito "
                     . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
                     . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."', '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."', 0) ");
     }
+/*---------------------------------------------------------------------------------------------*/ 
+     
+    public function yulaUpdateAd($data, $id, $xmls) {
+        //exit(var_dump($data));
+        $this->load->model('common/avito');
+        $this->load->model('product/product');
+        $settings = $this->model_common_avito->getSetts();//???
+        if($data['adress']['value']){
+            $adress = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['adress']['value']."'")->row;
+        } else {
+            $adress = ['name' => 'ул. Магнитная, 109/1'];
+        }
+        $weekend = $adress['name']=='пр. Карла Маркса, 179'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $phone = $adress['name']=='пр. Карла Маркса, 179'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
+        $img = ($adress['name']!=='пр. Карла Маркса, 179')?'shop.jpg':'KM.jpg';
+        $podcateg = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['podcateg']['value']."'");
+        $brand = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['brand']['value']."'");
+        $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['modR']['value']."'");
+        //-----------------------------------------
+        $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());//???
+        /************************/
+            $templ = str_replace('%podcat%', $podcateg->row['name'], $templ);
+            if($data['brand']['value']!=='-' && $data['brand']['value']!==''){
+                $templ = str_replace('%brand%', $brand->row['name'], $templ);
+                $templ = str_replace('%trbrand%', $brand->row['translate'], $templ);
+            } else {
+                $templ = str_replace('%brand%', '', $templ);
+                $templ = str_replace('%trbrand%', '', $templ);
+            }
+            if($data['modR']['value']!=='-' && $data['modR']['value']!==''){
+                $templ = str_replace('%modrow%', $modR->row['name'], $templ);
+                $templ = str_replace('%trmodrow%', $modR->row['translate'], $templ);
+            } else {
+                $templ = str_replace('%modrow%', '', $templ);
+                $templ = str_replace('%trmodrow%', '', $templ);
+            }
+            $templ = str_replace('%stock%', $adress['name'], $templ);
+            $templ = str_replace('%vin%', $data['vin'], $templ);
+            if(trim($data['catn']['value'])!==''){
+                $templ = str_replace('%catn%', '<li>Каталожный номер: <strong>'.$data['catn']['value'].'</strong></li>', $templ);
+            } else {
+                $templ = str_replace('%catn%', '', $templ);
+            }
+            if(trim($data['cond']['value'])!=='-'){
+                $templ = str_replace('%condit%', '<li>Состояние: '.$data['cond']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%condit%', '', $templ);
+            }
+            if(trim($data['compability']['value'])!==''){
+                $templ = str_replace('%compabil%', '<li>Подходит на: '.$data['compability']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%compabil%', '', $templ);
+            }
+            if(trim($data['note']['value'])!==''){
+                $templ = str_replace('%note%', '<li>'.$data['note']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%note%', '', $templ);
+            }
+            if(trim($data['dop']['value'])!==''){
+                $templ = str_replace('%dopinfo%', '<li>'.$data['dop']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%dopinfo%', '', $templ);
+            }
+            $templ = str_replace('%weekend%', $weekend, $templ);
+    /******************************************************************/
+        $dom=dom_import_simplexml($xmls->Ad[$id]->Description);
+        $dom->parentNode->removeChild($dom);
+    //-----------------------------------------------------------------
+        $desc = $xmls->Ad[$id]->addChild('Description');
+        $node = dom_import_simplexml($desc);
+        $no   = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($templ));
+    //------------------------------------------------------------------
+        $xmls->Ad[$id]->ManagerName = 'Менеджер';
+        $xmls->Ad[$id]->Price = $data['price']['value'];
+        $xmls->Ad[$id]->Condition = $data['type']['value'];
+        $xmls->Ad[$id]->ContactPhone = $phone;
+        $xmls->Ad[$id]->Title = $data['avitoname'];
+        $aid = $this->model_common_avito->getPCID($data['podcateg']['value']);//???
+        $xmls->Ad[$id]->TypeId = trim($aid);
+        
+    /******************************************************************/
+        $domImg=dom_import_simplexml($xmls->Ad[$id]->Images);
+        $domImg->parentNode->removeChild($domImg);
+    //-----------------------------------------------------------------
+        /******************************/
+        $images = $xmls->Ad[$id]->addChild('Images');
+        $image = $images->addChild('Image');
+        $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$data['image']['value']);
+        /*****************************/
+        $photos = $this->model_product_product->getPhotos($data['pid']);
+        $count=1;
+        if(!empty($photos)){
+            foreach ($photos as $photo) {
+                if($photo['img']!=$data['image']['value'] && $count<=3){
+                    $image = $images->addChild('Image');
+                    $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
+                    ++$count;
+                }
+            }
+        }
+        $image = $images->addChild('Image');
+        $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
+        if($data['youtube']['value'] != ''){
+                                                $xmls->Ad[$id]->addChild('VideoURL','https://www.youtube.com/watch?v='.$data['youtube']['value']);
+        }
+        $xmls->saveXML('Avito/yula.xml');
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_yula WHERE vin = '".$data['vin']."' ");
+        if($sup->num_rows<1){
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_yula "
+                    . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
+                    . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."', '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."', 0) ");
+        }
+    }
+    
+    public function yulaCreateAd($data, $xmls) {
+        //exit(var_dump($data));
+        $this->load->model('common/avito');
+        $this->load->model('product/product');
+        $settings = $this->model_common_avito->getSetts();//???
+        if($data['adress']['value']){
+            $adress = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['adress']['value']."'")->row;
+        } else {
+            $adress = ['name' => 'ул. Магнитная, 109/1'];
+        }
+        $weekend = $adress['name']=='пр. Карла Маркса, 179'?'СБ 11:00-16:00 , ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $phone = $adress['name']=='пр. Карла Маркса, 179'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
+        $podcateg = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['podcateg']['value']."'");
+        $img = ($adress['name']!=='пр. Карла Маркса, 179')?'shop.jpg':'KM.jpg';
+        $brand = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['brand']['value']."'");
+        $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['model']['value']."'");
+        //-----------------------------------------
+        $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());//???
+        /************************/
+            $templ = str_replace('%podcat%', $podcateg->row['name'], $templ);
+            $templ = str_replace('%podcat%', $podcateg->row['name'], $templ);
+            if($data['brand']['value']!=='-' && $data['brand']['value']!==''){
+                $templ = str_replace('%brand%', $brand->row['name'], $templ);
+                $templ = str_replace('%trbrand%', $brand->row['translate'], $templ);
+            } else {
+                $templ = str_replace('%brand%', '', $templ);
+                $templ = str_replace('%trbrand%', '', $templ);
+            }
+            if($data['modR']['value']!=='-' && $data['modR']['value']!==''){
+                $templ = str_replace('%modrow%', $modR->row['name'], $templ);
+                $templ = str_replace('%trmodrow%', $modR->row['translate'], $templ);
+            } else {
+                $templ = str_replace('%modrow%', '', $templ);
+                $templ = str_replace('%trmodrow%', '', $templ);
+            }
+            $templ = str_replace('%stock%', $adress['name'], $templ);
+            $templ = str_replace('%vin%', $data['vin'], $templ);
+            if(trim($data['catn']['value'])!==''){
+                $templ = str_replace('%catn%', '<li>Каталожный номер: <strong>'.$data['catn']['value'].'</strong></li>', $templ);
+            } else {
+                $templ = str_replace('%catn%', '', $templ);
+            }
+            if(trim($data['cond']['value'])!=='-'){
+                $templ = str_replace('%condit%', '<li>Состояние: '.$data['cond']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%condit%', '', $templ);
+            }
+            if(trim($data['compability']['value'])!==''){
+                $templ = str_replace('%compabil%', '<li>Подходит на: '.$data['compability']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%compabil%', '', $templ);
+            }
+            if(trim($data['note']['value'])!==''){
+                $templ = str_replace('%note%', '<li>'.$data['note']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%note%', '', $templ);
+            }
+            if(trim($data['dop']['value'])!==''){
+                $templ = str_replace('%dopinfo%', '<li>'.$data['dop']['value'].'</li>', $templ);
+            } else {
+                $templ = str_replace('%dopinfo%', '', $templ);
+            }
+            $templ = str_replace('%weekend%', $weekend, $templ);
+    /******************************************************************/
+            //exit(var_dump($data));
+    // Раскоментировать когда пойму как работает sav
+    //         $ad = $xmls->addChild('Ad');
+
+    //             $ad->addChild('Id', $data['vin']);
+    //             $ad->addChild('DateBegin', date('Y-m-d', strtotime("+".$settings['sdate']." days")));
+    //             $ad->addChild('DateEnd', date('Y-m-d', strtotime("+".$settings['edate']." days")));
+    //             $ad->addChild('ListingFee', $settings['listingfree']);
+    //             $ad->addChild('AdStatus', $settings['adstatus']);
+    //             $ad->addChild('AllowEmail', $settings['allowemail']);
+    //             $ad->addChild('ManagerName', 'MGN-AUTO');
+    //             if ($data['adress']!='Челябинск, ул.Троицкая 1В корпус2'){
+    //                 $ad->addChild('Address', 'Россия, Челябинская область, Магнитогорск, Магнитная улица, 109/1');
+    //             } else {
+    //                 $ad->addChild('Address', 'Россия, Челябинская область, Челябинск, Троицкая  улица, 1В корпус2');
+    //             }
+    //             $ad->addChild('ContactPhone', $phone);
+    //             $ad->addChild('Category', 'Запчасти и аксессуары');
+    //             $aid = $this->model_common_avito->getPCID($data['podcateg']['value']);//???
+    //             $ad->addChild('TypeId', trim($aid));
+    //             $ad->addChild('Title', $data['avitoname']);
+
+    //             $desc = $ad->addChild('Description');
+    //             $node = dom_import_simplexml($desc);
+    //             $no   = $node->ownerDocument; 
+    //             $node->appendChild($no->createCDATASection($templ));
+
+    //             $ad->addChild('Price', $data['price']['value']);
+    //             $ad->addChild('Condition', $data['type']['value']);
+    //             /******************************/
+    //             $images = $ad->addChild('Images');
+    //             $image = $images->addChild('Image');
+    //             $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$data['image']['value']);
+    //             /*****************************/
+    //             $photos = $this->model_product_product->getPhotos($data['pid']);//???
+    //             $count=1;
+    //             if(!empty($photos)){
+    //                 foreach ($photos as $photo) {
+    //                     if($photo['img']!=$data['image']['value'] && $count<=3){
+    //                         $image = $images->addChild('Image');
+    //                         $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
+    //                         ++$count;
+    //                     }
+    //                 }
+    //             }
+    //         $image = $images->addChild('Image');
+    //         $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
+    //         if($data['youtube']['value'] != ''){
+				// 		$xmls->Ad[$id]->addChild('VideoURL','https://www.youtube.com/watch?v='.$data['youtube']['value']);
+                                                
+    //         }
+    //         $xmls->saveXML('Avito/yula.xml');
+    //         $this->db->query("INSERT INTO ".DB_PREFIX."product_to_yula "
+    //                 . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
+    //                 . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."', '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."', 0) ");
+    }
+    
 /*---------------------------------------------------------------------------------------------*/    
     public function ARUFind($data) {
 //        exit(var_dump($data));
@@ -311,6 +595,7 @@ class ModelToolXml extends Model {
             }
             $part->addChild('description', (string)trim($templ));
             $part->addChild('price', $data['price']['value']);
+            $part->addChild('condition', $data['type']['value']);
             $part->addChild('count', $data['quantity']['value']);
             $avail = $part->addChild('availability');
                 $avail->addChild('isAvailable', $data['status']['value']);
@@ -376,6 +661,7 @@ class ModelToolXml extends Model {
             $xmls->part[$id]->manufacturer = $brand->row['name'];
         }
         $xmls->part[$id]->price = $data['price']['value'];
+        $xmls->part[$id]->Condition = $data['type']['value'];
         $xmls->part[$id]->title = $data['avitoname'];
         $xmls->part[$id]->count = $data['quantity']['value'];
         $xmls->part[$id]->availability->isAvailable = $data['status']['value'];

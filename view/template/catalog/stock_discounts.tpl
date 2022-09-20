@@ -163,6 +163,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
+					<td class="text-left col-sm-2">Каталожный номер</td>
                 </tr>
               </thead>
               <tbody>
@@ -235,7 +236,7 @@
                     <span class="label label-success"><?php echo $product['quantity']; ?></span>
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
-               
+				  <td class="text-left"><?php echo $product['catn'];?></td>
                     
                   <?php }?>
                 </tr>

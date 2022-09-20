@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><?php echo $name.' | '.$vin.' | '.$location;?></h3>
+        <h3><?php echo $name.' | '.$vin.' | '.$location.' | Цена: '.$price;?></h3>
         <div class="btn-group">
             <a class="btn btn-primary" target="_blank" href="<?php echo $edit; ?>"><i class="fa fa-pencil"></i> редактировать</a> 
             <a class="btn btn-success" target="_blank" href="<?php echo $go_site; ?>"><i class="fa fa-arrow-circle-right"></i> на витрине</a>
@@ -95,7 +95,7 @@
                     <td class="text-right col-sm-3"><?php echo $option['text']?>: </td>
                     <td class="text-left h4 col-sm-9">
                         <?php $p = stripos($option['value'],'http'); if(!is_bool($p)){ ?>
-                            <a href="<?php echo $option['value']?>" target="blank">Перейти</a>
+                            <a href="<?php echo $option['value']?>" target="blank"><?php echo str_replace('http://admin.авторазбор174.рф//index.php?route=donor/show&numb=','', $option['value'])?></a>
                         <?php } else { ?>
                             <?php echo htmlspecialchars_decode($option['value']);?>
                         <?php } ?>
@@ -120,7 +120,7 @@
                     <tr>
                         <td class="text-center h4"><?php echo $complect['complect']['price'];?> &#8381;</td>
                         <td class="text-center h4"><?php echo (int)$complect['complect']['price']?'Комплект целиком':'Обычная продажа';?></td>
-                        <td class="text-center h4"><?php echo (int)$complect['complect']['sale']?$complect['complect']['sale'].'%':'15%';?></td>
+                        <td class="text-center h4"><?php echo (int)$complect['complect']['sale']?$complect['complect']['sale'].'%':'0.00001%';?></td>
                     </tr>      
                 </table>
 

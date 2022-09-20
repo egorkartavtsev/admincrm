@@ -82,6 +82,8 @@
                         <option value="model">Модель</option>
                         <option value="category">Категория товара</option>
                         <option value="price">Ценовые диопазоны</option>
+                        <option value="opl_type">Тип оплаты</option>
+
                     </select>
                 </div>
                 <div class="form-group-sm">
@@ -100,15 +102,39 @@
               <table class="table-bordered table-responsive table-striped col-lg-12">
                   <thead>
                       <tr>
-                          <th>Наименование</th>
+                          <th>Подкатегория</th>
+                          <th>Марка</th>
+                          <th>Модель</th>
+                          <th>Донор</th>
                           <th>Внутр.номер</th>
                           <th>Цена продажи</th>
+                          <th>Поставщик</th>
                           <th>Адрес</th>
                           <th>Дата продажи</th>
+                          <th>Способ оплаты</th>
+                          <th>Способ прожажи</th>
+                          <th>Город покупателя</th>
                       </tr>
                   </thead>
                   <tbody id="saleRowsTable">
                   </tbody>
+                  <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Итого</th>
+                        <th><div id="itogo_sales"></div></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                  </tfoot>
               </table>
           </div>
       </div>

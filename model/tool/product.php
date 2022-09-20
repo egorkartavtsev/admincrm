@@ -65,15 +65,15 @@ class ModelToolProduct extends Model {
         $res = array();
         $res['vin'] = array(
             'excel' => 0,
-            'text'  => 'Р’РЅСѓС‚СЂРµРЅРЅРёР№ РЅРѕРјРµСЂ'
+            'text'  => 'Внутренний номер'
         );
         $res['price'] = array(
             'excel' => 1,
-            'text'  => 'Р¦РµРЅР°'
+            'text'  => 'Цена'
         );
         $res['quantity'] = array(
             'excel' => 2,
-            'text'  => 'РљРѕР»РёС‡РµСЃС‚РІРѕ'
+            'text'  => 'Кол-во'
         );
         $i=3;
         foreach ($sup->rows as $lib) {
@@ -85,22 +85,22 @@ class ModelToolProduct extends Model {
         }
         $res['comp'] = array(
             'excel' => $i,
-            'text'  => 'РљРѕРјРїР»РµРєС‚РЅРѕСЃС‚СЊ'
+            'text'  => 'Комплект'
         );
         ++$i;
         $res['comp_price'] = array(
             'excel' => $i,
-            'text'  => 'Р¦РµРЅР° РєРѕРјРїР»РµРєС‚Р°'
+            'text'  => 'Цена комплекта'
         );
         ++$i;
         $res['comp_whole'] = array(
             'excel' => $i,
-            'text'  => 'РЎРїРѕСЃРѕР± РїРѕРєСѓРїРєРё'
+            'text'  => 'comp_whole'
         );
         ++$i;
         $res['date_added'] = array(
             'excel' => $i,
-            'text'  => 'Р”Р°С‚Р° С„РѕС‚РѕРіСЂР°С„РёРё'
+            'text'  => 'Дата создания'
         );
         ++$i;
         
@@ -443,6 +443,7 @@ class ModelToolProduct extends Model {
             $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".trim($value)."' WHERE id = ".(int)$fill);
         }
         $this->db->query("UPDATE ".DB_PREFIX."product SET ".$sup->row['col']." = '".$fields['name']."' WHERE ".$sup->row['col']." = '".$sup->row['name']."'");
+        $this->db->query("UPDATE ".DB_PREFIX."donor SET ".$sup->row['col']." = '".$fields['name']."' WHERE ".$sup->row['col']." = '".$sup->row['name']."'");
         $this->db->query("UPDATE ".DB_PREFIX."product_description SET "
                 . "tag = REPLACE(tag, '".$sup->row['name']."', '".$fields['name']."'), "
                 . "meta_title = REPLACE(meta_title, '".$sup->row['name']."', '".$fields['name']."'), "

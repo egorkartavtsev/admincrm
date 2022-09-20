@@ -7,22 +7,68 @@
         }
         
         public function getProductTemplate() {
-            $query = $this->db->query("SELECT * FROM ".DB_PREFIX."excel_template ORDER BY id");
+            $query = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = 1 and excel != 0 ORDER BY excel");
             $template = array();
+            $template[1] = array(
+                'name' => 'vin',
+                'text' => 'Внутренний номер',
+                'important' => 1,
+                'system' => 1
+            );
+            $template[2] = array(
+                'name' => 'price',
+                'text' => 'Цена',
+                'important' => 1,
+                'system' => 1
+            );
+            $template[3] = array(
+                'name' => 'quantity',
+                'text' => 'Кол-во',
+                'important' => 1,
+                'system' => 1
+            );
+            $i = 3;
             foreach ($query->rows as $row) {
-                $template[$row['id']] = array(
+                $template[$row['excel']+3] = array(
                     'name' => trim($row['name']),
                     'text' => trim($row['text']),
-                    'important' => trim($row['important']),
-                    'system' => trim($row['system'])
+                    'important' => trim($row['required']),
+                    'system' => trim($row['required'])
                 );
+                ++$i;
             }
+            ++$i;
+            $template[$i] = array(
+                'name' => 'comp',
+                'text' => 'Комплект',
+                'important' => 0,
+                'system' => 0
+            );
+            $template[$i+1] = array(
+                'name' => 'comp_price',
+                'text' => 'Цена комплекта',
+                'important' => 0,
+                'system' => 0
+            );
+            $template[$i+2] = array(
+                'name' => 'comp_whole',
+                'text' => 'Способ продажи',
+                'important' => 0,
+                'system' => 0
+            );
+            $template[$i+3] = array(
+                'name' => 'date_added',
+                'text' => 'Дата создания',
+                'important' => 1,
+                'system' => 1
+            );
+            
             return $template;
         }
         
         public function getdescripttemplate(){
-            $query = $this->db->query("SELECT text FROM ".DB_PREFIX."text_template WHERE id = 1 ");
-            return $query->row['text'];
+            $query = $this->db->query("SELECT desctemp FROM ".DB_PREFIX."product_type WHERE type_id = 1 ");
+            return $query->row['desctemp'];
         }
         
         public function constructDescription($template, $product){
@@ -64,41 +110,44 @@
             return $cats;
         }
         
-        public function setToDB($data, $vin, $descripttemplate, $images, $comp = 0, $manager) {
-            
+        public function setToDB($data, $vin, $description, $images, $comp, $manager) {
+//            exit(var_dump(strtoupper($data['brand'])));
             $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE vin = '".$vin."' ");
             if(empty($quer->rows)){
             /* в этом блоке объединяем некоторые разрозненные данные по товару в переменные */
-                $name = $data['podcat'] . " ". $data['brand'] ." ". $data['modr'];
-                $tag = $data['brand'].', '.$data['model'].', '.$data['modr'].', '.$data['podcat'].', '.$name.', '.$data['catn'];
-                $description = $this->constructDescription($descripttemplate, $data);
-                $price = $data['price']!=NULL?$data['price']:0;
-                $quantity = $data['quant']!=NULL?$data['quant']:0;
-                $date = $data['date']!=''?"'".$data['date']."'":"NOW()";
-                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['brand']."' ");
+                $name = $data['podcateg'] . " ". $data['brand'] ." ". $data['modR'];
+                $tag = $data['brand'].', '.$data['model'].', '.$data['modR'].', '.$data['podcateg'].', '.$name.', '.$data['catn'];
+                foreach ($data as $key => $value) {
+                    $description = str_replace('%'.$key.'%', $value, $description);
+                }
+                $brand = strtoupper($data['brand']);
+                $price = $data['price']!==NULL?$data['price']:0;
+                $quantity = $data['quantity']!=NULL?$data['quantity']:0;
+                $date = $data['date_added']!=''?"'".$data['date_added']."'":"NOW()";
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$brand."' ");
                 $brand_id = $query->row['id'];
                 
                 $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['model']."' ");
                 $mod_id = $query->row['id'];
                 
-                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['modr']."' ");
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['modR']."' ");
                 $modr_id = $query->row['id'];
                 
                 $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['category']."' ");
-                $cat_id = $query->row['category_id'];
+                $cat_id = $query->row['id'];
                 
-                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['podcat']."' ");
-                $podcat_id = $query->row['category_id'];
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['podcateg']."' ");
+                $podcat_id = $query->row['id'];
                 
                 $image = ((is_array($images)) && (!empty($images)))?'catalog/demo/production/'.$vin.'/'.$images[0]:' ';
                 $comp_price = $data['comp_price']!=NULL?$data['comp_price']:'';
                 $complect = '';
-                $comp_whole = $data['whole']!=NULL?1:'';
-                $donor = $data['donor']!=NULL?$data['donor']:'';
+                $comp_whole = $data['comp_whole']!=NULL?1:'';
+                $donor = $data['numb']!=NULL?$data['numb']:'';
             /*******************************************************************************/
             /******************** блок работы с комплектами ********************************/
-                if($data['comp_price']!=NULL){
-                    $whole = $data['whole']!=NULL?1:0;
+                if($data['comp_price']!==''){
+                    $whole = $data['comp_whole']!==''?1:0;
                     $heading = $vin;
                     $c_price = $data['comp_price'];
                     $this->load->model('complect/complect');
@@ -106,44 +155,49 @@
                     $query = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
                     $comp_id = $query->row['id'];
                     $complect = "`comp` = '".$comp_id."', ";
-                } elseif ($data['complect']!=NULL) {
-                    $complect = "`comp` = '".$data['complect']."', ";
+                } elseif ($data['comp']!=='') {
+                    $complect = ", `comp` = '".$data['comp']."', ";
+                } else {
+                    $complect = "";
                 }
                 $status = $quantity!=0?1:0;
             /******************************************************************************/
             /******* окончательно сформированный товар укладываем в базу потаблично *******/
                 $query = "INSERT INTO ".DB_PREFIX."product "
                         . "SET "
+                            . "`structure` = 1, "
                             . "`brand` = '". $data['brand'] ."', "
                             . "`model` = '". $data['model'] ."', "
                             . "`category` = '". $data['category'] ."', "
-                            . "`podcateg` = '". $data['podcat'] ."', "
+                            . "`podcateg` = '". $data['podcateg'] ."', "
                             . "`note` = '". $data['note'] ."', "
                             . "`vin` = '". $vin ."', "
-                            . "`cond` = '". $data['condit'] ."', "
-                            . "`donor` = '". $donor ."', "
+                            . "`cond` = '". $data['cond'] ."', "
+                            . "`numb` = '". $donor ."', "
                             . "`type` = '". $data['type'] ."', "
-                            . "`location` = '".$data['still']."/".$data['jar']."/".$data['shelf']."/".$data['box']."', "
-                            . "`stell` = '".$data['still']."', "
+                            //. "`location` = '".$data['stell']."/".$data['jar']."/".$data['shelf']."/".$data['box']."', "
+                            . "`adress` = '". $data['adress'] ."', "
+                            . "`stock` = '". $data['stock'] ."', "
+                            . "`stell` = '".$data['stell']."', "
                             . "`jar` = '".$data['jar']."', "
                             . "`shelf` = '".$data['shelf']."', "
                             . "`box` = '".$data['box']."', "
                             . "`catn` = '". $data['catn'] ."', "
-                            . "`stock` = '". $data['stock'] ."', "
                             . "`price` = ". $price .", "
                             . "`image` = '". $image ."', "
                             . "`quantity` = ".$quantity.", "
                             . "`comp_price` = '".$comp_price."', "
                             . "`comp_whole` = '".$comp_whole."', "
                             . "`manager` = '".$manager."', "
-                            . "`modR` = '".$data['modr']."', "
+                            . "`modR` = '".$data['modR']."', "
                             ."`status` = ".(int)$status.", "
                             ."`date_added` = ".$date.", "
                             ."`date_available` = NOW(), "
                             ."`date_modified` = NOW(), "
                             . "avito = '".$data['avito']."', "
-                            . "drom = '".$data['drom']."', "
+                            . "drom = '".$data['drom']."' "
                             .$complect. " ";
+//                    exit($query);
                 $this->db->query($query);
                 $product_id = $this->db->getLastId();
                 
@@ -167,8 +221,7 @@
                 $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_lib "
                                 . "SET "
                                 . "product_id = '" . (int)$product_id . "', "
-                                . "fill_id = '" . (int)$cat_id . "', "
-                                . "main_category = 1");
+                                . "fill_id = '" . (int)$cat_id . "' ");
 
                 $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_lib "
                                 . "SET "

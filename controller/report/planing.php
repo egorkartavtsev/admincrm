@@ -113,7 +113,7 @@ class ControllerReportPlaning extends Controller{
         foreach ($allPlans as $plan) {
             $index = date('m', strtotime($plan['date']));
             $fact = $this->model_report_planing->getMonthFact(date('Y-m', strtotime($plan['date'])), $addr);
-            $res[$index] = [
+            $res[] = [
                 'date'      => $this->monthes[(int)$index-1].' '.date('Y', strtotime($plan['date'])),
                 'plan'      => $plan['plan'],
                 'fact'      => $fact,
