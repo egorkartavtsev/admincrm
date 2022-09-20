@@ -12,7 +12,7 @@ class ControllerCommonDashboard extends Controller {
                 $this->model_tool_layout->updateADS($route);
                 
                 $data['ses_token'] = $this->session->data['token'];
-		$data['breadcrumbs'] = array();
+				$data['breadcrumbs'] = array();
                 $fcItems = $this->user->getLayout();
                 $data['fcItems'] = $fcItems['fcmenu'];
                 
@@ -48,6 +48,9 @@ class ControllerCommonDashboard extends Controller {
                     'first' => $user['firstname'],
                     'last' => $user['lastname']
                 );
+				
+				$this->load->model('last_orders/last_orders');
+				$data['last_orders'] = $this->model_last_orders_last_orders->getLastOrders();
                 
 		$this->response->setOutput($this->load->view('common/dashboard', $data));
 	}

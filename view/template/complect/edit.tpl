@@ -43,8 +43,8 @@
                     <div class="col-lg-4">
                         <label>Способ продажи комплекта</label>
                         <select id="whole" class="form-control">
-                            <option value="0">Обычная продажа</option>
-                            <option value="1">Только комплект целиком</option>
+							<option <?php if($complect['whole'] == '1') echo 'selected'?> value="1">Только комплект целиком</option>
+							<option <?php if($complect['whole'] == '0') echo 'selected'?> value="0">Обычная продажа</option>
                         </select>
                     </div>
                     <div class="col-lg-4">

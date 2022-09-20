@@ -44,6 +44,44 @@
                 <?php }?>
                 <a href="index.php?route=setting/fastCallMenu&token=<?php echo $ses_token;?>" class="btn btn-info">настроить</a>
             </div>
+			<div>
+				<h3><b>Последние 10 заказов:</b></h3>
+				<div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead> 
+                          <tr>                              
+                            <th>id</th>
+							<th>Наименование комплекта</th>
+                            <th>Город</th>
+                            <th>Клиент</th>
+                            <th>Дата</th> 
+                          </tr> 
+                        </thead>
+                        <tbody id="lastOrd">
+                            <?php if(isset($last_orders)) { ?>
+                                <?php foreach($last_orders as $order) { ?>
+                                    <tr id="ord<?php echo $order['id'];?>">
+                                        <td><?php echo $order['id'];?></td>
+                                        <td><?php echo $order['name'];?></td>
+                                        <td><?php echo $order['city'];?></td>
+                                        <td><?php echo $order['client'];?></td>
+                                        <td><?php echo $order['date'];?></td>                                        
+                                    </tr>
+                                <?php } ?>
+                            <?php } else { ?>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    Нет заказов!
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>				
+			</div>
             <?php if(isset($notice['order'])){ 
                       echo $notice['order'];
                   }

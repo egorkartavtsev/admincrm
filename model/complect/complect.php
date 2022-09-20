@@ -31,7 +31,8 @@
                 'name'      => $query_comp->row['name'],
                 'price'     => $query_comp->row['price'],
                 'heading'   => $query_comp->row['heading'],
-                'sale'      => $query_comp->row['sale']
+                'sale'      => $query_comp->row['sale'],
+				'whole'     => $query_comp->row['whole']
             );
             
             $query = 'SELECT p.product_id, p.vin AS vin, pd.name AS name, p.price AS price '
