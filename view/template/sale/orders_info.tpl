@@ -142,7 +142,7 @@
                       <label>Состояние заказа:</label>
                       <select id="order-status" class="form-control">
                           <?php foreach($statuses as $status){ ?>
-                              <option value="<?php echo $status['id'];?>" <?php echo ($status['id']==$order['order_status_id'])?'selected':''?>><?php echo $status['name']?></option>
+                              <option value="<?php echo $status['id'];?>" <?php echo ($status['id']==$order['order_status_id'])? 'disabled selected':''?>><?php echo $status['name']?></option>
                           <?php }?>
                       </select>
                   </div>
@@ -205,7 +205,7 @@
 </div>
 <script type="text/javascript">
     $('#order-status').change(function(){
-        $('#save_order').removeAttr('disabled');
+        $('#save_order').removeAttr('disabled');		
     });
     
     $('#save_order').click(function(){
@@ -215,11 +215,11 @@
             data: {
                 stat: $('#order-status').val(),
                 order: getURLVar('order_id')
-            },
-            success:function(data){
-                $('#save_order').attr('disabled', 'true');
-                alert(data);
-                alert('Состояние изменено.');
+            },            
+			success:function(data){
+                    $('#save_order').attr('disabled', 'true');
+                    alert(data);
+                    alert('Состояние изменено.');
             }
         })
     });

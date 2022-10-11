@@ -87,7 +87,7 @@
                   }
                   if(isset($notice['avito'])){ 
                       echo $notice['avito'];
-                  }  
+                  } 				  
             ?>
         </div>
     </div>

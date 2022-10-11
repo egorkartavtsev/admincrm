@@ -331,8 +331,11 @@
     function validate($val, $match){
         var valid = document.getElementById($val).value;
         var matcher = document.getElementById($match).value;
-        if(valid <= matcher){
-            if(valid != '') {
+        if(valid > matcher || valid < 0){
+            $('#'+$val).css('box-shadow', '0px 0px 15px #f52');
+            $('#subm').hide('slow', function(){});
+        } else {            
+			if(valid != '') {
                 if(valid != 0){
                     $('#'+$val).css('box-shadow', '0px 0px 15px #8f5');
                     $('#subm').show('slow', function(){});
@@ -344,9 +347,6 @@
                 $('#'+$val).css('box-shadow', '0px 0px 15px #f52');
                 $('#subm').hide('slow', function(){});
             }
-        } else {
-            $('#'+$val).css('box-shadow', '0px 0px 15px #f52');
-            $('#subm').hide('slow', function(){});
         }
     }
     
