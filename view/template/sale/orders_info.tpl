@@ -220,6 +220,7 @@
                     $('#save_order').attr('disabled', 'true');
                     alert(data);
                     alert('Состояние изменено.');
+					$('#order-status').attr('disabled', 'true');
             }
         })
     });
