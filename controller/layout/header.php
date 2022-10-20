@@ -109,6 +109,10 @@ class ControllerLayoutHeader extends Controller {
                         if($sup->num_rows){
                             $data['notice']['avito'] = '<a href="'.$this->url->link('avito/avito_list', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice avito"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
                         }
+						$sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE DATE(current_timestamp) > DATE_ADD(DATE(date_added), interval 3 DAY) AND order_status_id IN (SELECT oos.order_status_id FROM ".DB_PREFIX."order_status oos JOIN ".DB_PREFIX."order_status oos2 ON oos.sort_order < oos2.sort_order AND oos2.order_status_id = 13)");
+						if($sup->num_rows){
+                            $data['notice']['expiredOrders'] = '<a btn_type="showExpiredOrders"  title="Информация о просроченных заказах" data-toggle="modal" data-target="#expiredOrdersModal" style="float: left;"><div class="top-notice expired"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
+                        }
                         //CKEditor
                         if ($this->config->get('config_editor_default')) {
                             $data['scripts'][]='view/javascript/ckeditor/ckeditor.js';

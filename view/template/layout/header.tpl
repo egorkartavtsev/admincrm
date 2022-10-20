@@ -85,7 +85,11 @@
         <?php if(isset($notice['avito'])){ 
                 echo $notice['avito'];
             }  ?>
+        <?php if(isset($notice['expiredOrders'])){ 
+                echo $notice['expiredOrders'];
+            }  ?>			
     <?php }  ?>
+	
    </div>
   <?php if ($logged) { ?>
     <ul class="nav pull-right">

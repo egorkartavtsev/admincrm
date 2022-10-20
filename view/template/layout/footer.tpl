@@ -1,4 +1,5 @@
 <?php echo $product_modal; ?>
+<?php echo $expired_orders; ?>
 <audio id="chatAudio">
     <source src="notify.mp3" type="audio/mpeg">
 </audio>

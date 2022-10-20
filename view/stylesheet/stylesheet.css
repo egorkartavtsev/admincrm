@@ -160,6 +160,7 @@ h1, h2, h3, h4, h5, h6, p {
     border-radius: 0px 0px 10px 10px;
     min-height: 40px;
     padding: 5px 20px;
+	cursor: pointer;
 }
 
 .db-notice{
@@ -221,6 +222,11 @@ h1, h2, h3, h4, h5, h6, p {
 
 .avito{
     background-image: linear-gradient(to bottom, #8dd8f5, #029cbf);
+    background-repeat: repeat-x;
+    margin-left: 1px;
+}
+.expired{
+    background-image: linear-gradient(to bottom, #fdd090, #d58c24);
     background-repeat: repeat-x;
     margin-left: 1px;
 }

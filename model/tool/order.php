@@ -283,6 +283,12 @@ class ModelToolOrder extends Model{
             $this->db->query("DELETE FROM ".DB_PREFIX."sales_info WHERE sku = '".$vin."' ");			
         }
     }
-    
+	
+    public function getExpiredOrders() {              
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order oo LEFT JOIN ".DB_PREFIX."order_status oos3 ON oo.order_status_id = oos3.order_status_id 
+        WHERE DATE(current_timestamp) > DATE_ADD(DATE(date_added), interval 3 DAY) AND oos3.order_status_id IN 
+        (SELECT oos.order_status_id FROM ".DB_PREFIX."order_status oos JOIN ".DB_PREFIX."order_status oos2 ON oos.sort_order < oos2.sort_order AND oos2.order_status_id = 13)");
+        return $sup->rows;
+    }
 }
 

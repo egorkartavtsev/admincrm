@@ -532,6 +532,19 @@ $(document).ready(function() {
             }
         })
     });
+
+    $(document).on('click', '[btn_type=showExpiredOrders]', function(){
+        var prod = $(this).attr('target');
+        $("#expiredorderscard").html('<img src="wait.gif" style="width: 100px;" class="center-block">');
+        ajax({
+            url:"index.php?route=tool/formTool/getExpiredOrdersCard",
+            method:"POST",
+            data:{prod:prod},
+            success:function(data){
+                $("#expiredorderscard").html(data)
+            }
+        })
+    });
     
     $(document).on('click', '[btn_type=label_settings]', function(){
         var target = $(this).attr('target');
