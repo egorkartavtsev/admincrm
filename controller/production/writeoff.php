@@ -263,7 +263,7 @@ class ControllerProductionWriteoff extends Controller {
                             . '<input type="text" class="form-control" placeholder="Введите цену продажи" value="'.$factprice.'" name="products['.$prod_info['vin'].'][pricefact]">'
                         . '</td>'
                         . '<td>'
-                            . '<input type="text" class="form-control" oninput="validate(\'quan'.$prod_info['vin'].'fact\', \'quan'.$prod_info['vin'].'\');" id="quan'.$prod_info['vin'].'fact" placeholder="Введите количество к продаже" value="'.$prod_info['quantity'].'" name="products['.$prod_info['vin'].'][quanfact]"><input type="hidden" name="products['.$prod_info['vin'].'][locate]" value="'.$prod_info['stock'].'/'.$prod_info['location'].'">'
+                            . '<input type="number" class="form-control" oninput="validate(\'quan'.$prod_info['vin'].'fact\', \'quan'.$prod_info['vin'].'\');" id="quan'.$prod_info['vin'].'fact" placeholder="Введите количество к продаже" value="'.$prod_info['quantity'].'" name="products['.$prod_info['vin'].'][quanfact]"><input type="hidden" name="products['.$prod_info['vin'].'][locate]" value="'.$prod_info['stock'].'/'.$prod_info['location'].'">'
                         . '</td>'
                         . '<td>'
                             . '<input type="text" class="form-control" name="products['.$prod_info['vin'].'][reason]" placeholder="Введите причину уценки" value="'.$reason.'">'

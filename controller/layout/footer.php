@@ -16,6 +16,13 @@ class ControllerLayoutFooter extends Controller {
                     'header' => 'Информация о продукте'
                 );
 		$data['product_modal'] = $this->load->view('modals/clear', $modal);
+		
+		        $modal2 = array(
+				    'target' => 'expiredOrders',
+					'key' => 'expiredorderscard',
+					'header' => 'Заказы с просроченным резервированием:'
+				);
+	    $data['expired_orders'] = $this->load->view('modals/clear', $modal2);
 		return $this->load->view('layout/footer', $data);
 	}
 }

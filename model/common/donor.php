@@ -126,7 +126,11 @@ class ModelCommonDonor extends Model {
         $results = array();
         
         foreach ($query->rows as $row){
-            if($row['model']!=''){
+            if($row['structure'] == 1){
+				if($row['model']!=''){
+                    $results[] = $row;
+                }
+			} else {
                 $results[] = $row;
             }
         }

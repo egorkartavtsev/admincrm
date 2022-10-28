@@ -35,7 +35,7 @@ class ControllerReportOrdersInfo extends Controller{
                 $data['complects'][$comp['key']] = $comp['prods'];
             }
         }
-        $data['statuses'] = $this->model_tool_order->getOrderStatuses();
+        $data['statuses'] = $this->model_tool_order->getFilteredOrderStatuses($this->request->get['order_id']);
         $data['catalog'] = HTTP_SHOWCASE.'index.php?route=catalog/product';
         $data['btn_back'] = $this->url->link('report/orders', 'token=' . $this->session->data['token'].$url, TRUE);
         if(!isset($filter)){
@@ -89,6 +89,7 @@ class ControllerReportOrdersInfo extends Controller{
                                 'saleprice' => $compl['factprice'],
                                 'reason' => $compl['reason'],
                                 'wherefrom' => 'сайт',
+								'opl_type' => '',
                                 'manager' => $this->session->data['username'],
                                 'location' => '',
                                 'summ' => $prod['factquantity']*$compl['factprice'],
@@ -108,6 +109,7 @@ class ControllerReportOrdersInfo extends Controller{
                             'saleprice' => $prod['price'],
                             'reason' => '',
                             'wherefrom' => 'сайт',
+							'opl_type' => '',
                             'manager' => $this->user->getId(),
                             'location' => '',
                             'date' => date("d.m.Y"),

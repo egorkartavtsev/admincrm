@@ -108,6 +108,11 @@ class ModelToolOrder extends Model{
         $sup = $this->db->query("SELECT order_status_id AS id, name FROM ".DB_PREFIX."order_status status ORDER BY sort_order");
         return $sup->rows;
     }
+	
+	public function getFilteredOrderStatuses($order) {		
+		$sup = $this->db->query("SELECT order_status_id AS id, name FROM ".DB_PREFIX."order_status status WHERE sort_order >= (SELECT sort_order FROM ".DB_PREFIX."order_status oos, ".DB_PREFIX."order oo WHERE oos.order_status_id = oo.order_status_id AND oo.order_id = ".(int)$order.") ORDER BY sort_order");
+		return $sup->rows;
+	}
     
     public function pagination($total, $curr_page, $url) {
         $total_page = ceil($total/30);
@@ -275,9 +280,15 @@ class ModelToolOrder extends Model{
     
     public function isSaled($vin){
         if($this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$vin."' ")->num_rows){
-            $this->db->query("DELETE FROM ".DB_PREFIX."sales_info WHERE sku = '".$vin."' ");
+            $this->db->query("DELETE FROM ".DB_PREFIX."sales_info WHERE sku = '".$vin."' ");			
         }
     }
-    
+	
+    public function getExpiredOrders() {              
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order oo LEFT JOIN ".DB_PREFIX."order_status oos3 ON oo.order_status_id = oos3.order_status_id 
+        WHERE DATE(current_timestamp) > DATE_ADD(DATE(date_added), interval 3 DAY) AND oos3.order_status_id IN 
+        (SELECT oos.order_status_id FROM ".DB_PREFIX."order_status oos JOIN ".DB_PREFIX."order_status oos2 ON oos.sort_order < oos2.sort_order AND oos2.order_status_id = 13)");
+        return $sup->rows;
+    }
 }
 

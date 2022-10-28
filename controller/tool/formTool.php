@@ -196,6 +196,12 @@ class ControllerToolFormTool extends Controller {
         $data['images'] = $images;
         echo $this->load->view('modals/prodCard', $data);
     }
+
+    public function getExpiredOrdersCard() {
+        $this->load->model("tool/order");
+        $data['expiredOrders'] = $this->model_tool_order->getExpiredOrders();
+        echo $this->load->view('modals/expiredOrdersCard', $data);
+    }
     
     
     public function searchingProds() {
