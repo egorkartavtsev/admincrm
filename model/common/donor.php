@@ -118,11 +118,16 @@ class ModelCommonDonor extends Model {
         return $query->row;
     }
     
-    public function getProds($donor){
-        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
+    public function getProds($donor, $filter = 0){
+        $sql = "SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "WHERE p.numb = '".$donor."' ORDER BY pd.name");
-        
+                . "WHERE p.numb = '".$donor."' ";
+		if($filter){
+			$sql.="AND pd.name LIKE '%".$filter['product_name']."%'";
+		}
+		$sql.= "ORDER BY pd.name";
+		$query = $this->db->query($sql);
+		
         $results = array();
         
         foreach ($query->rows as $row){

@@ -6,6 +6,7 @@ class ControllerDonorShow extends Controller {
         $this->load->model('common/donor');
         $this->load->model("tool/layout");
         $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+		$url = '';		
         $data['donor'] = $this->model_common_donor->getDonorShow($this->request->get['numb']);
         $this->load->model('tool/image');
         $this->document->setTitle($data['donor']['name']);
@@ -51,9 +52,19 @@ class ControllerDonorShow extends Controller {
                     'thumb' => $this->model_tool_image->resize($image['image'], $this->config->get($this->config->get('config_theme') . '_image_additional_width'), $this->config->get($this->config->get('config_theme') . '_image_additional_height'))
             );
         }
-        
+        if(isset($this->request->get['filter-product_name']) && $this->request->get['filter-product_name'] != ''){
+			$url.='&filter-product_name'.$this->request->get['filter-product_name'];
+			$filter['product_name'] = $this->request->get['filter-product_name'];
+			$data['filter_product_name'] = $filter['product_name'];
+		} else {
+			$data['filter_product_name'] = '';
+		}
+		if(!isset($filter)){
+            $filter = 0;
+        }
+		
         $data['products'] = array();
-        $prods = $this->model_common_donor->getProds($data['donor']['numb']);
+        $prods = $this->model_common_donor->getProds($data['donor']['numb'], $filter);
         $total_price = 0;
         $quant = 0;
         foreach ($prods as $result){
