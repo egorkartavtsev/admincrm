@@ -47,7 +47,7 @@
                                         <th class="col-sm-1">День</th>
                                         <th class="col-sm-1">План</th>
                                         <th class="col-sm-1">Факт</th>
-                                        <th class="col-sm-1">Продажы за данный день, руб.</th>
+                                        <th class="col-sm-1">Продажи за данный день, руб.</th>
                                         <th class="col-sm-1">Сумма для выполнения плана, руб.</th>
                                         <th class="col-sm-7">%</th>
                                     </tr>
@@ -72,7 +72,7 @@
                             <h4>На текущий день план отбит на <b><span id="totalPerc"><?php echo $plan['totalPercent'];?></span>%</b></h4>
                             <p>План: <b><span id="current"><?php echo $plan['current'];?></span></b> руб.</p>
                             <p>Факт: <b><span id="curFact"><?php echo $plan['curFact'];?></span></b> руб.</p>
-                            <p>Продажы за текущий день: <b><span id="curEvDay"><?php echo $plan['curEvDay'];?></span></b> руб.</p>
+                            <p>Продажи за текущий день: <b><span id="curEvDay"><?php echo $plan['curEvDay'];?></span></b> руб.</p>
                             <p>Необходимая сумма для выполнения плана: <b><span id="sumLast"><?php echo $plan['sumLast'];?></span></b> руб.</p>
                             <div id="tp-bar">
                                 <div class="progress">

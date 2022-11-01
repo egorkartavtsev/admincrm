@@ -56,8 +56,8 @@ class ModelReportPlaning extends Model {
 
     public function getMonthFact($month, $addr) {
         $sql = "SELECT * FROM " . DB_PREFIX . "sales_info si "
-                . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku "
-             . "WHERE si.date >= '" . $month . "-01 00:00:00' AND si.date <= '" . $month . "-31 23:59:59' AND p.adress = '".$addr."'";
+                . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = si.sku AND p.adress = '".$addr."' "
+             . "WHERE si.date >= '" . $month . "-01 00:00:00' AND si.date <= '" . $month . "-31 23:59:59' ";
         $tmp = $this->db->query($sql)->rows;
         $summ = 0;
         foreach ($tmp as $sale) {
