@@ -5,7 +5,7 @@ class ModelReportDonor extends Model{
         $words = explode(" ", $request);
         $sql = "SELECT name, id, numb FROM ".DB_PREFIX."donor WHERE 1 ";
         foreach ($words as $word) {
-            $sql.= "AND (LOCATE('".$word."', name) OR LOCATE('".$word."', numb)) ";
+            $sql.= "AND (LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', car_number)) ";
         }
         $sup = $this->db->query($sql);
         return $sup->rows;

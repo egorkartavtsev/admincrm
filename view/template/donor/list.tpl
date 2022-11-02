@@ -12,7 +12,7 @@
     </div>
     <div class="container-fluid">
         <div class="well well-sm col-sm-12">
-            <label>Поиск проводится по марке, модели, модельному ряду, году выпуска, VIN, ДВС и внутреннему номеру донора</label>
+            <label>Поиск проводится по марке, модели, модельному ряду, году выпуска, гос номеру, VIN, ДВС и внутреннему номеру донора</label>
             <input type="text" id="searchd" class="form-control" placeholder="Введите условия поиска" />
         </div>
         <div class="col-sm-12" style="overflow-x: scroll;">
@@ -23,6 +23,7 @@
                         <td>Изображение</td>
                         <td>Название</td>
                         <td>Внутренний номер</td>
+						<td>Гос номер</td>
                         <td>Модельный ряд</td>
                         <td>Тип кузова</td>
                         <td>Год выпуска</td>
@@ -51,6 +52,7 @@
                             <td class="text-center"><img src="<?php echo $donor['image'];?>"></td>
                             <td><?php echo $donor['name'];?></td>
                             <td><?php echo $donor['numb'];?></td>
+							<td><?php echo $donor['car_number'];?></td>
                             <td><?php echo $donor['mod_row'];?></td>
                             <td><?php echo $donor['ctype'];?></td>
                             <td><?php echo $donor['year'];?></td>

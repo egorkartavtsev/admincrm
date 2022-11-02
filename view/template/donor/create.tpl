@@ -62,6 +62,10 @@
             
             <div class="col-md-3">
                 <div class="form-group">
+				    <label for="car_number">Гос номер</label>
+					<input class="form-control" name="car_number" id="car_number" type="text"/>
+				</div>
+				<div class="form-group">
                     <label for="dvs">ДВС</label>
                     <input class="form-control" name="dvs" id="dvs" type="text" />
                 </div>
@@ -92,6 +96,10 @@
                     <label for="note">Примечание</label>
                     <input class="form-control" name="note" id="note" type="text" />
                 </div>
+				<div class="form-group">
+				    <label for="date_buy">Дата покупки</label>
+					<input class="form-control" name="date_buy" id="date_buy" type="date"/> 
+				</div>
             </div>
             
             <div class="col-md-3">

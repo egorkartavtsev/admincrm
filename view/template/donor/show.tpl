@@ -15,6 +15,7 @@
         <div class="col-md-3 alert alert-success">
             <table class="table table-hover table-bordered table-condensed">
                 <tr><td><b>Внутренний номер: </b></td><td><?php echo $donor['numb'];?></td></tr>
+				<tr><td><b>Гос номер: </b></td><td><?php echo $donor['car_number'];?></td></tr>
                 <tr><td><b>Тип кузова: </b></td><td><?php echo $donor['ctype']; ?></td></tr>
                 <tr><td><b>VIN: </b></td><td><?php echo $donor['vin'];?></td></tr>
                 <tr><td><b>Стоимость: </b></td><td><?php echo $donor['price'];?></td></tr>
@@ -27,6 +28,7 @@
                 <tr><td><b>Пробег: </b></td><td><?php echo $donor['kmeters'];?></td></tr>
                 <tr><td><b>Привод: </b></td><td><?php echo $donor['priv'];?></td></tr>
                 <tr><td><b>Год выпуска: </b></td><td><?php echo $donor['year'];?></td></tr>
+				<tr><td><b>Дата покупки: </b></td><td><?php echo $donor['date_buy'];?></td></tr>
             </table>
             <p><b>Примечание: </b><?php echo $donor['note'];?></p>
         </div>
@@ -61,7 +63,7 @@
 		<div class="alert  alert-success">
 			<div class="form-group-sm  col-sm-4">
 			    <label for="filter-product_name">Название</label>
-				<input class="form-control" type="text" id="filter-product_name" value="<?php echo $filter_product_name; ?>" placeholder="Введите название детали...">
+				<input class="form-control" type="text" id="filter-product_name" value="<?php echo $filter_product_name; ?>" placeholder="Введите название детали..."/>
 			</div>
 			<div class="clearfix"></div>
 			<div class="clearfix"><p></p></div>

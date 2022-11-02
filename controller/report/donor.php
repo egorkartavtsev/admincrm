@@ -45,6 +45,7 @@ class ControllerReportDonor extends Controller{
             $result.= '<div class="col-md-4 alert alert-success">';
                 $result.= '<table class="table table-hover table-bordered table-condensed">'
                                 .'<tr><td><b>Внутренний номер: </b></td><td>'.$info['info']['numb'].'</td></tr>'
+								.'<tr><td><b>Гос номер: </b></td><td>'.$info['info']['car_number'].'</td></tr>'
                                 .'<tr><td><b>Тип кузова: </b></td><td>'.$info['info']['ctype'].'</td></tr>'
                                 .'<tr><td><b>VIN: </b></td><td>'.$info['info']['vin'].'</td></tr>'
                                 .'<tr><td><b>Марка: </b></td><td>'.$info['info']['brand'].'</td></tr>'
@@ -56,6 +57,7 @@ class ControllerReportDonor extends Controller{
                                 .'<tr><td><b>Пробег: </b></td><td>'.$info['info']['kmeters'].'</td></tr>'
                                 .'<tr><td><b>Привод: </b></td><td>'.$info['info']['priv'].'</td></tr>'
                                 .'<tr><td><b>Год выпуска: </b></td><td>'.$info['info']['year'].'</td></tr>'
+								.'<tr><td><b>Дата покупки: </b></td><td>'.$info['info']['date_buy'].'</td></tr>'
                             .'</table><p><b>Примечание: </b>'.$info['info']['note'].'</p>';
             $result.= '</div>';
         //-----------------saleInfo-------------------
