@@ -13,8 +13,8 @@ class ControllerAvitoAvitoList extends Controller{
         $data['url'] = 'index.php?route='.$this->request->get['route'].'&token='.$this->session->data['token'];
         $page = 0;
         $filter = array(
-            'priceFrom' => 0,
-            'priceTo'   => 99999999,
+            'priceFrom' => 1000,
+            'priceTo'   => 5000,
             'date'      => '1976-01-01',
             'modbr'     => '',
             'model'     => '',
@@ -24,7 +24,7 @@ class ControllerAvitoAvitoList extends Controller{
             'vin'     => '',
             'sort'      => 'p2a.dateEnd',
             'start'     => 0,
-            'limit'     => 50,
+            'limit'     => 10,
             'order'     => 'DESC'
         );
         
@@ -68,12 +68,26 @@ class ControllerAvitoAvitoList extends Controller{
             $url.= '&filter_priceFrom='.$data['filter']['priceFrom'];
             $filter['priceFrom'] = $this->request->get['filter_priceFrom'];
         }
+		else
+		{
+            $data['filter']['priceFrom'] = $filter['priceFrom'];
+            $data['url'].= '&filter_priceFrom='.$data['filter']['priceFrom'];
+            $url.= '&filter_priceFrom='.$data['filter']['priceFrom'];			
+		}
+		
         if(isset($this->request->get['filter_priceTo'])){
             $data['filter']['priceTo'] = $this->request->get['filter_priceTo'];
             $data['url'].= '&filter_priceTo='.$data['filter']['priceTo'];
             $url.= '&filter_priceTo='.$data['filter']['priceTo'];
             $filter['priceTo'] = $this->request->get['filter_priceTo'];
         }
+		else
+		{
+            $data['filter']['priceTo'] = $filter['priceTo'];
+            $data['url'].= '&filter_priceTo='.$data['filter']['priceTo'];
+            $url.= '&filter_priceTo='.$data['filter']['priceTo'];				
+		}
+		
         if(isset($this->request->get['filter_date'])){
             $data['filter']['date'] = date('Y-m-d', strtotime($this->request->get['filter_date']));
             $data['url'].= '&filter_date='.$data['filter']['date'];
@@ -105,10 +119,11 @@ class ControllerAvitoAvitoList extends Controller{
         
         $ads = $this->model_product_avito->getProducts($filter);
         $total = $this->model_product_avito->getProductsTotal($filter);
+		
         $pagination = new Pagination();
         $pagination->total = $total;
         $pagination->page = $page;
-        $pagination->limit = 50;
+        $pagination->limit = $filter['limit'];
         $pagination->url = $this->url->link('avito/avito_list', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
 
         $data['pagination'] = $pagination->render();
