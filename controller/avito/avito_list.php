@@ -24,7 +24,7 @@ class ControllerAvitoAvitoList extends Controller{
             'vin'     => '',
             'sort'      => 'p2a.dateEnd',
             'start'     => 0,
-            'limit'     => 100,
+            'limit'     => 50,
             'order'     => 'DESC'
         );
         
