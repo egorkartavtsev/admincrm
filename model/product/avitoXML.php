@@ -7,11 +7,9 @@ class ModelProductAvitoXml extends Model
 
     public function getProds($filter)
     {
-        $result = array();
+        $this->Result['prods'] = array();
         $this->Filter = $filter;
-        //exit(var_dump($this->Filter));
         $xmls = $this->getProdsByFilter();
-        //exit(var_dump($xmls));
         $i = 0;
         foreach ($xmls as $ad) {
             $tmp = (array)$ad;
@@ -125,9 +123,9 @@ class ModelProductAvitoXml extends Model
         if ($this->Filter['mess'] != '')
             $tmp = array_filter($tmp, function ($ad) {
                 if ((int)$this->Filter['mess'])
-                    return strtotime($ad->DateEnd) >= strtotime("Now");
+                    return strtotime($ad->DateEnd.' 23:59:59') >= strtotime("Now");
                 else
-                    return strtotime($ad->DateEnd) < strtotime("Now");
+                    return strtotime($ad->DateEnd.' 23:59:59') < strtotime("Now");
             });
 
         if ($this->Filter['donor'] != '')

@@ -21,12 +21,12 @@ class ControllerAvitonewAvito extends Controller {
             'mess'     => '',
             'vin'     => '',
             'start'     => 0,
-            'limit'     => 50
+            'limit'     => 10
         );
 
         if(isset($this->request->get['page'])){
             $page = $this->request->get['page'];
-            $filter['start'] = ($page-1)*50;
+            $filter['start'] = ($page-1)*$filter['limit'];
         }
         if(isset($this->request->get['filter_stock'])){
             $data['filter']['stock'] = $this->request->get['filter_stock'];
@@ -90,7 +90,7 @@ class ControllerAvitonewAvito extends Controller {
                 "Price" => $pr["Price"],
                 "Image" => $this->model_tool_image->resize($pr['mainImage'], 70, 70),
                 "Name" => $pr["name"],
-                "class" => strtotime($pr["DateEnd"]) < strtotime("Now") ? 'elderAD' : 'noteld'
+                "class" => strtotime($pr["DateEnd"].' 23:59:59') < strtotime("Now") ? 'elderAD' : 'noteld'
             );
         }
 
