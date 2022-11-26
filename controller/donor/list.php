@@ -23,6 +23,7 @@ class ControllerDonorList extends Controller {
             }
             $data['donors'][] = array(
                 'numb' => $donor['numb'],
+				'car_number' => $donor['car_number'],
                 'image' => $image,
                 'totalp' => $total_price,
                 'quant' => $quant,
@@ -89,6 +90,7 @@ class ControllerDonorList extends Controller {
             $table.='<td class="text-center"><img src="'.$image.'"></td>';
             $table.='<td>'.$donor['name'].'</td>';
             $table.='<td>'.$donor['numb'].'</td>';
+			$table.='<td>'.$donor['car_number'].'</td>';
             $table.='<td>'.$donor['modR'].'</td>';
             $table.='<td>'.$donor['ctype'].'</td>';
             $table.='<td>'.$donor['year'].'</td>';

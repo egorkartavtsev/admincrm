@@ -13,7 +13,7 @@
   <div class="container-fluid">
       <div class="col-sm-12 dropdown" id="searchbox">
           <div class="alert alert-success form-group">
-              <label for="dsearch">Введите внутренний номер донора, год выпуска, VIN, марку или модель</label>
+              <label for="dsearch">Введите внутренний номер донора, год выпуска, гос номер, VIN, марку или модель</label>
               <input type="text" class="form-control" id="dsearch">
               <div class="clearfix"></div>
           </div>
