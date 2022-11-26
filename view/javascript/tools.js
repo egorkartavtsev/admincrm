@@ -905,6 +905,7 @@ $(document).ready(function() {
             },
             success:function(data){
                 btn.remove();
+                location.reload();
             }
         })
     })
@@ -940,6 +941,7 @@ $(document).ready(function() {
             success:function(data){
                 btn.parent().parent().addClass('elderAD');
                 btn.remove();
+                location.reload();
             }
         })
     })
