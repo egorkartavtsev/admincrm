@@ -164,6 +164,8 @@
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
 					<td class="text-left col-sm-2">Каталожный номер</td>
+					<td class="text-left col-sm-2">Совместимость</td>
+					<td class="text-left col-sm-2">Состояние</td>
                 </tr>
               </thead>
               <tbody>
@@ -237,7 +239,8 @@
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
 				  <td class="text-left"><?php echo $product['catn'];?></td>
-                    
+				  <td class="text-left"><?php echo $product['compability']; ?></td>
+				  <td class="text-left"><?php echo $product['cond']; ?></td>
                   <?php }?>
                 </tr>
                 <?php } ?>

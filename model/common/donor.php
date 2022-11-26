@@ -41,7 +41,9 @@ class ModelCommonDonor extends Model {
                             . "trmiss = '".$data['trans']."', "
                             . "priv = '".$data['privod']."', "
                             . "color = '".$data['color']."', "
-                            . "price = '".$data['price']."' ");
+                            . "price = '".$data['price']."', "
+							. "date_buy = '".$data['date_buy']."', "
+							. "car_number = '".$data['car_number']."' ");
         
         $donor_id = $this->db->getLastId();
         if(strlen($_FILES['photo']['name'][0])!=0){         
@@ -118,11 +120,16 @@ class ModelCommonDonor extends Model {
         return $query->row;
     }
     
-    public function getProds($donor){
-        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
+    public function getProds($donor, $filter = 0){
+        $sql = "SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "WHERE p.numb = '".$donor."' ORDER BY pd.name");
-        
+                . "WHERE p.numb = '".$donor."' ";
+		if($filter){
+			$sql.="AND pd.name LIKE '%".$filter['product_name']."%'";
+		}
+		$sql.= "ORDER BY pd.name";
+		$query = $this->db->query($sql);
+		
         $results = array();
         
         foreach ($query->rows as $row){
@@ -166,6 +173,7 @@ class ModelCommonDonor extends Model {
         $this->db->query("UPDATE ".DB_PREFIX."donor "
                             . "SET "
                             . "numb = '".$data['number']."', "
+							. "car_number = '".$data['car_number']."', "
                             . "name = '".$name."', "
                             . "image = '".$data['main-image']."', "
                             . "brand = '".$brand."', "
@@ -175,6 +183,7 @@ class ModelCommonDonor extends Model {
                             . "year = '".$data['year']."', "
                             . "note = '".$data['note']."', "
                             . "youtube = '".$youtube."', "
+							. "date_buy = '".$data['date_buy']."', "
                             . "kmeters = '".$data['kilometers']."', "
                             . "vin = '".$data['vin']."', "
                             . "dvs = '".$data['dvs']."', "
@@ -196,7 +205,7 @@ class ModelCommonDonor extends Model {
         $rWords = explode(" ", trim($request));
         $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE 1 ";
         foreach ($rWords as $word) {
-            $sql.="AND (LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', dvs)) ";
+            $sql.="AND (LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', dvs) OR LOCATE('".$word."', car_number)) ";
         }
         $sql.="ORDER BY id DESC";
         $result = $this->db->query($sql);

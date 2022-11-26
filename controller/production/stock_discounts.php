@@ -397,6 +397,8 @@ class ControllerProductionStockDiscounts extends Controller {
                                     'dop'        => $result['dop'],
                                     'quantity'   => $result['quantity'],
                                     'status'     => $stat,
+									'compability'=> $result['compability'],
+									'cond'       => $result['cond'],
                                     'edit'       => $this->url->link('production/stock_discounts/edit', 'product_id=' . $result['product_id'] . $url, true)
                             );
                         }       

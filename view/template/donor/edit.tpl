@@ -70,6 +70,10 @@
             
             <div class="col-md-3">
                 <div class="form-group-sm">
+				    <label for="car_number">Гос номер</label>
+					<input class="form-control" name="car_number" id="car_number" type="text" value="<?php echo $donor['car_number'];?>"/>
+				</div>
+				<div class="form-group-sm">
                     <label for="dvs">ДВС</label>
                     <input class="form-control" name="dvs" id="dvs" type="text" value="<?php echo $donor['dvs'];?>"/>
                 </div>
@@ -99,6 +103,10 @@
                     <label for="youtube">Код YouTube</label>
                     <input class="form-control" name="youtube" id="youtube" type="text" value="<?php echo $donor['youtube'];?>"/>
                 </div>
+				<div class="form-group-sm">
+				    <label for="date_buy">Дата покупки</label>
+					<input class="form-control" name="date_buy" id="date_buy" type="date" value="<?php echo $donor['date_buy'];?>"/>
+				</div>
             </div>
             
             <div class="col-md-3">
