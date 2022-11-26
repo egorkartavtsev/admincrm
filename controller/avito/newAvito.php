@@ -82,16 +82,15 @@ class ControllerAvitonewAvito extends Controller {
         $prods = $this->model_product_avitoXML->getProds($filter);
         $data["prods"] = array();
 
-        foreach($prods['prods'] as $pr)
-        {
+        foreach($prods['prods'] as $pr) {
             $data["prods"][] = array(
                 "DateBegin" => $pr["DateBegin"],
-                "DateEnd"   => $pr["DateEnd"],
+                "DateEnd" => $pr["DateEnd"],
                 "Id" => $pr["Id"],
                 "Price" => $pr["Price"],
                 "Image" => $this->model_tool_image->resize($pr['mainImage'], 70, 70),
                 "Name" => $pr["name"],
-                "class" => strtotime($pr["DateEnd"]) <= strtotime("Now") ? 'elderAD':'noteld'
+                "class" => strtotime($pr["DateEnd"]) < strtotime("Now") ? 'elderAD' : 'noteld'
             );
         }
 

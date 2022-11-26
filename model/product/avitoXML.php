@@ -127,7 +127,7 @@ class ModelProductAvitoXml extends Model
                 if ((int)$this->Filter['mess'])
                     return strtotime($ad->DateEnd) >= strtotime("Now");
                 else
-                    return strtotime($ad->DateEnd) <= strtotime("Now");
+                    return strtotime($ad->DateEnd) < strtotime("Now");
             });
 
         if ($this->Filter['donor'] != '')

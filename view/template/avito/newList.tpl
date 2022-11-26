@@ -26,7 +26,7 @@
                            value="<?php echo isset($filter['priceTo'])?$filter['priceTo']:'';?>">
                 </div>
                 <div class="form-group-sm">
-                    <label>Статус: </label>
+                    <label>Статус объявления: </label>
                     <select class="form-control" target="filter" target-name="mess">
                         <option value=" ">Все</option>
                         <option value="1"
@@ -84,7 +84,7 @@
             <tbody>
             <?php foreach($prods as $ad){ ?>
                 <tr class="<?php echo $ad['class'];?>">
-                    <td><img src="<?php echo $ad['image']?>" alt="<?php echo $ad['Name']; ?>" class="img-thumbnail center-block left"></td>
+                    <td><img src="<?php echo $ad['Image']?>" alt="<?php echo $ad['Name']; ?>" class="img-thumbnail center-block left"></td>
                     <td class="h4">
                         <b><?php echo $ad['Name']?></b><br>
                         Внутренний номер: <b><?php echo $ad['Id']?></b><br>
