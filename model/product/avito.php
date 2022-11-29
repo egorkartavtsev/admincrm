@@ -70,7 +70,8 @@ class ModelProductAvito extends Model {
     }
     
     public function getProducts($filter) {
-        $sql = "SELECT * FROM ".DB_PREFIX."product_to_avito p2a "
+        $sql = "SELECT p.product_id , pd.name , p.image , p.vin , p2a.dateStart , p2a.dateEnd , p.price , p2a.message "
+				. "FROM ".DB_PREFIX."product_to_avito p2a "
                 . "LEFT JOIN ".DB_PREFIX."product p ON p.product_id = p2a.product_id "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p2a.product_id "
                 . "WHERE LOCATE('".$filter['modbr']."', p.brand) "
@@ -88,7 +89,7 @@ class ModelProductAvito extends Model {
             $sql.= "AND p2a.dateEnd<=NOW() ";
         }
         $sql.= "ORDER BY ".$filter['sort']." ".$filter['order']." LIMIT ".(int)$filter['limit']." OFFSET ".(int)$filter['start'];
-//        exit(var_dump($sql));
+        //exit(var_dump($sql));
         $sup = $this->db->query($sql);
         return $sup->rows;
     }
