@@ -25,26 +25,43 @@ class ControllerReportOrdersInfo extends Controller{
         if(isset($this->request->get['filter-telephone']) && $this->request->get['filter-telephone']!=''){
             $url.='&filter-telephone='.$this->request->get['filter-telephone'];
         }
-        $data['order'] = $order;
+        
         $data['order_id'] = $this->request->get['order_id'];
+		$data['statuses'] = $this->model_tool_order->getFilteredOrderStatuses($this->request->get['order_id']);
+		$data['allow_sale'] = in_array('Ожидание оплаты', array_column($data['statuses'], 'name'));
+		$data['order_sale'] = $this->model_tool_order->getOrderSale($this->request->get['order_id']);
+		$data['sale_price'] = $this->model_tool_order->getSalePrice ($this->request->get['order_id']);
+		$data['allow_del_sale'] = $data['order_sale'] != '0' || $data['sale_price'] != NULL;
         $data['complects'] = array();
         $data['order_history'] = $this->model_tool_order->getHistInfo($this->request->get['order_id']);
-        foreach ($order['products'] as $prod) {
-            $comp = $this->model_tool_order->tryComp($prod['vin']);
-            if($comp){
+		$i = 0;
+		$data['totPr'] = 0;
+		foreach ($order['products'] as $prod) {
+			$comp = $this->model_tool_order->tryComp($prod['vin']);
+			if($comp){
                 $data['complects'][$comp['key']] = $comp['prods'];
             }
-        }
-        $data['statuses'] = $this->model_tool_order->getFilteredOrderStatuses($this->request->get['order_id']);
+			//рассчёт стоимости со скидкой
+			if($data['order_sale'] != 0){
+				$order['products'][$i]['factprice'] = round($prod['price'] - ($prod['price'] / 100 * $data['order_sale']));
+				$data['totPr'] += $order['products'][$i]['factprice'];
+			}
+			elseif(!empty($data['sale_price'])){
+				$sale = ($order['total'] - $data['sale_price']) / ($order['total']/100);
+				$order['products'][$i]['factprice'] = round($prod['price'] - ($prod['price'] / 100 * $sale));
+				$data['totPr'] += $order['products'][$i]['factprice'];
+			}
+			$i += 1;
+        }	
+		$data['order'] = $order;
         $data['catalog'] = HTTP_SHOWCASE.'index.php?route=catalog/product';
         $data['btn_back'] = $this->url->link('report/orders', 'token=' . $this->session->data['token'].$url, TRUE);
         if(!isset($filter)){
             $filter = 0;
         }
-        $data['href'].= $url;
-        
+        $data['href'].= $url;        
         $data['ship'] = $this->model_tool_order->getShipLib();
-        
+		        
         $this->response->setOutput($this->load->view('sale/orders_info', $data));
     }
     
@@ -60,6 +77,7 @@ class ControllerReportOrdersInfo extends Controller{
         $result = $this->model_tool_order->added_prod($this->request->post['vin'], $this->request->post['order']);
         echo $result;
     }
+	
     public function delete_prod() {
         $this->load->model('tool/order');
         $result = $this->model_tool_order->delete_prod($this->request->post['prod'], $this->request->post['order']);
@@ -71,22 +89,30 @@ class ControllerReportOrdersInfo extends Controller{
         $stat = $this->request->post['stat'];
         switch ($stat) {
             case '13': //oplacheno
-                $prods = $this->model_tool_order->getOrderInfo($this->request->post['order']);
+                $prods = $this->model_tool_order->getOrderInfo($this->request->post['order']);				
                 $list = array();
                 $invoice = uniqid("r_");
                 $this->load->model('common/write_off');
-                foreach ($prods['products'] as $prod) {
-                    $comp = $this->model_common_write_off->isCompl($prod['vin']);
+                foreach ($prods['products'] as $prod) { 
+					$comp = $this->model_common_write_off->isCompl($prod['vin']);					
                     if($comp){
                         foreach($comp as $compl){
-                            $this->model_tool_order->isSaled($compl['vin']);
+                            //устанавливаем фактическую цену продажи ($saleprice) в зависимости от того, есть ли скидка
+							$saleprice = $compl['factprice'];
+							if(!is_null($prods['sale_price']) && $prods['sale_price'] != 0){
+								$sale = ($prods['total'] - $prods['sale_price']) / ($prods['total']/100);
+								$saleprice = round($prod['price'] - ($prod['price'] / 100 * $sale));
+							} elseif($prods['order_sale'] != 0) {
+								$saleprice = $prod['price'] - ($prod['price'] / 100 * $prods['order_sale']);
+							}
+							$this->model_tool_order->isSaled($compl['vin']);
                             $list[] = array(
                                 'name' => $compl['name'],
                                 'vin' => $compl['vin'],
                                 'price' => $compl['price'],
                                 'quan' => $compl['quantity'],
                                 'quanfact' => $prod['factquantity'],
-                                'saleprice' => $compl['factprice'],
+                                'saleprice' => $saleprice,
                                 'reason' => $compl['reason'],
                                 'wherefrom' => 'сайт',
 								'opl_type' => '',
@@ -97,16 +123,24 @@ class ControllerReportOrdersInfo extends Controller{
                                 'city' => $prods['city'],
                                 'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']
                             );
-                        }
+                        }						
                     } else {
                         $this->model_tool_order->isSaled($prod['vin']);
-                        $list[] = array(
+                        //устанавливаем фактическую цену продажи ($saleprice) в зависимости от того, есть ли скидка
+						$saleprice = $prod['price'];
+						if(!is_null($prods['sale_price']) && $prods['sale_price'] != 0){
+							$sale = ($prods['total'] - $prods['sale_price']) / ($prods['total']/100);
+							$saleprice = round($prod['price'] - ($prod['price'] / 100 * $sale));
+						} elseif($prods['order_sale'] != 0) {
+							$saleprice = $prod['price'] - ($prod['price'] / 100 * $prods['order_sale']);
+						}
+						$list[] = array(
                             'name' => $prod['name'],
                             'vin' => $prod['vin'],
                             'price' => $prod['price'],
                             'quan' => $prod['quantity'],
                             'quanfact' => $prod['factquantity'],
-                            'saleprice' => $prod['price'],
+                            'saleprice' => $saleprice,
                             'reason' => '',
                             'wherefrom' => 'сайт',
 							'opl_type' => '',
@@ -116,9 +150,8 @@ class ControllerReportOrdersInfo extends Controller{
                             'summ' => $prod['factquantity']*$prod['price'],
                             'city' => $prods['city'],
                             'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']
-                        );                        
-                    }
-                    
+                        );						
+                    }                    
                 }
                 $this->model_common_write_off->sale($list, $invoice);
             break;
@@ -130,6 +163,23 @@ class ControllerReportOrdersInfo extends Controller{
         echo $result;
     }
     
+	public function save_sale() {
+		$this->load->model('tool/order');
+        $sale = $this->request->post['sale'];
+		$result = $this->model_tool_order->save_sale($sale, $this->request->post['order']);        
+	}
+	
+	public function save_sale_price() {
+		$this->load->model('tool/order');
+		$sale = $this->request->post['sale'];
+		$result = $this->model_tool_order->save_sale_price($sale, $this->request->post['order']);
+	}
+	
+	public function delete_sale(){
+		$this->load->model('tool/order');		
+		$result = $this->model_tool_order->delete_sale($this->request->post['order']);
+	}
+	
     public function saveShipInfo() {
         $sup = explode(",", $this->request->post['data']);
         $tmp = array();

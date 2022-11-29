@@ -106,34 +106,42 @@
                             <td>Наименование</td>
                             <td>Артикул</td>
                             <td>Стоимость</td>
+							<td>Стоимость со скидкой</td>
                             <td>Количество</td>
                             <td>Итого</td>
                             <td class="text-center"><i class="fa fa-android"></i></td>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php if(isset($order['products']) && count($order['products'])){ ?>
-                      <?php foreach($order['products'] as $prod){ ?>
-                        <tr>
-                            <td><a href="<?php echo $catalog.'&product_id='.$prod['product_id'];?>"><?php echo $prod['name'];?></a></td>
-                            <td><?php echo $prod['vin']?></td>
-                            <td><?php echo (int)$prod['price']?></td>
-                            <td><?php echo (int)$prod['factquantity']?></td>
-                            <td><?php echo (int)$prod['total']?></td>
-                            <td><button class="btn btn-danger" btn_type="delete_prod" prod="<?php echo $prod['product_id']?>"><i class="fa fa-trash-o"></i></button></td>
-                        </tr>
-                      <?php } ?>
-                    <?php } ?>
-                      <tr><td colspan="4" style="text-align: right;">Итого:</td><td colspan="2"><?php echo $order['total'];?></td></tr>
-                      <tr>
-                          <td colspan="4">
-                              <label for="addedVin">Добавить товар к заказу</label>
-                              <input class="form-control" type="text" placeholder="Введите артикул товара..." id="addedVin">
-                          </td>
-                          <td colspan="2">
-                              <button class="btn btn-success" btn_type="added_prod"><i class="fa fa-plus"></i></button>
-                          </td>
-                      </tr>
+						<?php if(isset($order['products']) && count($order['products'])){ ?>
+						  <?php foreach($order['products'] as $prod){ ?>
+							<tr>
+								<td><a href="<?php echo $catalog.'&product_id='.$prod['product_id'];?>"><?php echo $prod['name'];?></a></td>
+								<td><?php echo $prod['vin']?></td>
+								<td><?php echo (int)$prod['price']?></td>
+								<td><?php if(isset($prod['factprice'])){echo $prod['factprice'];} ?></td>
+								<td><?php echo (int)$prod['factquantity']?></td>
+								<td><?php echo isset($prod['factprice']) ? $prod['factprice'] : (int)$prod['total']?></td>
+								<td><button class="btn btn-danger" btn_type="delete_prod" prod="<?php echo $prod['product_id']?>"><i class="fa fa-trash-o"></i></button></td>
+							</tr>
+						  <?php } ?>
+						<?php } ?>
+						  
+						<?php if(isset($prod['factprice'])){ ?>
+							<tr><td colspan="4" style="text-align: right;">Старая цена: </td><td colspan="3" style="text-align: center;"><?php echo $order['total']; ?></td></tr>
+							<tr><td colspan="4" style="text-align: right;">Итого (с учётом скидки): </td><td colspan="3" style="text-align: center;"><?php echo $totPr; ?></td><tr><?php } 
+						else{?>
+							<tr><td colspan="4" style="text-align: right;">Итого:</td><td colspan="3" style="text-align: center;"><?php echo $order['total'];?></td></tr>
+						<?php } ?>
+						<tr>
+						    <td colspan="4">
+							    <label for="addedVin">Добавить товар к заказу</label>
+							    <input class="form-control" type="text" placeholder="Введите артикул товара..." id="addedVin">
+						    </td>
+						    <td colspan="3" style="text-align: center;">
+							    <button class="btn btn-success" btn_type="added_prod"><i class="fa fa-plus"></i></button>
+						    </td>
+						</tr>
                     </tbody>
                   </table>
               </div>
@@ -150,6 +158,35 @@
                       <label for="save_order">&nbsp;</label>
                       <button id="save_order" disabled class="btn btn-success btn-block"><i class="fa fa-floppy-o"></i></button>
                   </div>
+				  <?php if($allow_sale){ ?>				  
+					  <div class="col-lg-8">
+						  <br>
+						  <label for="order_sale">Скидка к заказу: </label>
+						  <input class="form-control" type="number" oninput="validOrderSale();" id="order_sale" value="<?php echo $order_sale ?>"/>
+					  </div>
+					  <div class="col-lg-4">
+						  <br>
+						  <label for="save_sale">&nbsp;</label>
+						  <button class="btn btn-success btn-block" id="save_sale"><i class="fa fa-floppy-o"></i></button>
+					  </div> 
+					  <div class="col-lg-8">
+						  <br>
+						  <label>Стоимость заказа со скидкой: </label>
+						  <input class="form-control" type="number" oninput="validSalePrice(<?php echo $order['total'];?>);" id="sale_price" value="<?php echo $sale_price ?>"/>
+					  </div>
+					  <div class="col-lg-4">
+						  <br>
+						  <label for="save_sale_price">&nbsp</label>
+						  <button class="btn btn-success btn-block" id="save_sale_price"><i class="fa fa-floppy-o"></i></button>
+					  </div>
+					  <?php if($allow_del_sale){ ?>
+						  <div class="col-lg-8">
+							  <br>
+							  <label>Убрать скидку: &nbsp;</label>
+							  <button id="delete_sale" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+						  </div>
+					  <?php } ?>
+				  <?php } ?>
               </div>
               <div class="col-md-8">
                   <div class="well">
@@ -224,6 +261,51 @@
             }
         })
     });
+	
+	$('#save_sale').click(function(){		
+		ajax({
+			url: 'index.php?route=report/orders_info/save_sale&token='+getURLVar('token'),
+			method: 'post',
+			data: {
+				sale: $('#order_sale').val(),
+				order: getURLVar('order_id')
+			},
+			success:function(data){					
+					alert('Скидка изменилась.');
+					location.reload();
+			}
+		})
+	});
+	
+	$('#save_sale_price').click(function(){
+		ajax({
+			url: 'index.php?route=report/orders_info/save_sale_price&token='+getURLVar('token'),
+			method: 'post',
+			data: {
+				sale: $('#sale_price').val(),
+				order: getURLVar('order_id')
+			},
+			success:function(data){
+				    alert('Стоимость заказа изменилась');
+					location.reload();
+			}
+		})
+	});
+	
+	$('#delete_sale').click(function(){		
+		ajax({
+			url: 'index.php?route=report/orders_info/delete_sale&token='+getURLVar('token'),
+			method: 'post',
+			data: {
+				order: getURLVar('order_id')
+			},
+			success:function(data){
+				console.log(data);
+				alert('Скидка удалена');
+				location.reload();
+			}
+		})		
+	});
     
     $('[btn_type=added_prod]').click(function(){
         var vin = $(this).parent().parent().find('input[id=addedVin]').val();
@@ -268,5 +350,37 @@
             }
         })
     });
+	
+	function validOrderSale() {
+		var valid = document.getElementById("order_sale").value;
+        if(valid > 100 || valid < 0){
+			$('#order_sale').css('box-shadow', '0px 0px 15px #f52');
+			$('#save_sale').attr('disabled', 'true');
+		} else {
+			if(valid != ''){
+				$('#order_sale').css('box-shadow', '0px 0px 15px #8f5');
+				$('#save_sale').removeAttr('disabled');
+			} else {
+				$('#order_sale').css('box-shadow', '0px 0px 15px #f52');
+				$('#save_sale').attr('disabled', 'true');
+			}
+		}
+	}
+	
+	function validSalePrice($match) {
+		var valid = document.getElementById("sale_price").value;
+		if(valid <= 0 || valid > $match){
+			$('#sale_price').css('box-shadow', '0px 0px 15px #f52');
+			$('#save_sale_price').attr('disabled', 'true');
+		} else {
+			if(valid != ''){
+				$('#sale_price').css('box-shadow', '0px 0px 15px #8f5');
+				$('#save_sale_price').removeAttr('disabled');				
+			}else{				
+				$('#sale_price').css('box-shadow', '0px 0px 15px #f52');
+				$('#save_sale_price').attr('disabled', 'true');
+			}
+		}
+	}
 </script>
 <?php echo $footer; ?> 
