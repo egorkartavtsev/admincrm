@@ -177,6 +177,13 @@ class ModelToolOrder extends Model{
                                     . "FROM ".DB_PREFIX."product p "
                                     . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                                 . "WHERE p.vin = '".$vin."' ");
+		//общее количество товара по всем заказам не должно превышать количество товара на складе 
+		$sup2 = $this->db->query("SELECT sum(quantity) AS quant "
+								. " FROM ".DB_PREFIX."order_product oop "
+								. "WHERE product_id = (SELECT product_id FROM ".DB_PREFIX."product op WHERE vin = '".$vin."') ");
+        if(!is_null($sup2->row['quant']) && $sup2->row['quant'] >= $sup->row['quantity']){
+			return FALSE;
+		}
 		if($sup->num_rows){
             $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product "
                     . "WHERE order_id = ".(int)$order_id." AND product_id = ".(int)$sup->row['product_id']." ");
