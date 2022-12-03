@@ -75,7 +75,9 @@ class ModelToolOrder extends Model{
                 'track_id' => $isup->row['track_id'],
                 'ship_href' => $isup->row['ship_href'],
                 'total' => (int)$isup->row['total'],
-                'order_status_id' => (int)$isup->row['order_status_id']
+                'order_status_id' => (int)$isup->row['order_status_id'],
+				'order_sale' => (int)$isup->row['order_sale'],
+				'sale_price' => (int)$isup->row['sale_price']
             );
             if($psup->num_rows){
                 $result['products'] = $psup->rows;
@@ -112,6 +114,16 @@ class ModelToolOrder extends Model{
 	public function getFilteredOrderStatuses($order) {		
 		$sup = $this->db->query("SELECT order_status_id AS id, name FROM ".DB_PREFIX."order_status status WHERE sort_order >= (SELECT sort_order FROM ".DB_PREFIX."order_status oos, ".DB_PREFIX."order oo WHERE oos.order_status_id = oo.order_status_id AND oo.order_id = ".(int)$order.") ORDER BY sort_order");
 		return $sup->rows;
+	}
+	
+	public function getOrderSale($order) {
+		$sup = $this->db->query("SELECT order_sale FROM ".DB_PREFIX."order WHERE order_id = ".(int)$order." ");
+		return $sup->row['order_sale'];
+	}
+	
+	public function getSalePrice($order) {
+		$sup = $this->db->query("SELECT sale_price FROM ".DB_PREFIX."order WHERE order_id = ".(int)$order." ");
+		return $sup->row['sale_price'];
 	}
     
     public function pagination($total, $curr_page, $url) {
@@ -165,7 +177,14 @@ class ModelToolOrder extends Model{
                                     . "FROM ".DB_PREFIX."product p "
                                     . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                                 . "WHERE p.vin = '".$vin."' ");
-        if($sup->num_rows){
+		//общее количество товара по всем заказам не должно превышать количество товара на складе 
+		$sup2 = $this->db->query("SELECT sum(quantity) AS quant "
+								. " FROM ".DB_PREFIX."order_product oop "
+								. "WHERE product_id = (SELECT product_id FROM ".DB_PREFIX."product op WHERE vin = '".$vin."') ");
+        if(!is_null($sup2->row['quant']) && $sup2->row['quant'] >= $sup->row['quantity']){
+			return FALSE;
+		}
+		if($sup->num_rows){
             $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product "
                     . "WHERE order_id = ".(int)$order_id." AND product_id = ".(int)$sup->row['product_id']." ");
             if($quer->num_rows && $sup->row['quantity']>0){
@@ -230,10 +249,41 @@ class ModelToolOrder extends Model{
     public function save_status($stat, $order) {
         $this->db->query("UPDATE ".DB_PREFIX."order SET "
                             . "order_status_id = ".(int)$stat." "
-                         . "WHERE order_id = ".(int)$order." ");
+                            . "WHERE order_id = ".(int)$order." ");
         $tmp = $this->db->query("SELECT name FROM ".DB_PREFIX."order_status WHERE order_status_id = ".(int)$stat);
         $this->addHistInfo($order, 2, $tmp->row['name']);
     }
+	
+	public function save_sale($sale, $order) {
+		$this->db->query("UPDATE ".DB_PREFIX."order SET "
+                            . "order_sale = ".(int)$sale.", "
+							."sale_price = NULL "
+                         . "WHERE order_id = ".(int)$order." ");		
+		$this->addHistInfo($order, 5, $sale."%");
+	}
+	
+	public function save_sale_price($sale, $order) {
+		$this->db->query("UPDATE ".DB_PREFIX."order SET "
+                            . "sale_price = ".(int)$sale.", "
+							. "order_sale = 0 "
+                            . "WHERE order_id = ".(int)$order." ");
+		$this->addHistInfo($order, 5, $sale." р.");
+	}
+	
+	public function delete_sale($order) {
+		$sales = $this->db->query("SELECT order_sale, sale_price FROM ".DB_PREFIX."order WHERE order_id = ".$order." ");
+		$sale = '';
+		if($sales->row['order_sale'] != '0'){
+			$sale = $sales->row['order_sale']."%";
+		}elseif($sales->row['sale_price'] != NULL){
+			$sale = $sales->row['sale_price']." р.";
+		}
+		$this->db->query("UPDATE ".DB_PREFIX."order SET "
+							. "sale_price = NULL, "
+							. "order_sale = 0 "
+                            . "WHERE order_id = ".(int)$order." ");		
+		$this->addHistInfo($order, 6, $sale);
+	}
     
     public function getShipLib(){
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE library_id = 12");
