@@ -79,6 +79,8 @@
                                 <option value="Наличные">Наличные</option>
                                 <option value="Карта">Оплата по карте</option>
                                 <option value="Расчетный счет">Расчетный счет</option>
+								<option value="Авитодоставка">Авитодоставка</option>
+								<option value="СБП">СБП</option>
                             </select>
                         </div>
                       <div id="ship_href"><a target="blank" href="<?php echo $order['ship_href']; ?>" class="bnt btn-sm btn-info">Отслеживание по трекномеру</a></div>
@@ -119,15 +121,15 @@
 								<td><a href="<?php echo $catalog.'&product_id='.$prod['product_id'];?>"><?php echo $prod['name'];?></a></td>
 								<td><?php echo $prod['vin']?></td>
 								<td><?php echo (int)$prod['price']?></td>
-								<td><?php if(isset($prod['factprice'])){echo $prod['factprice'];} ?></td>
+								<td><?php if(isset($prod['onePrPrice'])){echo $prod['onePrPrice'];} ?></td>
 								<td><?php echo (int)$prod['factquantity']?></td>
-								<td><?php echo isset($prod['factprice']) ? $prod['factprice'] : (int)$prod['total']?></td>
+								<td><?php echo isset($prod['onePrPrice']) ? $prod['totPrPrice'] : (int)$prod['total']?></td>
 								<td><button class="btn btn-danger" btn_type="delete_prod" prod="<?php echo $prod['product_id']?>"><i class="fa fa-trash-o"></i></button></td>
 							</tr>
 						  <?php } ?>
 						<?php } ?>
 						  
-						<?php if(isset($prod['factprice'])){ ?>
+						<?php if(isset($prod['onePrPrice'])){ ?>
 							<tr><td colspan="4" style="text-align: right;">Старая цена: </td><td colspan="3" style="text-align: center;"><?php echo $order['total']; ?></td></tr>
 							<tr><td colspan="4" style="text-align: right;">Итого (с учётом скидки): </td><td colspan="3" style="text-align: center;"><?php echo $totPr; ?></td><tr><?php } 
 						else{?>
@@ -162,7 +164,7 @@
 					  <div class="col-lg-8">
 						  <br>
 						  <label for="order_sale">Скидка к заказу: </label>
-						  <input class="form-control" type="number" oninput="validOrderSale();" id="order_sale" value="<?php echo $order_sale ?>"/>
+						  <input class="form-control" type="number" pattern = "[^,]" oninput="validOrderSale();" id="order_sale" value="<?php echo $order_sale ?>"/>
 					  </div>
 					  <div class="col-lg-4">
 						  <br>
@@ -255,6 +257,8 @@
             },            
 			success:function(data){
                     $('#save_order').attr('disabled', 'true');
+					$('#save_sale').attr('disabled', 'true');
+					$('#save_sale_price').attr('disabled', 'true');
                     alert(data);
                     alert('Состояние изменено.');
 					$('#order-status').attr('disabled', 'true');
@@ -365,6 +369,11 @@
 				$('#save_sale').attr('disabled', 'true');
 			}
 		}
+		var st = new RegExp('[^0-9]+');
+		if(st.test(valid)){
+			$('#order_sale').css('box-shadow', '0px 0px 15px #f52');
+			$('#save_sale').attr('disabled', 'true');
+		}
 	}
 	
 	function validSalePrice($match) {
@@ -380,6 +389,11 @@
 				$('#sale_price').css('box-shadow', '0px 0px 15px #f52');
 				$('#save_sale_price').attr('disabled', 'true');
 			}
+		}
+		var st = new RegExp('[^0-9]+');
+		if(st.test(valid)){
+			$('#sale_price').css('box-shadow', '0px 0px 15px #f52');
+			$('#save_sale_price').attr('disabled', 'true');
 		}
 	}
 </script>

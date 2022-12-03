@@ -43,13 +43,15 @@ class ControllerReportOrdersInfo extends Controller{
             }
 			//рассчёт стоимости со скидкой
 			if($data['order_sale'] != 0){
-				$order['products'][$i]['factprice'] = round($prod['price'] - ($prod['price'] / 100 * $data['order_sale']));
-				$data['totPr'] += $order['products'][$i]['factprice'];
+				$order['products'][$i]['onePrPrice'] = round($prod['price'] - ($prod['price'] / 100 * $data['order_sale']), 2);
+				$order['products'][$i]['totPrPrice'] = round($order['products'][$i]['onePrPrice'] * $prod['factquantity']);
+				$data['totPr'] += $order['products'][$i]['totPrPrice'];
 			}
 			elseif(!empty($data['sale_price'])){
 				$sale = ($order['total'] - $data['sale_price']) / ($order['total']/100);
-				$order['products'][$i]['factprice'] = round($prod['price'] - ($prod['price'] / 100 * $sale));
-				$data['totPr'] += $order['products'][$i]['factprice'];
+				$order['products'][$i]['onePrPrice'] = round($prod['price'] - ($prod['price'] / 100 * $sale), 2);
+				$order['products'][$i]['totPrPrice'] = round($order['products'][$i]['onePrPrice'] * $prod['factquantity']);
+				$data['totPr'] += $order['products'][$i]['totPrPrice'];
 			}
 			$i += 1;
         }	
@@ -96,16 +98,16 @@ class ControllerReportOrdersInfo extends Controller{
                 foreach ($prods['products'] as $prod) { 
 					$comp = $this->model_common_write_off->isCompl($prod['vin']);					
                     if($comp){
-                        foreach($comp as $compl){
-                            //устанавливаем фактическую цену продажи ($saleprice) в зависимости от того, есть ли скидка
-							$saleprice = $compl['factprice'];
+                        foreach($comp as $compl){                            
+							//устанавливаем фактическую цену продажи ($saleprice) в зависимости от того, есть ли скидка
+							$saleprice = $compl['fact_price'];
 							if(!is_null($prods['sale_price']) && $prods['sale_price'] != 0){
 								$sale = ($prods['total'] - $prods['sale_price']) / ($prods['total']/100);
-								$saleprice = round($prod['price'] - ($prod['price'] / 100 * $sale));
+								$saleprice = round((round($compl['fact_price'] - ($compl['fact_price'] / 100 * $sale), 2)) * $compl['quantity']);
 							} elseif($prods['order_sale'] != 0) {
-								$saleprice = $prod['price'] - ($prod['price'] / 100 * $prods['order_sale']);
+								$saleprice = round((round($compl['fact_price'] - ($compl['fact_price'] / 100 * $prods['order_sale']), 2))* $compl['quantity']);
 							}
-							$this->model_tool_order->isSaled($compl['vin']);
+							//$this->model_tool_order->isSaled($compl['vin']);
                             $list[] = array(
                                 'name' => $compl['name'],
                                 'vin' => $compl['vin'],
@@ -118,21 +120,21 @@ class ControllerReportOrdersInfo extends Controller{
 								'opl_type' => '',
                                 'manager' => $this->session->data['username'],
                                 'location' => '',
-                                'summ' => $prod['factquantity']*$compl['factprice'],
+                                'summ' => $prod['factquantity']*$compl['fact_price'],
                                 'date' => date("d.m.Y"),
                                 'city' => $prods['city'],
                                 'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']
                             );
                         }						
                     } else {
-                        $this->model_tool_order->isSaled($prod['vin']);
+                        //$this->model_tool_order->isSaled($prod['vin']);
                         //устанавливаем фактическую цену продажи ($saleprice) в зависимости от того, есть ли скидка
 						$saleprice = $prod['price'];
 						if(!is_null($prods['sale_price']) && $prods['sale_price'] != 0){
 							$sale = ($prods['total'] - $prods['sale_price']) / ($prods['total']/100);
-							$saleprice = round($prod['price'] - ($prod['price'] / 100 * $sale));
+							$saleprice = round((round($prod['price'] - ($prod['price'] / 100 * $sale), 2)) * $prod['factquantity']);
 						} elseif($prods['order_sale'] != 0) {
-							$saleprice = $prod['price'] - ($prod['price'] / 100 * $prods['order_sale']);
+							$saleprice = round((round($prod['price'] - ($prod['price'] / 100 * $prods['order_sale']), 2))* $prod['factquantity']);
 						}
 						$list[] = array(
                             'name' => $prod['name'],

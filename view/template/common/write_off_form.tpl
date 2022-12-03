@@ -67,6 +67,8 @@
                                     <option value="Наличные">Наличные</option>
                                     <option value="Карта">Оплата по карте</option>
                                     <option value="Расчетный счет">Расчетный счет</option>
+									<option value="Авитодоставка">Авитодоставка</option>
+									<option value="СБП">СБП</option>
                                 </select>
                             </div>
                         </div>
