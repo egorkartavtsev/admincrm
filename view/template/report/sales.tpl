@@ -94,7 +94,17 @@
                         <option value="y">Года</option>
                     </select>
                 </div>
-            </div>
+            </div>			
+			<div class="alert alert-success"> 
+				<div class="form-group-sm">
+					<label>Выберите тип товара:</label>
+					<select class="form-control" name="type">
+						<option value="all">Все</option>
+						<option value="НОВЫЙ">Новые</option>
+						<option value="Б/У">Б/У</option>
+					</select>
+				</div>
+			</div>			
           </div>
       </div>
       <div class="row">

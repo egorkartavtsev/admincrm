@@ -39,6 +39,11 @@ class ModelToolReports extends Model {
         if(isset($filter['enddate'])){
             $sql.= "AND date<='".date("Y-m-d H:i:s", strtotime($filter['enddate']))."' ";
         }
+		if(isset($filter['type'])){
+			if($filter['type'] != "all"){
+				$sql.= "AND type = '".$filter['type']."' ";
+			}
+		}
         $order = $this->getOrder($filter);
         
         //exit($sql);
