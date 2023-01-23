@@ -1168,6 +1168,7 @@ $(document).ready(function() {
           }  
         });   
     })
+	
     $(document).on('change', '[alert_triger=prompt]', function(){
         var select = $(this);
         var prompt = select.find('option:selected').attr('prompt');
