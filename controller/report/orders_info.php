@@ -153,7 +153,7 @@ class ControllerReportOrdersInfo extends Controller{
                             'city' => $prods['city'],
                             'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']
                         );						
-                    }                    
+                    }                   
                 }
                 $this->model_common_write_off->sale($list, $invoice);
             break;

@@ -1829,7 +1829,7 @@ $(document).ready(function() {
                     summ = Number.parseInt(row['saleprice']);
                     itogo = itogo + summ; 
                     document.getElementById("itogo_sales").innerHTML = itogo;
-                    $('#saleRowsTable').append('<tr><td>'+row['podcateg']+'</td><td>'+row['brand']+'</td><td>'+row['model']+'</td><td>'+row['numb']+'</td><td>'+row['vin']+'</td><td>'+row['summ']+'</td><td>'+row['postаvsik']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td><td>'+row['opl_type']+'</td><td>'+row['wherefrom']+'</td><td>'+row['city']+'</td></tr>');
+                    $('#saleRowsTable').append('<tr><td>'+row['podcateg']+'</td><td>'+row['brand']+'</td><td>'+row['model']+'</td><td>'+row['numb']+'</td><td>'+row['vin']+'</td><td>'+summ+'</td><td>'+row['postаvsik']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td><td>'+row['opl_type']+'</td><td>'+row['wherefrom']+'</td><td>'+row['city']+'</td></tr>');
                 });
             }
         });
