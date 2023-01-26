@@ -1947,3 +1947,15 @@ function getDefault($flag){
         }
     });
 }
+
+function validVin() {
+  var valid = document.getElementById("prodVin").value;
+  console.log(valid.indexOf('+'));
+  if(valid.indexOf('+') == '-1'){
+    $('#prodVin').css('box-shadow', '0px 0px 15px #8f5');
+    $('[btn-type=createProduct]').removeAttr('disabled');
+  } else {
+    $('#prodVin').css('box-shadow', '0px 0px 15px #f52');
+    $('[btn-type=createProduct]').attr('disabled', 'true');
+  }
+}

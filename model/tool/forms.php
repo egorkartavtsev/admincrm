@@ -22,17 +22,24 @@ class ModelToolForms extends Model {
         $this->load->model('tool/complect');
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$id." ORDER BY sort_order");
         foreach ($this->systems as $key => $field) {
-            if($key === 'podcateg'){
-            $this->form['system'].= '<div class="form-group-sm col-md-4">'
-                                . '<label>'.$field['text'].'</label>'
-                                . '<input class="form-control" name="input-'.$key.'" required placeholder="Ваше имя" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
-                             . '</div>';
-        } else{
-            $this->form['system'].= '<div class="form-group-sm col-md-4">'
-                                . '<label>'.$field['text'].'</label>'
-                                . '<input class="form-control" name="input-'.$key.'" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
-                             . '</div>';
-        }
+            if($key == 'vin'){
+				$dop = ' for="prodVin"';
+				$dop1 = 'oninput="validVin();" id="prodVin"';
+			}else{
+				$dop = '';
+				$dop1 = '';
+			}
+			if($key === 'podcateg'){
+				$this->form['system'].= '<div class="form-group-sm col-md-4">'
+									. '<label>'.$field['text'].'</label>'
+									. '<input class="form-control" name="input-'.$key.'" required placeholder="Ваше имя" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
+								 . '</div>';
+			} else {
+				$this->form['system'].= '<div class="form-group-sm col-md-4">'
+									. '<label'.$dop.'>'.$field['text'].'</label>'
+									. '<input class="form-control" name="input-'.$key.'" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].' '.$dop1.'/>'
+								 . '</div>';
+			}
         }
         foreach($sup->rows as $option){
             $this->getOptionField($option);
