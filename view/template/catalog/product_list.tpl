@@ -66,9 +66,7 @@
                 <label class="control-label" for="input-type">Состояние товара</label>
                 <select name="filter_type" id="input-type" class="form-control"><option value=""> </option><option value="1" <?php if($filter_type==='1'){echo 'selected';} ?>>Новый</option><option value="0" <?php if($filter_type==='0'){echo 'selected';} ?>>Б/У</option></select>
               </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="form-group col-sm-6">
+			  <div class="form-group col-sm-6">
                 <label class="control-label" for="input-price">Цена от:</label>
                 <input type="text" name="filter_price_from" value="<?php echo $filter_price_from; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
               </div>
@@ -76,6 +74,8 @@
                 <label class="control-label" for="input-price">Цена до:</label>
                 <input type="text" name="filter_price_to" value="<?php echo $filter_price_to; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
               </div>
+            </div>
+            <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-quantity"><?php echo $entry_quantity; ?></label>
                 <input type="text" name="filter_quantity" value="<?php echo $filter_quantity; ?>" placeholder="<?php echo $entry_quantity; ?>" id="input-quantity" class="form-control" />
@@ -88,9 +88,7 @@
                 <label class="control-label" for="input-drom">Наличие на дром</label>
                 <select name="filter_drom" id="input-drom" class="form-control"><option value=""> </option><option value="1" <?php if($filter_drom==='1'){echo 'selected';} ?>>Есть</option><option value="0" <?php if($filter_drom==='0'){echo 'selected';} ?>>Нет</option></select>
               </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="form-group">
+			  <div class="form-group">
                 <label class="control-label" for="input-status"><?php echo $entry_status; ?></label>
                 <select name="filter_status" id="input-status" class="form-control">
                   <option value="*"></option>
@@ -127,10 +125,13 @@
                   <?php } ?>
                 </select>
               </div>
-              <div class="form-group">
+            </div>
+            <div class="col-sm-4">
+			  <div class="form-group">
                 <label class="control-label" for="input-catn">Каталожный номер</label>
                 <input type="text" name="filter_catn" value="<?php echo $filter_catn; ?>" placeholder="Каталожный номер" id="input-catn" class="form-control" />
               </div>
+			  <?php echo $filtLocation;?><br>
               <button type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-filter"></i> Применить <?php echo $button_filter; ?></button>
               <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button>
             </div>
@@ -425,6 +426,31 @@ $('#button-filter').on('click', function() {
 
   if (filter_status != '*') {
     url += '&filter_status=' + encodeURIComponent(filter_status);
+  }
+  //фильтры местоположения
+  var filter_adress = $('select[name=\'filter_adress\']').val();
+  if(filter_adress && filter_adress != "-") {
+	url +='&filter_adress='+ encodeURIComponent(filter_adress);
+  }
+  var filter_stock = $('select[name=\'filter_stock\']').val();
+  if(filter_stock && filter_stock != "-") {
+	url +='&filter_stock='+ encodeURIComponent(filter_stock);
+  }
+  var filter_stell = $('select[name=\'filter_stell\']').val();
+  if(filter_stell && filter_stell != "-") {
+	url +='&filter_stell='+ encodeURIComponent(filter_stell);
+  }
+  var filter_jar = $('select[name=\'filter_jar\']').val();
+  if(filter_jar && filter_jar != "-") {
+	url +='&filter_jar='+ encodeURIComponent(filter_jar);
+  }
+  var filter_shelf = $('select[name=\'filter_shelf\']').val();
+  if(filter_shelf && filter_shelf != "-") {
+	url +='&filter_shelf='+ encodeURIComponent(filter_shelf);
+  }
+  var filter_box = $('select[name=\'filter_box\']').val();
+  if(filter_box && filter_box != "-") {
+	url +='&filter_box='+ encodeURIComponent(filter_box);
   }
 
 	location = url;
