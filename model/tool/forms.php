@@ -704,12 +704,12 @@ class ModelToolForms extends Model {
 						. '<select class="form-control" name="filter_'.$row['name'].'" id="input-'.$row['name'].'" '.$dop.'>'
 						. '<option value="">-</option>';
 							$sql = "SELECT * FROM ".DB_PREFIX."lib_fills olf WHERE olf.item_id = ".$row['item_id']."";
-							if(!is_null($row['parent_name']) && !is_null($filter_data['filter_' . $row['parent_name'] . ''])){
+							if(!is_null($row['parent_name']) && !empty($filter_data) && !is_null($filter_data['filter_' . $row['parent_name'] . ''])){
 								$sql .= " AND parent_id = '" . $filter_data['filter_' . $row['parent_name'] . ''] . "'";
 							}
 							$vals = $this->db->query($sql);
 							foreach ($vals-> rows as $val) {
-								$selects.= '<option value="'.$val['id'].'" '.(!is_null($filter_data['filter_'. $row['name'] .'']) && $val['id'] == $filter_data['filter_'. $row['name'] .'']?'selected':'').'>'.$val['name'].'</option>';
+								$selects.= '<option value="'.$val['id'].'" '.(!empty($filter_data) && !is_null($filter_data['filter_'. $row['name'] .'']) && $val['id'] == $filter_data['filter_'. $row['name'] .'']?'selected':'').'>'.$val['name'].'</option>';
 							}
 			$selects.= '</select></div>'.$endrow;
 		}

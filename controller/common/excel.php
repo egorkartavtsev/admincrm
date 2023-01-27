@@ -18,6 +18,7 @@
             $this->load->model("tool/layout");
             $this->load->model("common/excel");
             $this->load->model("tool/excel");
+			$this->load->model('tool/forms');
             $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['types'] = $this->model_common_excel->getTypes();
             $data['broken'] = $err!=0?$err:NULL;
@@ -36,6 +37,8 @@
     //        $data['results_ex'] = $this->getDBFiles();        
             $data['results_ex'] = array();        
             $data['token_excel'] = $this->session->data['token'];
+			$filter_data = [];
+			$data['filtLocation'] = $this->model_tool_forms->constructFiltLocationForm($filter_data);
             $this->response->setOutput($this->load->view('common/excel', $data));
         }
 
@@ -217,7 +220,7 @@
         }
         
         public function downloadFile(){
-            if(isset($this->request->get['type'])){
+			if(isset($this->request->get['type'])){
                 $dType = $this->request->get['type'];
                 $filter_data = $this->request->post;
                 $method = 'download_'.$dType;
