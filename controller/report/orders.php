@@ -36,6 +36,13 @@ class ControllerReportOrders extends Controller{
         } else {
             $data['filter_telephone'] = '';
         }
+		if(isset($this->request->get['filter-email']) && $this->request->get['filter-email']!=''){
+			$url.='&filter-email='.$this->request->get['filter-email'];
+			$filter['email'] = $this->request->get['filter-email'];
+			$data['filter_email'] = $filter['email'];
+		} else {
+			$data['filter_email'] = '';
+		}
         if(!isset($filter)){
             $filter = 0;
         }
