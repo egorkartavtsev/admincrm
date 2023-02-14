@@ -22,17 +22,24 @@ class ModelToolForms extends Model {
         $this->load->model('tool/complect');
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$id." ORDER BY sort_order");
         foreach ($this->systems as $key => $field) {
-            if($key === 'podcateg'){
-            $this->form['system'].= '<div class="form-group-sm col-md-4">'
-                                . '<label>'.$field['text'].'</label>'
-                                . '<input class="form-control" name="input-'.$key.'" required placeholder="Ваше имя" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
-                             . '</div>';
-        } else{
-            $this->form['system'].= '<div class="form-group-sm col-md-4">'
-                                . '<label>'.$field['text'].'</label>'
-                                . '<input class="form-control" name="input-'.$key.'" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
-                             . '</div>';
-        }
+            if($key == 'vin'){
+				$dop = ' for="prodVin"';
+				$dop1 = 'oninput="validVin();" id="prodVin"';
+			}else{
+				$dop = '';
+				$dop1 = '';
+			}
+			if($key === 'podcateg'){
+				$this->form['system'].= '<div class="form-group-sm col-md-4">'
+									. '<label>'.$field['text'].'</label>'
+									. '<input class="form-control" name="input-'.$key.'" required placeholder="Ваше имя" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].'/>'
+								 . '</div>';
+			} else {
+				$this->form['system'].= '<div class="form-group-sm col-md-4">'
+									. '<label'.$dop.'>'.$field['text'].'</label>'
+									. '<input class="form-control" name="input-'.$key.'" field="'.$key.'" value="'.$field['default'].'" '.$field['attrs'].' '.$dop1.'/>'
+								 . '</div>';
+			}
         }
         foreach($sup->rows as $option){
             $this->getOptionField($option);
@@ -542,8 +549,6 @@ class ModelToolForms extends Model {
         $modal = '';
         $hiddens = '<input type="hidden" name="manager" value="'.$info['manager'].'" />'; 
         $lib_links = $this->getLinksArr($this->request->get['product_id']);
-//        exit(var_dump($info));
-//        exit(var_dump(!array_key_exists('vin', $this->systemFields)));
         $systemF.= '<div class="form-group-sm col-md-6">'
                     . '<label>Внутренний номер:</label>'
                     . '<input class="form-control" name="info[vin]" disabled unique="unique" field="vin" value="'.$info['vin'].'"/>'
@@ -573,7 +578,7 @@ class ModelToolForms extends Model {
                  . '</div>';            
         }
         foreach ($info as $key => $option) {
-            if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
+			if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
                 switch ($option['field_type']) {
                     case 'input':
                         $inputs.= '<div class="col-md-12 form-group-sm editForm">'
@@ -663,6 +668,53 @@ class ModelToolForms extends Model {
         }
         return '<div class="well well-sm" num="prod-edit">'.$systemF.'<div class="clearfix"></div><hr>'.$libraries.$selects.'<div class="clearfix"></div><hr>'.$inputs.'<div class="clearfix"></div><hr>'.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
     }
+	
+	public function constructAddressForm() {
+		$sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_struct ols WHERE ols.library_id = 2");
+		$selects = "";
+		foreach($sup->rows as $row){
+			$child = $this->db->query("SELECT name AS child FROM ".DB_PREFIX."lib_struct ols WHERE ols.parent_id = ".$row['item_id']."");
+			if($row['isparent']==='1'){
+                $dop = 'select_type="librSelect" child="'.$child->row['child'].'"';
+                        $endrow='';
+            } else {$dop = ''; $endrow = '<div class="col-lg-12"></div>';}
+			$selects.= '<div class="row paddingrow" id="'.$row['name'].'"><label class="control-label" for="input-'.$row['name'].'">'.$row['text'].'</label>'
+                    . '<select form="form-product" class="form-control" name="'.$row['name'].'" id="input-'.$row['name'].'" '.$dop.'>'
+					  . '<option value="">-</option>';
+						$sql = $this->db->query("SELECT id, name FROM ".DB_PREFIX."lib_fills olf WHERE olf.item_id = ".$row['item_id']." ");
+						$vals = $sql-> rows;
+						foreach ($vals as $val) {
+							$selects.= '<option value="'.$val['id'].'">'.$val['name'].'</option>';
+						}
+					$selects.= '</select></div>'.$endrow;
+		}
+		return '<div num="relocation">'.$selects.'</div>';
+	}
+	
+	public function constructFiltLocationForm($filter_data) {
+		$sup = $this->db->query("SELECT ols.*, (SELECT name FROM " . DB_PREFIX . "lib_struct ols2 WHERE ols.parent_id = ols2.item_id) parent_name, "
+				. "(SELECT name FROM " . DB_PREFIX . "lib_struct ols3 WHERE ols.item_id = ols3.parent_id) child_name FROM ".DB_PREFIX."lib_struct ols WHERE ols.library_id = 2");
+		$selects = "";
+		foreach($sup->rows as $row){
+			if($row['isparent']==='1'){
+                $dop = 'select_type="librSelect" child="'.$row['child_name'].'"';
+                $endrow='';
+            } else {$dop = ''; $endrow = '<div class="col-lg-12"></div>';}
+			$selects.= '<div class="row paddingrow" id="'.$row['name'].'"><label class="control-label" for="input-'.$row['name'].'">'.$row['text'].'</label>'
+						. '<select class="form-control" name="filter_'.$row['name'].'" id="input-'.$row['name'].'" '.$dop.'>'
+						. '<option value="">-</option>';
+							$sql = "SELECT * FROM ".DB_PREFIX."lib_fills olf WHERE olf.item_id = ".$row['item_id']."";
+							if(!is_null($row['parent_name']) && !empty($filter_data) && !is_null($filter_data['filter_' . $row['parent_name'] . ''])){
+								$sql .= " AND parent_id = '" . $filter_data['filter_' . $row['parent_name'] . ''] . "'";
+							}
+							$vals = $this->db->query($sql);
+							foreach ($vals-> rows as $val) {
+								$selects.= '<option value="'.$val['id'].'" '.(!empty($filter_data) && !is_null($filter_data['filter_'. $row['name'] .'']) && $val['id'] == $filter_data['filter_'. $row['name'] .'']?'selected':'').'>'.$val['name'].'</option>';
+							}
+			$selects.= '</select></div>'.$endrow;
+		}
+		return '<div num="filtLocation">'.$selects.'</div>';
+	}
     
     public function updateProduct($info, $id) {
         //exit(var_dump($info));

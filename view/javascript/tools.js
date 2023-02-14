@@ -1168,6 +1168,7 @@ $(document).ready(function() {
           }  
         });   
     })
+	
     $(document).on('change', '[alert_triger=prompt]', function(){
         var select = $(this);
         var prompt = select.find('option:selected').attr('prompt');
@@ -1828,7 +1829,7 @@ $(document).ready(function() {
                     summ = Number.parseInt(row['saleprice']);
                     itogo = itogo + summ; 
                     document.getElementById("itogo_sales").innerHTML = itogo;
-                    $('#saleRowsTable').append('<tr><td>'+row['podcateg']+'</td><td>'+row['brand']+'</td><td>'+row['model']+'</td><td>'+row['numb']+'</td><td>'+row['vin']+'</td><td>'+row['summ']+'</td><td>'+row['postаvsik']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td><td>'+row['opl_type']+'</td><td>'+row['wherefrom']+'</td><td>'+row['city']+'</td></tr>');
+                    $('#saleRowsTable').append('<tr><td>'+row['podcateg']+'</td><td>'+row['brand']+'</td><td>'+row['model']+'</td><td>'+row['numb']+'</td><td>'+row['vin']+'</td><td>'+summ+'</td><td>'+row['postаvsik']+'</td><td>'+row['adress']+'</td><td>'+row['date']+'</td><td>'+row['opl_type']+'</td><td>'+row['wherefrom']+'</td><td>'+row['city']+'</td></tr>');
                 });
             }
         });
@@ -1945,4 +1946,16 @@ function getDefault($flag){
             console.log(data);
         }
     });
+}
+
+function validVin() {
+  var valid = document.getElementById("prodVin").value;
+  console.log(valid.indexOf('+'));
+  if(valid.indexOf('+') == '-1'){
+    $('#prodVin').css('box-shadow', '0px 0px 15px #8f5');
+    $('[btn-type=createProduct]').removeAttr('disabled');
+  } else {
+    $('#prodVin').css('box-shadow', '0px 0px 15px #f52');
+    $('[btn-type=createProduct]').attr('disabled', 'true');
+  }
 }

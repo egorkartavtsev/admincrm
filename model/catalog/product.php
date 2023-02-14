@@ -125,6 +125,32 @@ class ModelCatalogProduct extends Model {
 //            $sql .= " AND p2c.category_id = '" . (int)$data['filter_category'] . "'";
             $sql .= " ";
         }
+		//фильтры местоположения
+		if(isset($data['filter_adress'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_adress']) . "'");
+			$sql .= " AND p.adress = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_stock'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_stock']) . "'");
+			$sql .= " AND p.stock = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_stell'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_stell']) . "'");
+			$sql .= " AND p.stell = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_jar'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_jar']) . "'");
+			$sql .= " AND p.jar = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_shelf'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_shelf']) . "'");
+			$sql .= " AND p.shelf = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_box'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_box']) . "'");
+			$sql .= " AND p.box = '" . $sup->row['name'] . "'";
+		}
+		
 		$sql .= " GROUP BY p.product_id";
 
 		$sort_data = array(
@@ -417,20 +443,17 @@ class ModelCatalogProduct extends Model {
 			$sql .= " AND p.price > '" . $this->db->escape($data['filter_price_from']) . "%'";
 		}
 		
-                if (isset($data['filter_price_to']) && !is_null($data['filter_price_to'])) {
+        if (isset($data['filter_price_to']) && !is_null($data['filter_price_to'])) {
 			$sql .= " AND p.price < '" . $this->db->escape($data['filter_price_to']) . "%'";
 		}
-                
-                if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
+		
+		if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
 			$sql .= " AND p.vin LIKE '" . $this->db->escape($data['filter_vin']) . "%'";
 		}
-                if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
+		if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
 			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.catn)";
 		}
-                
-              
-                
-                if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
+		if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
 			$sql .= " AND p.quantity = '" . (int)$data['filter_quantity'] . "'";
 		}
 
@@ -445,12 +468,37 @@ class ModelCatalogProduct extends Model {
 				$sql .= " AND (p.image IS NULL OR p.image = '' OR p.image = 'no_image.png')";
 			}
 		}
+		//фильтры местоположения
+		if(isset($data['filter_adress'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_adress']) . "'");
+			$sql .= " AND p.adress = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_stock'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_stock']) . "'");
+			$sql .= " AND p.stock = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_stell'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_stell']) . "'");
+			$sql .= " AND p.stell = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_jar'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_jar']) . "'");
+			$sql .= " AND p.jar = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_shelf'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_shelf']) . "'");
+			$sql .= " AND p.shelf = '" . $sup->row['name'] . "'";
+		}
+		if(isset($data['filter_box'])){
+			$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills WHERE id='" . $this->db->escape($data['filter_box']) . "'");
+			$sql .= " AND p.box = '" . $sup->row['name'] . "'";
+		}
 
-                if (!empty($data['filter_category'])) {
-                    $sql .= " ";
-//                    $sql .= " AND p2c.category_id = '" . (int)$data['filter_category'] . "'";
-                }
-                $sql .= " AND !LOCATE('complect', vin)";
+		if (!empty($data['filter_category'])) {
+			$sql .= " ";
+//          $sql .= " AND p2c.category_id = '" . (int)$data['filter_category'] . "'";
+		}
+		$sql .= " AND !LOCATE('complect', vin)";
 		$query = $this->db->query($sql);
                 
 		//exit(var_dump($query));

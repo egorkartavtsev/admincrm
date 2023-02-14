@@ -17,18 +17,22 @@
       </div>
       <div class="panel-body">
           <div class="alert alert-success">
-              <div class="form-group-sm col-sm-4">
+              <div class="form-group-sm col-sm-3">
                   <label for="filter-order_id">Номер заказа</label>
                   <input class="form-control" type="text" id="filter-order_id" value="<?php echo $filter_order_id; ?>" placeholder="Введите номер заказа ...">
               </div>
-              <div class="form-group-sm col-sm-4">
+              <div class="form-group-sm col-sm-3">
                   <label for="filter-lastname">Покупатель</label>
                   <input class="form-control" type="text" id="filter-lastname" value="<?php echo $filter_lastname; ?>" placeholder="Введите фамилию...">
               </div>
-              <div class="form-group-sm col-sm-4">
+              <div class="form-group-sm col-sm-3">
                   <label for="filter-telephone">Телефон</label>
                   <input class="form-control" type="text" id="filter-telephone" value="<?php echo $filter_telephone; ?>" placeholder="Введите телефон ...">
               </div>
+			  <div class="form-group-sm col-sm-3">
+			      <label for="filter-email">Адрес электронной почты</label>
+				  <input class="form-control" type="text" id="filter-email" value="<?php echo $filter_email; ?>" placeholder="Введите адрес электронной почты...">
+			  </div>
               <div class="clearfix"></div>
               <div class="clearfix"><p></p></div>
               <div class="col-sm-6">

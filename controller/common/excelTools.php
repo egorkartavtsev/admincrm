@@ -319,7 +319,6 @@
         
         public function constructFilter($filter_data) {
             $this->load->model('common/excel');
-            
             $filter['type'] = isset($filter_data['type'])?$filter_data['type']:1;
             $filter['prod_on'] = isset($filter_data['prod_on'])?TRUE:FALSE;
             $filter['prod_off'] = isset($filter_data['prod_off'])?TRUE:FALSE;
@@ -336,9 +335,11 @@
             }
             if(!isset($filter_data['stock'])){
                 $filter['stock'] = FALSE;
+				$filter['location'] = $this->model_common_excel->getLocFilters($filter_data);
             } else {
                 foreach($filter_data['stock'] as $stock)
                 $filter['stock'][$stock] = $stock;
+				$filter['location'] = FALSE;
             }
             return $filter;
         }  

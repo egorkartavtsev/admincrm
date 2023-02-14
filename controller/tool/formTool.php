@@ -34,6 +34,22 @@ class ControllerToolFormTool extends Controller {
                     $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'" >'.$fill['name'].'</option>';
                 }
                 $result.= '</select>';
+            } elseif($num === 'relocation') {
+                $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label></div>';
+                $result.= '<select form="form-product" class="form-control" alert_triger="prompt" name = "info['.$fieldName.']" '.$child['js'].'>';
+                $result.= '<option value="-">-</option>';
+                foreach ($child['fills'] as $fill) {
+                    $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'" >'.$fill['name'].'</option>';
+                }
+                $result.= '</select>';
+            } elseif($num === 'filtLocation') {
+                $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label></div>';
+                $result.= '<select class="form-control" alert_triger="prompt" name="filter_'.$fieldName.'" '.$child['js'].'>';
+                $result.= '<option value="-">-</option>';
+                foreach ($child['fills'] as $fill) {
+                    $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'" >'.$fill['name'].'</option>';
+                }
+                $result.= '</select>';
             } elseif($num === 'createauto') {
                 $result.= '<label>'.$child['text'].'</label> ';
                 $result.= '<select class="form-control" alert_triger="prompt"  id = "select-'.$fieldName.'" '.$child['js'].'>';
@@ -67,7 +83,7 @@ class ControllerToolFormTool extends Controller {
                     $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'">'.$fill['name'].'</option>';
                 }
                 $result.= '</select>';
-            }    
+            }
         }
         echo $result;
     }

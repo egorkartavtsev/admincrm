@@ -81,18 +81,47 @@
                             </select>
                         </div>
                         <hr>
-                        <h3>Выберите склад</h3>
-
-                        <?php foreach($stocks as $stock) { ?>
-                        <div class='col-lg-3' style="float: left;">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="stock[<?php echo $stock['id']; ?>]" value="<?php echo $stock['name']; ?>"> <?php echo $stock['name']; ?>  
-                                    </label>
-                                </div>
-                            </div>
-                        <?php }?>
                         <div class="clearfix"></div>
+						<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+						  <div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingOne">
+							  <h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								  Выбрать склад
+								</a>
+							  </h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							  <div class="panel-body">
+								<span class="label label-warning">Если выбраны склады, фильтр по местоположению не учитывается </span><br><br>
+								<?php foreach($stocks as $stock) { ?>
+								  <div class='col-lg-3' style="float: left;">
+									<div class="checkbox">
+									  <label>
+										  <input type="checkbox" name="stock[<?php echo $stock['id']; ?>]" value="<?php echo $stock['name']; ?>"> <?php echo $stock['name']; ?>  
+									  </label>
+									</div>
+								  </div>
+								<?php }?>
+							  </div>
+							</div>
+						  </div>
+						  <div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingTwo">
+							  <h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								  Выбрать местоположение
+								</a>
+							  </h4>
+							</div>
+							<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+							  <div class="panel-body">
+								<span class="label label-warning">Если выбраны склады, этот фильтр не учитывается </span><br><br>
+								<?php echo $filtLocation;?>
+							  </div>
+							</div>
+						  </div>
+						</div>
                         <div class="clearfix"><p></p></div>
                         <div class="col-lg-6">
                             <hr>

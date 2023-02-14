@@ -174,6 +174,7 @@ class ControllerProductionCatalog extends Controller {
 
 	protected function getList() {
                 $this->load->model('tool/layout');
+				$this->load->model('tool/forms');
                 $data = $this->model_tool_layout->getLayout($this->request->get['route']);
                 
                 $user = $this->user->getUserInfo();
@@ -189,16 +190,6 @@ class ControllerProductionCatalog extends Controller {
 			$filter_donor = trim($this->request->get['filter_donor']);
 		} else {
 			$filter_donor = null;
-		}
-		if (isset($this->request->get['filter_drom'])) {
-			$filter_drom = trim($this->request->get['filter_drom']);
-		} else {
-			$filter_drom = null;
-		}
-		if (isset($this->request->get['filter_type'])) {
-			$filter_type = trim($this->request->get['filter_type']);
-		} else {
-			$filter_type = null;
 		}
 		if (isset($this->request->get['filter_catn'])) {
 			$filter_catn = trim($this->request->get['filter_catn']);
@@ -244,12 +235,12 @@ class ControllerProductionCatalog extends Controller {
 		} else {
 			$filter_brand = null;
 		}
-                if (isset($this->request->get['filter_drom'])) {
+		if (isset($this->request->get['filter_drom'])) {
 			$filter_drom = trim($this->request->get['filter_drom']);
 		} else {
 			$filter_drom = null;
 		}
-                if (isset($this->request->get['filter_type'])) {
+		if (isset($this->request->get['filter_type'])) {
 			$filter_type = trim($this->request->get['filter_type']);
 		} else {
 			$filter_type = null;
@@ -289,6 +280,37 @@ class ControllerProductionCatalog extends Controller {
 			$page = trim($this->request->get['page']);
 		} else {
 			$page = 1;
+		}
+		//Фильтры местоположения
+		if (isset($this->request->get['filter_adress'])) {
+			$filter_adress = $this->request->get['filter_adress'];
+		} else {
+			$filter_adress = null;
+		}
+		if (isset($this->request->get['filter_stock'])) {
+			$filter_stock = $this->request->get['filter_stock'];
+		} else {
+			$filter_stock = null;
+		}
+		if (isset($this->request->get['filter_stell'])) {
+			$filter_stell = $this->request->get['filter_stell'];
+		} else {
+			$filter_stell = null;
+		}
+		if (isset($this->request->get['filter_jar'])) {
+			$filter_jar = $this->request->get['filter_jar'];
+		} else {
+			$filter_jar = null;
+		}
+		if (isset($this->request->get['filter_shelf'])) {
+			$filter_shelf = $this->request->get['filter_shelf'];
+		} else {
+			$filter_shelf = null;
+		}
+		if (isset($this->request->get['filter_box'])) {
+			$filter_box = $this->request->get['filter_box'];
+		} else {
+			$filter_box = null;
 		}
 
 		$url = '';
@@ -347,6 +369,25 @@ class ControllerProductionCatalog extends Controller {
 		if (isset($this->request->get['filter_image'])) {
 			$url .= '&filter_image=' . $this->request->get['filter_image'];
 		}
+		//Фильтры местоположения
+		if (isset($this->request->get['filter_adress']) && $this->request->get['filter_adress'] != "-") {
+			$url .= '&filter_adress=' . $this->request->get['filter_adress'];
+		}
+		if (isset($this->request->get['filter_stock']) && $this->request->get['filter_stock'] != "-") {
+			$url .= '&filter_stock=' . $this->request->get['filter_stock'];
+		}
+		if (isset($this->request->get['filter_stell']) && $this->request->get['filter_stell'] != "-") {
+			$url .= '&filter_stell=' . $this->request->get['filter_stell'];
+		}
+		if (isset($this->request->get['filter_jar']) && $this->request->get['filter_jar'] != "-") {
+			$url .= '&filter_jar=' . $this->request->get['filter_jar'];
+		}
+		if (isset($this->request->get['filter_shelf']) && $this->request->get['filter_shelf'] != "-") {
+			$url .= '&filter_shelf=' . $this->request->get['filter_shelf'];
+		}
+		if (isset($this->request->get['filter_box']) && $this->request->get['filter_box'] != "-") {
+			$url .= '&filter_box=' . $this->request->get['filter_box'];
+		}
 
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
@@ -381,6 +422,12 @@ class ControllerProductionCatalog extends Controller {
                         'filter_wocat' => $filter_wocat,
 			'filter_status'   => $filter_status,
 			'filter_image'    => $filter_image,
+			'filter_adress'   => $filter_adress,
+			'filter_stock'    => $filter_stock,
+			'filter_stell'    => $filter_stell,
+			'filter_jar'      => $filter_jar,
+			'filter_shelf'    => $filter_shelf,
+			'filter_box'      => $filter_box,
 			'sort'            => $sort,
 			'order'           => $order,
 			'start'           => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -584,6 +631,25 @@ class ControllerProductionCatalog extends Controller {
 		if (isset($this->request->get['filter_image'])) {
 			$url .= '&filter_image=' . $this->request->get['filter_image'];
 		}
+		//Фильтры местоположения
+		if (isset($this->request->get['filter_adress']) && $this->request->get['filter_adress'] != "-") {
+			$url .= '&filter_adress=' . $this->request->get['filter_adress'];
+		}
+		if (isset($this->request->get['filter_stock']) && $this->request->get['filter_stock'] != "-") {
+			$url .= '&filter_stock=' . $this->request->get['filter_stock'];
+		}
+		if (isset($this->request->get['filter_stell']) && $this->request->get['filter_stell'] != "-") {
+			$url .= '&filter_stell=' . $this->request->get['filter_stell'];
+		}
+		if (isset($this->request->get['filter_jar']) && $this->request->get['filter_jar'] != "-") {
+			$url .= '&filter_jar=' . $this->request->get['filter_jar'];
+		}
+		if (isset($this->request->get['filter_shelf']) && $this->request->get['filter_shelf'] != "-") {
+			$url .= '&filter_shelf=' . $this->request->get['filter_shelf'];
+		}
+		if (isset($this->request->get['filter_box']) && $this->request->get['filter_box'] != "-") {
+			$url .= '&filter_box=' . $this->request->get['filter_box'];
+		}
 
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
@@ -646,13 +712,30 @@ class ControllerProductionCatalog extends Controller {
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
 		}
-
 		if (isset($this->request->get['filter_status'])) {
 			$url .= '&filter_status=' . $this->request->get['filter_status'];
 		}
-
 		if (isset($this->request->get['filter_image'])) {
 			$url .= '&filter_image=' . $this->request->get['filter_image'];
+		}
+		//Фильтры местоположения
+		if (isset($this->request->get['filter_adress']) && $this->request->get['filter_adress'] != "-") {
+			$url .= '&filter_adress=' . $this->request->get['filter_adress'];
+		}
+		if (isset($this->request->get['filter_stock']) && $this->request->get['filter_stock'] != "-") {
+			$url .= '&filter_stock=' . $this->request->get['filter_stock'];
+		}
+		if (isset($this->request->get['filter_stell']) && $this->request->get['filter_stell'] != "-") {
+			$url .= '&filter_stell=' . $this->request->get['filter_stell'];
+		}
+		if (isset($this->request->get['filter_jar']) && $this->request->get['filter_jar'] != "-") {
+			$url .= '&filter_jar=' . $this->request->get['filter_jar'];
+		}
+		if (isset($this->request->get['filter_shelf']) && $this->request->get['filter_shelf'] != "-") {
+			$url .= '&filter_shelf=' . $this->request->get['filter_shelf'];
+		}
+		if (isset($this->request->get['filter_box']) && $this->request->get['filter_box'] != "-") {
+			$url .= '&filter_box=' . $this->request->get['filter_box'];
 		}
 
 		if (isset($this->request->get['sort'])) {
@@ -663,6 +746,7 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&order=' . $this->request->get['order'];
 		}
 
+		$data['filtLocation'] = $this->model_tool_forms->constructFiltLocationForm($filter_data);
 		$pagination = new Pagination();
 		$pagination->total = $product_total;
 		$pagination->page = $page;
@@ -688,6 +772,12 @@ class ControllerProductionCatalog extends Controller {
 		$data['filter_wocat'] = $filter_wocat;
 		$data['filter_status'] = $filter_status;
 		$data['filter_image'] = $filter_image;
+		$data['filter_adress'] = $filter_adress;
+		$data['filter_stock'] = $filter_stock;
+		$data['filter_stell'] = $filter_stell;
+		$data['filter_jar'] = $filter_jar;
+		$data['filter_shelf'] = $filter_shelf;
+		$data['filter_box'] = $filter_box;
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;

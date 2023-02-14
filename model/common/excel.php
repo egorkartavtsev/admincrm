@@ -377,6 +377,7 @@
         
         public function constructQuery($filter) {
             $this->load->model('tool/product');
+			$this->load->model('product/relocation');
             $template = $this->model_tool_product->getExcelTempl($filter['type']);
 //            exit(var_dump($filter));
 //            exit(var_dump($template));
@@ -415,6 +416,14 @@
                 if($filter['date_end']){
                     $query.="AND p.date_added <= '".$filter['date_end']."' ";
                 }
+				if($filter['location']){
+					$names = $this->model_product_relocation->getNames();
+					foreach($names as $name){
+						if(isset($filter['location'][$name])){
+							$query.="AND p." . $name . " = '" . $filter['location'][$name] . "' ";
+						}
+					}
+				}
             }
             $query.="AND structure = ".(int)$filter['type']." ORDER BY p.date_added DESC";
             //exit($query);
@@ -427,4 +436,17 @@
             $products = $this->db->query($query);
             return $products->rows;
         }
+		
+		public function getLocFilters($filter_data) {
+			$this->load->model('product/relocation');
+			$names = $this->model_product_relocation->getNames();
+			$location = [];
+			foreach ($names as $filtName) {
+				if(array_key_exists('filter_'.$filtName, $filter_data) && $filter_data['filter_'.$filtName] != "" && $filter_data['filter_'.$filtName] != "-"){
+					$sup = $this->db->query("SELECT name FROM " . DB_PREFIX . "lib_fills olf WHERE olf.id = '". $filter_data['filter_'.$filtName] . "'");
+					$location += [$filtName => $sup->row['name']];
+				}
+			}
+			return $location;
+		}
     }
