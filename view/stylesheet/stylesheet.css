@@ -376,6 +376,13 @@ span.hidden-xs, span.hidden-sm, span.hidden-md, span.hidden-lg {
 	color: #6D6D6D;
 	border-right: 1px solid #E1E1E1;
 }
+button[name="previousAddr"] {
+	font-weight: bold;
+	float:left;
+    font-size: 12px;
+    width:250px;
+	
+}
 #profile {
 	display: none;
 }

@@ -669,7 +669,7 @@ class ModelToolForms extends Model {
         return '<div class="well well-sm" num="prod-edit">'.$systemF.'<div class="clearfix"></div><hr>'.$libraries.$selects.'<div class="clearfix"></div><hr>'.$inputs.'<div class="clearfix"></div><hr>'.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
     }
 	
-	public function constructAddressForm() {
+	public function constructAddressForm($selected_addr = []) {
 		$sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_struct ols WHERE ols.library_id = 2");
 		$selects = "";
 		foreach($sup->rows as $row){
@@ -684,7 +684,7 @@ class ModelToolForms extends Model {
 						$sql = $this->db->query("SELECT id, name FROM ".DB_PREFIX."lib_fills olf WHERE olf.item_id = ".$row['item_id']." ");
 						$vals = $sql-> rows;
 						foreach ($vals as $val) {
-							$selects.= '<option value="'.$val['id'].'">'.$val['name'].'</option>';
+							$selects.= '<option value="'.$val['id'].'" '.(!empty($selected_addr) && !is_null($selected_addr[''. $row['name'] .'']) && $val['name'] == $selected_addr[''. $row['name'] .'']?'selected':'').'>'.$val['name'].'</option>';
 						}
 					$selects.= '</select></div>'.$endrow;
 		}
