@@ -115,7 +115,7 @@
                    if ($sqlrt['cid'] === $sqlr['comp'])  {
                                         $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
                                         $getnote = $this->model_common_excelDrom->getDromDescriptionCompl($sqlr);
-                                        $active_sheet->setCellValue('A'.$lp.'','Копмлект '.$sqlr['podcat'].'');
+                                        $active_sheet->setCellValue('A'.$lp.'','Комплект '.$sqlr['podcat'].'');
                                         $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
                                         $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
                                         $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
