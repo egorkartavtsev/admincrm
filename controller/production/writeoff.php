@@ -87,7 +87,8 @@ class ControllerProductionWriteoff extends Controller {
             } else {
                 $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
             }        
-            $complect = $this->model_common_write_off->isComplect($vin);
+            $complect = $this->model_common_write_off->isComplect($vin);			
+			$availableQnt = $this->model_common_write_off->availableQuantity($prod_info['product_id']);
           //  exit(var_dump($prod_info));
             $product = '<div class="alert alert-success">';
                 $product.= '<h4><span id="name">'.$prod_info['name'].'</span></h4>';
@@ -96,13 +97,13 @@ class ControllerProductionWriteoff extends Controller {
                 $product.= '</div>';
                 $product.= '<div class="col-lg-6">';
                     $product.= '<h4><span class="text-muted">Цена: </span><span id="price">'.$prod_info['price'].'</h4>';
-                    $product.= '<h4><span class="text-muted">Количество: </span><span id="quan">'.$prod_info['quantity'].'</h4>';
+                    $product.= '<h4><span class="text-muted">Доступно к списанию: </span><span id="quan">'.$availableQnt.'</h4>';
                     $product.= '<h4><span class="text-muted">Расположение: </span><span id="loc">'.$prod_info['stock'].'/'.$prod_info['location'].'</h4>';
                     $product.= '<h4><span class="text-muted">Заметки для менеджера: </span><span id="zam">'.$prod_info['zаmetki'].'</h4>';
                     if($complect){
                         $product.= '<h4><span class="label label-warning">КОМПЛЕКТ</span></h4>';
                     }
-                    if($prod_info['quantity']>0){ 
+                    if($availableQnt>0){ 
                         $product.= '<button class="btn btn-success" id="writeoff" onclick="addToList(\''.$prod_info['vin'].'\', \''.$this->session->data['token'].'\')"><i class="fa fa-plus"></i> Добавить к списку списания</button>';
                     }
 
@@ -245,7 +246,8 @@ class ControllerProductionWriteoff extends Controller {
     }
     
     private function prodInfo($prod_info) {
-        $this->load->model('tool/image');
+        //exit(var_dump($prod_info));
+		$this->load->model('tool/image');
         $factprice = isset($prod_info['fact_price'])?$prod_info['fact_price']:$prod_info['price'];
         $reason = isset($prod_info['reason'])?$prod_info['reason']:'';
         if(!empty($prod_info)){
@@ -254,16 +256,18 @@ class ControllerProductionWriteoff extends Controller {
             } else {
                 $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
             }
+			$availableQnt = $this->model_common_write_off->availableQuantity($prod_info['product_id']);
             $list = '<tr id="'.$prod_info['vin'].'">'
                         . '<td>'.$prod_info['name'].'<input type="hidden" name="products['.$prod_info['vin'].'][name]" value="'.$prod_info['name'].'"></td>'
                         . '<td><b>'.$prod_info['vin'].'</b></td>'
-                        . '<td>'.$prod_info['quantity'].'<input id="quan'.$prod_info['vin'].'" id="quan'.$prod_info['vin'].'" type="hidden" name="products['.$prod_info['vin'].'][quan]" value="'.$prod_info['quantity'].'"></td>'
+						. '<td>'.$prod_info['quantity'].'<input id="quan'.$prod_info['vin'].'" id="quan'.$prod_info['vin'].'" type="hidden" name="products['.$prod_info['vin'].'][quan]" value="'.$prod_info['quantity'].'"></td>'
+                        . '<td>'.$availableQnt.'<input id="available'.$prod_info['vin'].'" type="hidden" name="products['.$prod_info['vin'].'][available]" value="'.$availableQnt.'"></td>'
                         . '<td>'.$prod_info['price'].'<input type="hidden" name="products['.$prod_info['vin'].'][price]" value="'.$prod_info['price'].'"></td>'
                         . '<td>'
                             . '<input type="text" class="form-control" placeholder="Введите цену продажи" value="'.$factprice.'" name="products['.$prod_info['vin'].'][pricefact]">'
                         . '</td>'
                         . '<td>'
-                            . '<input type="number" class="form-control" oninput="validate(\'quan'.$prod_info['vin'].'fact\', \'quan'.$prod_info['vin'].'\');" id="quan'.$prod_info['vin'].'fact" placeholder="Введите количество к продаже" value="'.$prod_info['quantity'].'" name="products['.$prod_info['vin'].'][quanfact]"><input type="hidden" name="products['.$prod_info['vin'].'][locate]" value="'.$prod_info['stock'].'/'.$prod_info['location'].'">'
+                            . '<input type="number" class="form-control" oninput="validate(\'quan'.$prod_info['vin'].'fact\', \'available'.$prod_info['vin'].'\');" id="quan'.$prod_info['vin'].'fact" placeholder="Введите количество к продаже" value="'.$availableQnt.'" name="products['.$prod_info['vin'].'][quanfact]"><input type="hidden" name="products['.$prod_info['vin'].'][locate]" value="'.$prod_info['stock'].'/'.$prod_info['location'].'">'
                         . '</td>'
                         . '<td>'
                             . '<input type="text" class="form-control" name="products['.$prod_info['vin'].'][reason]" placeholder="Введите причину уценки" value="'.$reason.'">'
