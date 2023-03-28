@@ -18,7 +18,6 @@ class ControllerProductionAutoloadDrom extends Controller {
 	}
 	
 	public function download() {
-		exit(var_dump($this->request->get));
 		$this->load->model("common/excelDrom");
 		
 		$minPrice = $this->request->get['minPrice'];
