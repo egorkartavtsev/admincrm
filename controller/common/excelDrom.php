@@ -67,74 +67,71 @@
                 . "p.drom AS drom "
                 . "FROM ".DB_PREFIX."product p "
                 . "WHERE (p.quantity > 0) AND (p.podcateg != '') AND (p.price > 0)" );
-           $complects_bd = $this->model_common_excelDrom->getComplectDrom();
+            $complects_bd = $this->model_common_excelDrom->getComplectDrom();
             //exit(var_dump($exlxe));
             $lp=2;
-              foreach ($exlxe->rows as $sqlr) {
-                  $sqlr['dsh'] = 'Запчасть';
-              if ($sqlr['comp'] === '') {
-                                        $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
-                                        $getnote = $this->model_common_excelDrom->getDromDescription($sqlr);
-                                        $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
-                                        $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
-                                        $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
-                                        $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
-                                        $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
-                                        $active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
-                                        $active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
-                                        $sqlr['price'] =  ceil(104*$sqlr['price']/5000) * 50 ; 
-                                        $active_sheet->setCellValue('O'.$lp.'',''.$sqlr['price'].'');
-                                        $active_sheet->setCellValue('P'.$lp.'','RUR');
-                                        $active_sheet->setCellValue('Q'.$lp.'','В наличии');
-                                        $active_sheet->setCellValue('S'.$lp.'',''.$photoDrom.'');
-                                        $lp = $lp+1;
-                                        }
-                 else {
-           foreach ($complects_bd as $sqlrt) {
-              if ($sqlrt['c_whole'] === '0'){
-                             if (($sqlr['comp'] === $sqlrt['head'])or($sqlr['comp'] === $sqlrt['cid'])){
-                                        $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
-                                        $getnote = $this->model_common_excelDrom->getDromDescription($sqlr);
-                                        $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
-                                        $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
-                                        $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
-                                        $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
-                                        $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
-                                        $active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
-                                        $active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
-                                        $sqlr['price'] =  ceil(104*$sqlr['price']/5000) * 50 ; 
-                                        $active_sheet->setCellValue('O'.$lp.'',''.$sqlr['price'].'');
-                                        $active_sheet->setCellValue('P'.$lp.'','RUR');
-                                        $active_sheet->setCellValue('Q'.$lp.'','В наличии');
-                                        $active_sheet->setCellValue('S'.$lp.'',''.$photoDrom.'');
-                                   
-                                        $lp = $lp+1;
-                } 
-              }
-             else { 
-                   if ($sqlrt['cid'] === $sqlr['comp'])  {
-                                        $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
-                                        $getnote = $this->model_common_excelDrom->getDromDescriptionCompl($sqlr);
-                                        $active_sheet->setCellValue('A'.$lp.'','Комплект '.$sqlr['podcat'].'');
-                                        $active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
-                                        $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
-                                        $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
-                                        $active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
-                                        $active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
-                                        $active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
-                                        $sqlrt['c_price'] =  ceil(104*$sqlrt['c_price']/5000) * 50 ; 
-                                        $active_sheet->setCellValue('O'.$lp.'',''.$sqlrt['c_price'].'');
-                                        $active_sheet->setCellValue('P'.$lp.'','RUR');
-                                        $active_sheet->setCellValue('Q'.$lp.'','В наличии');
-                                        $active_sheet->setCellValue('S'.$lp.'',''.$photoDrom.'');
-                                   
-                                        $lp = $lp+1; 
-                    }
-                    
-                    }
-                            }
-           }
-              }
+            foreach ($exlxe->rows as $sqlr) {
+                $sqlr['dsh'] = 'Запчасть';
+                if ($sqlr['comp'] === '') {
+					$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
+					$getnote = $this->model_common_excelDrom->getDromDescription($sqlr);
+					$active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
+					$active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
+					$active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
+					$active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
+					$active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
+					$active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
+					$active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
+					$sqlr['price'] =  ceil(104*$sqlr['price']/5000) * 50 ; 
+					$active_sheet->setCellValue('O'.$lp.'',''.$sqlr['price'].'');
+					$active_sheet->setCellValue('P'.$lp.'','RUR');
+					$active_sheet->setCellValue('Q'.$lp.'','В наличии');
+					$active_sheet->setCellValue('S'.$lp.'',''.$photoDrom.'');
+					$lp = $lp+1;
+                } else {
+					foreach ($complects_bd as $sqlrt) {
+						if ($sqlrt['c_whole'] === '0'){
+							if (($sqlr['comp'] === $sqlrt['head'])or($sqlr['comp'] === $sqlrt['cid'])){
+								$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
+								$getnote = $this->model_common_excelDrom->getDromDescription($sqlr);
+								$active_sheet->setCellValue('A'.$lp.'',''.$sqlr['podcat'].'');
+								$active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
+								$active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
+								$active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
+								$active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
+								$active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
+								$active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
+								$sqlr['price'] =  ceil(104*$sqlr['price']/5000) * 50 ; 
+								$active_sheet->setCellValue('O'.$lp.'',''.$sqlr['price'].'');
+								$active_sheet->setCellValue('P'.$lp.'','RUR');
+								$active_sheet->setCellValue('Q'.$lp.'','В наличии');
+								$active_sheet->setCellValue('S'.$lp.'',''.$photoDrom.'');
+						   
+								$lp = $lp+1;
+							} 
+						} else { 
+							if ($sqlrt['cid'] === $sqlr['comp'])  {
+								$photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
+								$getnote = $this->model_common_excelDrom->getDromDescriptionCompl($sqlr);
+								$active_sheet->setCellValue('A'.$lp.'','Комплект '.$sqlr['podcat'].'');
+								$active_sheet->setCellValue('B'.$lp.'',''.$sqlr['type'].'');
+								$active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
+								$active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
+								$active_sheet->setCellValue('F'.$lp.'',''.$sqlr['vin'].'');
+								$active_sheet->setCellValue('M'.$lp.'',''.$getnote.'');
+								$active_sheet->setCellValue('N'.$lp.'',''.$sqlr['quant'].'');
+								$sqlrt['c_price'] =  ceil(104*$sqlrt['c_price']/5000) * 50 ; 
+								$active_sheet->setCellValue('O'.$lp.'',''.$sqlrt['c_price'].'');
+								$active_sheet->setCellValue('P'.$lp.'','RUR');
+								$active_sheet->setCellValue('Q'.$lp.'','В наличии');
+								$active_sheet->setCellValue('S'.$lp.'',''.$photoDrom.'');
+						   
+								$lp = $lp+1; 
+							}
+						}
+					}
+				}
+            }
             
            // header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
@@ -144,8 +141,10 @@
             header ( "Content-Disposition: attachment; filename=auto-parts-MGNAUTO.xls" );
 
 
-            $objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
-            $objWriter->save('downloadXcelFiles/auto-parts-MGNAUTO.xls');
+            //$objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
+			//$objWriter->save('downloadXcelFiles/auto-parts-MGNAUTO.xls');
+            $objWriter = new PHPExcel_Writer_Excel5($OrderExcel);
+			$objWriter->save('php://output');
             //return $this->$OrderExcel;
         }
     }
