@@ -1,10 +1,10 @@
 <?php
-    class ModelCommonExcelDrom extends Model {
-          public function getDromTempl() {
+class ModelCommonExcelDrom extends Model {
+    public function getDromTempl() {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."text_template WHERE id = 3 ");
         return $sup->row['text'];
     }
-        public function getDromDescription($data) {
+    public function getDromDescription($data) {
     //--------------------------------------------------------------
         $this->load->model('common/avito');
         $settings = $this->model_common_avito->getSetts();
@@ -74,7 +74,7 @@
     /******************************************************************/
         return $templ; 
     }
-   public function getPhotoDrom($pid) {
+    public function getPhotoDrom($pid) {
        $templ= '';
          $qphot = $this->db->query("SELECT * FROM ".DB_PREFIX."product_image WHERE product_id = '".$pid."' ORDER BY sort_order ");
                         $photos = '';
@@ -106,6 +106,21 @@
                 . "WHERE 1 " );
         return $sup->rows;   
     }
+
+	public function getCompInfo($sqlr){
+		$sup = $this->db->query("SELECT	c.price AS c_price, c.whole AS c_whole FROM ".DB_PREFIX."complects c WHERE '" . $sqlr['comp'] . "' IN (CAST(c.id AS char), c.heading) ");
+		if($sup->num_rows > 0) {
+			if($sup->row['c_whole'] === '1'){
+				$sqlr['getdescr'] = $this->model_common_excelDrom->getDromDescriptionCompl($sqlr);
+				$sqlr['price'] =  ceil(104*$sup->row['c_price']/5000) * 50 ;
+				$sqlr['podcat'] = 'Комплект '.$sqlr['podcat'];
+			}
+		} else if ($sup->num_rows == 0){
+			// если у товара заполнено comp, но в таблице oc_complects нет совпадений, возвращается sqlr без изменений
+		}
+		return $sqlr;
+	}
+	
     public function getCompDrom() {
          $sup = $this->db->query("SELECT "
                 . "p.podcateg AS podcat, "
@@ -118,7 +133,8 @@
                 . "WHERE (p.quantity > 0) AND (p.podcateg != '') AND (p.price > 0) AND (p.comp != '')" );
         return $sup->rows;   
     }
-        public function getDromDescriptionCompl($data) {
+
+    public function getDromDescriptionCompl($data) {
     //--------------------------------------------------------------
         $this->load->model('common/avito');
         $settings = $this->model_common_avito->getSetts();
@@ -173,6 +189,32 @@
            // $templ = str_replace('%weekend%', $weekend, $templ);
     /******************************************************************/
         return $templ; 
-    
     }
-    }
+	
+	public function getExlx($minPrice, $maxPrice) {
+		
+		$exlx = $this->db->query("SELECT "
+                . "p.product_id AS pid, "
+                . "p.podcateg AS podcat, " //Наименование товара
+                . "p.type AS type, "      // б/у, новое
+                . "p.brand AS brand, "    //Марка
+                . "p.model AS model, "    //Модель
+                . "p.vin AS vin, "        //внутренний номер
+                . "p.price AS price, "      //Цена
+                . "p.quantity AS quant, " //Количество 
+                . "p.avito AS avito, "
+                . "p.modR AS modRow, "
+                . "p.note AS note, "
+                . "p.catn AS catN, "
+                . "p.comp AS comp, "
+                . "p.cond AS cond, "
+                . "p.compability AS compability,  "
+                . "p.dop AS dop, "
+                . "p.stock AS stock, "
+                . "p.drom AS drom "
+                . "FROM ".DB_PREFIX."product p "
+                . "WHERE (p.quantity > 0) AND (p.podcateg != '') AND (p.price > 0) AND (p.price >= " . $minPrice . ") AND (p.price <= " . $maxPrice . ") " );
+		return $exlx;
+	}
+	
+}

@@ -82,6 +82,13 @@ class ControllerProductionRelocation extends Controller {
 		} else {
 			$page = 1;
 		}
+		if(isset($this->request->get['isExact'])){
+			$isExact = 'yes';
+			$data['checked'] = 'checked="checked"';
+		} else {
+			$isExact = 'no';
+			$data['checked'] = '';
+		}
 		
 		$url = $this->getFiltUrl();
 		
@@ -97,6 +104,7 @@ class ControllerProductionRelocation extends Controller {
 			'filter_jar'      => $filter_jar,
 			'filter_shelf'    => $filter_shelf,
 			'filter_box'      => $filter_box,
+			'isExact'         => $isExact,
 			'start'           => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit'           => $this->config->get('config_limit_admin')
 		);
@@ -171,6 +179,7 @@ class ControllerProductionRelocation extends Controller {
 		$data['text_list'] = $this->language->get('text_list');		
 		$data['form'] = $this->model_tool_forms->constructAddressForm();
 		$data['filtLocation'] = $this->model_tool_forms->constructFiltLocationForm($filter_data);
+		$data['previousAddr'] = $this->model_product_relocation->getPreviousAddr();
 		$pagination = new Pagination();
 		$pagination->total = $product_total;
 		$pagination->page = $page;
@@ -193,9 +202,6 @@ class ControllerProductionRelocation extends Controller {
 	public function relocate() {
 		$this->load->model('product/relocation');
 		$all = $this->request->post;
-		if(isset($all['selected'])){
-			$products = implode(", ", $all['selected']);
-		}
 		$names = $this->model_product_relocation->getNames();
 		$newAddr = [];
 		
@@ -207,7 +213,7 @@ class ControllerProductionRelocation extends Controller {
 				$newAddr += [$name => $all['info'][$name]];
 			}
 		}
-		$this->model_product_relocation->relocate($products, $newAddr);
+		$this->model_product_relocation->relocate($all['selected'], $newAddr);
 		$url = $this->getFiltUrl();
         $this->response->redirect($this->url->link('production/relocation', '1' . $url, true));
     }
@@ -236,6 +242,26 @@ class ControllerProductionRelocation extends Controller {
 		if (isset($this->request->get['filter_box']) && $this->request->get['filter_box'] != "-") {
 			$url .= '&filter_box=' . $this->request->get['filter_box'];
 		}
+		if (isset($this->request->get['isExact'])) {
+			$url .= '&isExact=yes';
+		}
 		return $url;
+	}
+	
+	public function fillNewAddr(){
+		$this->load->model('tool/forms');
+		$this->load->model('product/relocation');
+		$firstExplode = explode(":", $_POST['selectedAddr']);
+		$selected_addr = explode("/", $firstExplode[1]);
+		array_unshift($selected_addr, $firstExplode[0]);
+		$names = $this->model_product_relocation->getNames();
+		$i = 0;
+		foreach ($names as $name){
+			$selected_addr[$name] = $selected_addr[$i];
+			unset($selected_addr[$i]);
+			$i++;
+		}
+		$newForm = $this->model_tool_forms->constructAddressForm($selected_addr);
+		echo $newForm;
 	}
 }

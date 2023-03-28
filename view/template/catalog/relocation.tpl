@@ -35,16 +35,23 @@
 				<input type="text" name="filter_vin" value="<?php echo $filter_vin; ?>" placeholder="Внутренний номер" id="input-vin" class="form-control" />
 			  </div>
 			  <?php echo $filtLocation;?><br>
+			  <h4><input type="checkbox" name="isExact" <?php echo $checked; ?>/> <span class="label label-default">Указан точный адрес</span></h4>
 			  <button type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-filter"></i> Применить фильтры</button>
               <button type="button" id="btn-clear-filters" class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-2">
 			</div>
 			<div class="col-sm-4">
 			  <h3 class="panel-title" align="center"><b>Новое местоположение товара</b></h3><br>
 			  <?php echo $form;?> <br>
 		<form action="<?php echo $relocate; ?>" method="post" enctype="multipart/form-data" id="form-product">
-		  <button type="submit" id='btn-relocate' class="btn btn-success pull-right">Переместить товар</button>
+		  <button type="button" id='btn-relocate' class="btn btn-success pull-right">Переместить товар</button>
+			</div>
+			<div class="col-sm-2">
+				<h3 class="panel-title" align="left"><b>Недавно использованные адреса:</b></h3><br>
+				<?php foreach($previousAddr as $addr){?>
+					<button type="button" name="previousAddr" class="btn btn-success pull-right" value="<?php echo $addr['adress']; ?>:<?php echo $addr['location']; ?>" onclick="chooseAddr(this)"> <?php echo $addr['adress']; ?><br><?php echo $addr['location']; ?></button><br>
+				<?php } ?>
 			</div>
 		  </div>
 		</div>
@@ -163,9 +170,14 @@
 		$('#btn-relocate').on('click', function(){
           var result = confirm('Сохранить перемещение?');
           if(result){
-            alert('Да');
+			var products = $('input[name=\'selected[]\']:checked').prop("checked");
+			if(products){
+				$('#form-product').submit();
+			}else{
+				alert('Выберите товары для перемещения');
+			}
           }else{
-            alert('Нет')
+            return false;
           }
         });
 		$('#panel-heading-f').on('click', function(){
@@ -205,8 +217,32 @@
 			if(filter_box && filter_box != "-") {
 				url +='&filter_box='+ encodeURIComponent(filter_box);
 			}
+			var isExact = document.querySelector('input[name=\'isExact\']');
+            if(isExact.checked) {
+                url+='&isExact=yes';
+            }
 			location = url;
 		});
+		function chooseAddr(elem){
+			var selected_addr = $(elem).val();
+			$.ajax ({
+				url: 'index.php?route=production/relocation/fillNewAddr',
+				type: "post",
+				data: ({selectedAddr:selected_addr}),
+				dataType: "html",
+				beforeSend: function(){
+					$(elem).button('loading');
+				},
+				success: funcSuccess,
+				error: function(){
+					alert('Возникла ошибка при заполнении');
+				}
+			});
+		};
+		function funcSuccess(data){
+			$('button[name=\'previousAddr\']').button('reset');
+			$('div[num=\'relocation\']').html(data);
+		};
     </script>
   </div>
 

@@ -203,5 +203,30 @@ class ModelCommonWriteoff extends Model {
         return $data;
 
     }
+	
+	public function availableQuantity($product_id) {
+		$dop = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product WHERE product_id = ".$product_id." ");
+		if($dop->row){
+			$query = $this->db->query("SELECT op.quantity - sum(oop.quantity) as available "
+                . "FROM ".DB_PREFIX."order oo "
+                . "LEFT JOIN ".DB_PREFIX."order_product oop "
+                    . "ON oo.order_id = oop.order_id "
+				. "JOIN ".DB_PREFIX."product op "
+					."ON oop.product_id = op.product_id "
+                . "WHERE oop.product_id = ".$product_id." "
+				."AND oo.order_status_id IN ( "
+				."SELECT oos.order_status_id "
+				."FROM ".DB_PREFIX."order_status oos "
+				."JOIN ".DB_PREFIX."order_status oos2 "
+					."ON oos.sort_order < oos2.sort_order "
+					."AND oos2.order_status_id = 13 ) ");
+			return $query->row['available'];
+		} else {
+			//если в заказах нет этого товара, то отправляется просто количество
+			$quantity = $this->db->query("SELECT quantity FROM ".DB_PREFIX."product WHERE product_id = ".$product_id." ");
+			return $quantity->row['quantity'];
+		}
+	}
+	
 }
 

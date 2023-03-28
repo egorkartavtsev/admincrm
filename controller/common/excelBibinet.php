@@ -101,9 +101,9 @@
                    if ($sqlrt['cid'] === $sqlr['comp'])  {
                                         $photoDrom = $this->model_common_excelDrom->getPhotoDrom($sqlr['pid']);
                                         $getnote = $this->model_common_excelDrom->getDromDescriptionCompl($sqlr);
-                                        $active_sheet->setCellValue('A'.$lp.'','Копмлект '.$sqlr['podcat'].'');
+                                        $active_sheet->setCellValue('A'.$lp.'','Комплект '.$sqlr['podcat'].'');
                                          $active_sheet->setCellValue('A'.$lp.'',''.$sqlr['vin'].'');
-                                        $active_sheet->setCellValue('B'.$lp.'','Копмлект '.$sqlr['podcat'].'');
+                                        $active_sheet->setCellValue('B'.$lp.'','Комплект '.$sqlr['podcat'].'');
                                         $active_sheet->setCellValue('C'.$lp.'',''.$sqlr['brand'].'');
                                         $active_sheet->setCellValue('D'.$lp.'',''.$sqlr['model'].'');
                                         //$sqlrt['c_price'] =  ceil(104*$sqlrt['c_price']/5000) * 50 ; 
