@@ -5,7 +5,8 @@ class ModelCommonExcelDrom extends Model {
         return $sup->row['text'];
     }
     public function getDromDescription($data) {
-    //--------------------------------------------------------------
+		//exit(var_dump($data));
+	//--------------------------------------------------------------
         $this->load->model('common/avito');
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
@@ -48,6 +49,11 @@ class ModelCommonExcelDrom extends Model {
             } else {
                 $templ = str_replace('%dop%', ' ', $templ);
             }
+			if($data['original_ili_analog'] !== '-' && $data['original_ili_analog'] !== ''){
+				$templ = str_replace('%original_ili_analog%', 'Оригинальность: '.$data['original_ili_analog'].' ', $templ);
+			} else {
+                $templ = str_replace('%original_ili_analog%', '', $templ);
+            }
         } else {
             $templ = str_replace('%podcateg%',  '', $templ);
             $templ = str_replace('%brand%',  '', $templ);
@@ -66,9 +72,14 @@ class ModelCommonExcelDrom extends Model {
             } else {
                 $templ = str_replace('%cond%', ' ', $templ);
             }
-                $templ = str_replace('%compability%', ' ', $templ);
-                $templ = str_replace('%note%', ' ', $templ);
-                $templ = str_replace('%dop%', ' ', $templ);
+            $templ = str_replace('%compability%', ' ', $templ);
+            $templ = str_replace('%note%', ' ', $templ);
+            $templ = str_replace('%dop%', ' ', $templ);
+			if($data['original_ili_analog'] !== '-' && $data['original_ili_analog'] !== ''){
+				$templ = str_replace('%original_ili_analog%', 'Оригинальность: '.$data['original_ili_analog'].' ', $templ);
+			} else {
+                $templ = str_replace('%original_ili_analog%', '', $templ);
+            }
         }
             //$templ = str_replace('%weekend%', $weekend, $templ);
     /******************************************************************/
@@ -136,7 +147,7 @@ class ModelCommonExcelDrom extends Model {
 
     public function getDromDescriptionCompl($data) {
     //--------------------------------------------------------------
-        $this->load->model('common/avito');
+		$this->load->model('common/avito');
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
         //$weekend = $data['stock']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
@@ -154,45 +165,49 @@ class ModelCommonExcelDrom extends Model {
             }
         }
         $data['cond'] = ' '.$data['cond'].'Состояние: '.$data['const'].' ';
-            $templ = str_replace('%podcateg%', $data['podcat'], $templ);
-            $templ = str_replace('%brand%', $data['brand'], $templ);
-            $templ = str_replace('%modR%', $data['modRow'], $templ);
-            $templ = str_replace('%trbrand%', ' ', $templ);
-            $templ = str_replace('%trmodrow%', ' ', $templ);
-            $templ = str_replace('%stock%', isset($stock->row['adress'])?$stock->row['adress']:' г. Магнитогорск, ул. Магнитная 109/1 ', $templ);
-            $templ = str_replace('%vin%', $data['vin'], $templ);
-            if(trim($data['catN'])!==''){
-                $templ = str_replace('%catn%', ' Каталожный номер: '.$data['catN'].' ', $templ);
-            } else {
-                $templ = str_replace('%catn%', ' ', $templ);
-            }
-            if(trim($data['cond'])!=='-'){
-                $templ = str_replace('%cond%', ' '.$data['cond'].' ', $templ);
-            } else {
-                $templ = str_replace('%cond%', ' ', $templ);
-            }
-            if(trim($data['compability'])!==''){
-                $templ = str_replace('%compability%', ' Подходит на: '.$data['compability'].' ', $templ);
-            } else {
-                $templ = str_replace('%compability%', ' ', $templ);
-            }
-            if(trim($data['note'])!==''){
-                $templ = str_replace('%note%', ' '.$data['note'].' ', $templ);
-            } else {
-                $templ = str_replace('%note%', ' ', $templ);
-            }
-            if(trim($data['dop'])!==''){
-                $templ = str_replace('%dop%', ' '.$data['dop'].' ', $templ);
-            } else {
-                $templ = str_replace('%dop%', ' ', $templ);
-            }
+		$templ = str_replace('%podcateg%', $data['podcat'], $templ);
+		$templ = str_replace('%brand%', $data['brand'], $templ);
+		$templ = str_replace('%modR%', $data['modRow'], $templ);
+		$templ = str_replace('%trbrand%', ' ', $templ);
+		$templ = str_replace('%trmodrow%', ' ', $templ);
+		$templ = str_replace('%stock%', isset($stock->row['adress'])?$stock->row['adress']:' г. Магнитогорск, ул. Магнитная 109/1 ', $templ);
+		$templ = str_replace('%vin%', $data['vin'], $templ);
+		if(trim($data['catN'])!==''){
+			$templ = str_replace('%catn%', ' Каталожный номер: '.$data['catN'].' ', $templ);
+		} else {
+			$templ = str_replace('%catn%', ' ', $templ);
+		}
+		if(trim($data['cond'])!=='-'){
+			$templ = str_replace('%cond%', ' '.$data['cond'].' ', $templ);
+		} else {
+			$templ = str_replace('%cond%', ' ', $templ);
+		}
+		if(trim($data['compability'])!==''){
+			$templ = str_replace('%compability%', ' Подходит на: '.$data['compability'].' ', $templ);
+		} else {
+			$templ = str_replace('%compability%', ' ', $templ);
+		}
+		if(trim($data['note'])!==''){
+			$templ = str_replace('%note%', ' '.$data['note'].' ', $templ);
+		} else {
+			$templ = str_replace('%note%', ' ', $templ);
+		}
+		if(trim($data['dop'])!==''){
+			$templ = str_replace('%dop%', ' '.$data['dop'].' ', $templ);
+		} else {
+			$templ = str_replace('%dop%', ' ', $templ);
+		}
+		if($data['original_ili_analog'] !== '-' && $data['original_ili_analog'] !== ''){
+			$templ = str_replace('%original_ili_analog%', 'Оригинальность: '.$data['original_ili_analog'].' ', $templ);
+		} else {
+			$templ = str_replace('%original_ili_analog%', ' ', $templ);
+		}
            // $templ = str_replace('%weekend%', $weekend, $templ);
     /******************************************************************/
         return $templ; 
     }
 	
 	public function getExlx($minPrice, $maxPrice) {
-		
 		$exlx = $this->db->query("SELECT "
                 . "p.product_id AS pid, "
                 . "p.podcateg AS podcat, " //Наименование товара
@@ -211,7 +226,8 @@ class ModelCommonExcelDrom extends Model {
                 . "p.compability AS compability,  "
                 . "p.dop AS dop, "
                 . "p.stock AS stock, "
-                . "p.drom AS drom "
+				. "p.drom AS drom, "
+                . "p.originаl_ili_аnаlog AS original_ili_analog "
                 . "FROM ".DB_PREFIX."product p "
                 . "WHERE (p.quantity > 0) AND (p.podcateg != '') AND (p.price > 0) AND (p.price >= " . $minPrice . ") AND (p.price <= " . $maxPrice . ") " );
 		return $exlx;
