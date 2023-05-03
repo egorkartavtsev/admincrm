@@ -544,9 +544,15 @@ class ModelToolProduct extends Model {
             foreach ($reqwords as $word){
                 $query.="AND (p.vin = '".$this->db->escape($word)."' ";
                    foreach ($tmp as $field) {
-                       $query.="OR LOCATE('" . $this->db->escape($word) . "', p.".$field['name'].") ";
+                        if($field['name'] == 'podcateg' OR $field['name'] == 'Storony'){
+						  $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE (LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND library_id = 3")->rows;
+						  foreach($sup as $podcatVar){
+							$query.="OR LOCATE('" . $podcatVar['name'] . "', p.".$field['name'].") ";
+						  }
+						}
+						$query.="OR LOCATE('" . $this->db->escape($word) . "', p.".$field['name'].") ";
                    }
-               $query.=") ";
+                $query.=") ";
             }
 //*************************************************** sinonimy *********************************************************
 //        if($sinonym->num_rows){

@@ -162,6 +162,10 @@
                                   <td><p>%weekend%</p></td>
                                   <td><p>Выходные дни</p></td>
                               </tr>
+							  <tr>
+                                  <td><p>%originаl_ili_аnаlog%</p></td>
+                                  <td><p>Оригинальность</p></td>
+                              </tr>
                           </tbody>
                       </table>
                       <p>
@@ -227,6 +231,10 @@
                               <tr>
                                   <td><p>%cond%</p></td>
                                   <td><p>Состояние</p></td>
+                              </tr>
+							  <tr>
+                                  <td><p>%originаl_ili_аnаlog%</p></td>
+                                  <td><p>Оригинальность</p></td>
                               </tr>
                           </tbody>
                       </table>

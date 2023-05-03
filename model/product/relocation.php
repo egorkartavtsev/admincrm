@@ -3,7 +3,7 @@ class ModelProductRelocation extends Model {
     
     public function getProducts($data = array()) {
         $sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
-		$sql .= " WHERE !LOCATE('complect', vin) AND  p.price > '0' AND quantity > 0";
+		$sql .= " WHERE !LOCATE('complect', vin) AND quantity > 0";
 		
 		if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
 			$sql .= " AND p.vin LIKE '" . $this->db->escape($data['filter_vin']) . "%'";
@@ -43,7 +43,7 @@ class ModelProductRelocation extends Model {
 	
     public function getTotalProducts($data = array()) {
 		$sql = "SELECT COUNT(DISTINCT p.product_id) AS total FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
-		$sql .= " WHERE p.price > '0' AND quantity > 0";
+		$sql .= " WHERE quantity > 0";
 		
 		if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
 			$sql .= " AND p.vin LIKE '" . $this->db->escape($data['filter_vin']) . "%'";

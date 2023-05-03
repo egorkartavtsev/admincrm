@@ -79,49 +79,54 @@ class ModelToolXml extends Model {
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
-            $templ = str_replace('%podcat%', $podcateg->row['name'], $templ);
-            if($data['brand']['value']!=='-' && $data['brand']['value']!==''){
-                $templ = str_replace('%brand%', $brand->row['name'], $templ);
-                $templ = str_replace('%trbrand%', $brand->row['translate'], $templ);
-            } else {
-                $templ = str_replace('%brand%', '', $templ);
-                $templ = str_replace('%trbrand%', '', $templ);
-            }
-            if($data['modR']['value']!=='-' && $data['modR']['value']!==''){
-                $templ = str_replace('%modrow%', $modR->row['name'], $templ);
-                $templ = str_replace('%trmodrow%', $modR->row['translate'], $templ);
-            } else {
-                $templ = str_replace('%modrow%', '', $templ);
-                $templ = str_replace('%trmodrow%', '', $templ);
-            }
-            $templ = str_replace('%stock%', $adress['name'], $templ);
-            $templ = str_replace('%vin%', $data['vin'], $templ);
-            if(trim($data['catn']['value'])!==''){
-                $templ = str_replace('%catn%', '<li>Каталожный номер: <strong>'.$data['catn']['value'].'</strong></li>', $templ);
-            } else {
-                $templ = str_replace('%catn%', '', $templ);
-            }
-            if(trim($data['cond']['value'])!=='-'){
-                $templ = str_replace('%condit%', '<li>Состояние: '.$data['cond']['value'].'</li>', $templ);
-            } else {
-                $templ = str_replace('%condit%', '', $templ);
-            }
-            if(trim($data['compability']['value'])!==''){
-                $templ = str_replace('%compabil%', '<li>Подходит на: '.$data['compability']['value'].'</li>', $templ);
-            } else {
-                $templ = str_replace('%compabil%', '', $templ);
-            }
-            if(trim($data['note']['value'])!==''){
-                $templ = str_replace('%note%', '<li>'.$data['note']['value'].'</li>', $templ);
-            } else {
-                $templ = str_replace('%note%', '', $templ);
-            }
-            if(trim($data['dop']['value'])!==''){
-                $templ = str_replace('%dopinfo%', '<li>'.$data['dop']['value'].'</li>', $templ);
-            } else {
-                $templ = str_replace('%dopinfo%', '', $templ);
-            }
-            $templ = str_replace('%weekend%', $weekend, $templ);
+		$templ = str_replace('%podcat%', $podcateg->row['name'], $templ);
+		if($data['brand']['value']!=='-' && $data['brand']['value']!==''){
+			$templ = str_replace('%brand%', $brand->row['name'], $templ);
+			$templ = str_replace('%trbrand%', $brand->row['translate'], $templ);
+		} else {
+			$templ = str_replace('%brand%', '', $templ);
+			$templ = str_replace('%trbrand%', '', $templ);
+		}
+		if($data['modR']['value']!=='-' && $data['modR']['value']!==''){
+			$templ = str_replace('%modrow%', $modR->row['name'], $templ);
+			$templ = str_replace('%trmodrow%', $modR->row['translate'], $templ);
+		} else {
+			$templ = str_replace('%modrow%', '', $templ);
+			$templ = str_replace('%trmodrow%', '', $templ);
+		}
+		$templ = str_replace('%stock%', $adress['name'], $templ);
+		$templ = str_replace('%vin%', $data['vin'], $templ);
+		if(trim($data['catn']['value'])!==''){
+			$templ = str_replace('%catn%', '<li>Каталожный номер: <strong>'.$data['catn']['value'].'</strong></li>', $templ);
+		} else {
+			$templ = str_replace('%catn%', '', $templ);
+		}
+		if(trim($data['cond']['value'])!=='-'){
+			$templ = str_replace('%condit%', '<li>Состояние: '.$data['cond']['value'].'</li>', $templ);
+		} else {
+			$templ = str_replace('%condit%', '', $templ);
+		}
+		if(trim($data['compability']['value'])!==''){
+			$templ = str_replace('%compabil%', '<li>Подходит на: '.$data['compability']['value'].'</li>', $templ);
+		} else {
+			$templ = str_replace('%compabil%', '', $templ);
+		}
+		if(trim($data['note']['value'])!==''){
+			$templ = str_replace('%note%', '<li>'.$data['note']['value'].'</li>', $templ);
+		} else {
+			$templ = str_replace('%note%', '', $templ);
+		}
+		if(trim($data['dop']['value'])!==''){
+			$templ = str_replace('%dopinfo%', '<li>'.$data['dop']['value'].'</li>', $templ);
+		} else {
+			$templ = str_replace('%dopinfo%', '', $templ);
+		}
+		$templ = str_replace('%weekend%', $weekend, $templ);
+		if($data['originаl_ili_аnаlog']['value']!=='-' && $data['originаl_ili_аnаlog']['value']!==''){
+			$templ = str_replace('%originаl_ili_аnаlog%', '<li>Оригинальность: '.$data['originаl_ili_аnаlog']['value'].'</li>', $templ);
+		} else {
+			$templ = str_replace('%originаl_ili_аnаlog%', '', $templ);
+		}
     /******************************************************************/
         $dom=dom_import_simplexml($xmls->Ad[$id]->Description);
         $dom->parentNode->removeChild($dom);
@@ -132,7 +137,7 @@ class ModelToolXml extends Model {
         $node->appendChild($no->createCDATASection($templ));
     //------------------------------------------------------------------
         $xmls->Ad[$id]->ManagerName = 'Даниил';
-        $xmls->Ad[$id]->Price = $data['price']['value'];
+        $xmls->Ad[$id]->Price = $data['price']['value'] * 1.1;
         $xmls->Ad[$id]->ContactPhone = $phone;
         $xmls->Ad[$id]->Title = $data['avitoname'];
         $aid = $this->model_common_avito->getPCID($data['podcateg']['value']);
@@ -187,7 +192,7 @@ class ModelToolXml extends Model {
         $podcateg = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['podcateg']['value']."'");
         $img = ($adress['name']!=='пр. Карла Маркса, 179')?'shop.jpg':'KM.jpg';
         $brand = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['brand']['value']."'");
-        $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['model']['value']."'");
+        $modR = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE id = '".$data['modR']['value']."'");
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
@@ -235,6 +240,12 @@ class ModelToolXml extends Model {
                 $templ = str_replace('%dopinfo%', '', $templ);
             }
             $templ = str_replace('%weekend%', $weekend, $templ);
+			if($data['originаl_ili_аnаlog']['value']!=='-' && $data['originаl_ili_аnаlog']['value']!==''){
+				$templ = str_replace('%originаl_ili_аnаlog%', '<li>Оригинальность: '.$data['originаl_ili_аnаlog']['value'].'</li>', $templ);
+			} else {
+                $templ = str_replace('%originаl_ili_аnаlog%', '', $templ);
+            }
+			
     /******************************************************************/
             //exit(var_dump($data));
             $ad = $xmls->addChild('Ad');
@@ -262,7 +273,7 @@ class ModelToolXml extends Model {
                 $no   = $node->ownerDocument; 
                 $node->appendChild($no->createCDATASection($templ));
 
-                $ad->addChild('Price', $data['price']['value']);
+                $ad->addChild('Price', $data['price']['value'] * 1.1);
 				if($data['type']['value'] == "НОВОЕ")
 				{
 					$ad->addChild('Condition', "Новый");
