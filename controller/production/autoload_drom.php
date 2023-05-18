@@ -86,16 +86,22 @@ class ControllerProductionAutoloadDrom extends Controller {
 			$lp = $lp+1;
 		}
 		
-	   // header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
+		//$objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
+		//$objWriter->save('downloadXcelFiles/auto-parts-MGNAUTO.xls');
+				
+		//если выгрузка по категории, файл сохраняется на сервер, иначе отдаём на скачивание
+		if(isset($this->request->get['categ'])){
+			$objWriter = new PHPExcel_Writer_Excel5($OrderExcel);
+			$category = $this->request->get['categ'];
+			$objWriter->save("downloadXcelFiles/auto-parts-MGNAUTO(" . $category . ").xls");
+		}
+		$price = "" . $minPrice . "-" . $maxPrice . "";
 		header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
 		header ( "Cache-Control: no-cache, must-revalidate" );
 		header ( "Pragma: no-cache" );
 		header ( "Content-type: application/vnd.ms-excel" );
-		header ( "Content-Disposition: attachment; filename=auto-parts-MGNAUTO.xls" );
-
-
-		//$objWriter = PHPExcel_IOFactory::createWriter($OrderExcel, 'Excel5');
-		//$objWriter->save('downloadXcelFiles/auto-parts-MGNAUTO.xls');
+		header ( "Content-Disposition: attachment; filename=auto-parts-MGNAUTO(" . $price . ").xls" );
+		
 		$objWriter = new PHPExcel_Writer_Excel5($OrderExcel);
 		$objWriter->save('php://output');
 	}

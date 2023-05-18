@@ -23,11 +23,12 @@
 		  </div>
 		  <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 			<div class="panel-body">
+			  <span class="label label-default">При выборе категории обновится Drom</span>
 			  <div class="row">
 			    <div class="col-lg-3">
-				  <a class="btn btn-block btn-success" href="index.php?route=production/autoload_drom/download&minPrice=0&maxPrice=1000"> Выгрузить товары до 1000 р. </a>
-				  <a class="btn btn-block btn-success" href="index.php?route=production/autoload_drom/download&minPrice=1000&maxPrice=10000"> Выгрузить товары от 1000 р. до 10000 р. </a>
-				  <a class="btn btn-block btn-success" href="index.php?route=production/autoload_drom/download&minPrice=10000&maxPrice= 999999"> Выгрузить товары дороже 10000 р. </a>
+				  <a class="btn btn-block btn-success" href="index.php?route=production/autoload_drom/download&minPrice=0&maxPrice=1000&categ=0-1000"> Выгрузить товары до 1000 р. </a>
+				  <a class="btn btn-block btn-success" href="index.php?route=production/autoload_drom/download&minPrice=1000&maxPrice=10000&categ=1000-10000"> Выгрузить товары от 1000 р. до 10000 р. </a>
+				  <a class="btn btn-block btn-success" href="index.php?route=production/autoload_drom/download&minPrice=10000&maxPrice= 999999&categ=10000-999999""> Выгрузить товары дороже 10000 р. </a>
 			    </div>
 			  </div>
 			</div>
@@ -43,6 +44,9 @@
 		  </div>
 		  <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 			<div class="panel-body">
+			   <div class="form-group col-lg-9">
+			     <span class="label label-default">Drom НЕ ОБНОВИТСЯ, только скачается файл на ваше устройство</span>
+			   </div>
 			  <div class="form-group col-lg-6">
 			   <label>Цена от: </label>
 			   <input type="number" name="filter_min_price" placeholder="Минимальная цена" id="input-min_price" class="form-control" />
@@ -51,8 +55,10 @@
 				<label>Цена до: </label>
 				<input type="number" name="filter_max_price" placeholder="Максимальная цена" id="input-max_price" class="form-control" />
 			  </div>
-			  <button type="button" id="button-download" class="btn btn-success"> Выгрузить товары </button>
-			  <button type="button" id="button-download-all" class="btn btn-success"> Выгрузить все товары </button>
+			  <div class="form-group col-lg-6">
+				<button type="button" id="button-download" class="btn btn-success"> Выгрузить товары </button>
+			    <button type="button" id="button-download-all" class="btn btn-success"> Выгрузить все товары </button>
+			  </div>
 			</div>
 		  </div>
 		</div>
