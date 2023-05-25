@@ -23,6 +23,7 @@
           <div class="col-md-4" type="filter">
             <h2>Настройки Графика:</h2>
             <button class="btn btn-info" type="applyFilter" locate="sales"><i class="fa fa-check-circle-o"></i> применить настройки</button>
+			<a class="btn btn-success" type="downloadReport" id="button-download"> Скачать отчёт </a>
             <p>&nbsp;</p>
             <div class="alert alert-success">
                 <h4>Отчётный период:</h4>
