@@ -1844,7 +1844,6 @@ $(document).ready(function() {
                     val:$(this).val()
                 };
                 req.filter.push(object);
-//                filter.push(object);
             }
         });
         $(this).parent().find('select').each(function(){

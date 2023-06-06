@@ -288,7 +288,7 @@ class ControllerProductionStockDiscounts extends Controller {
 		}
 
 		$data['add'] = $this->url->link('production/addition', '1' . $url, true);
-		$data['delete'] = $this->url->link('production/stock_discounts/savePrice', '1' . $url, true);
+		$data['delete'] = $this->url->link('production/stock_discounts/saveChanges', '1' . $url, true);
                 $data['go_site'] = HTTP_SHOWCASE.'index.php?route=catalog/product&product_id=';
 		$data['products'] = array();
 
@@ -322,7 +322,8 @@ class ControllerProductionStockDiscounts extends Controller {
 //                $data['utype'] = $this->session->data['uType'];
 //                exit(var_dump($results));
 		foreach ($results as $result) {
-                        $photos = $this->model_tool_product->getProdImg($result['product_id']);
+                        //exit(var_dump($result));
+						$photos = $this->model_tool_product->getProdImg($result['product_id']);
                         $image = array();
                         $local_id = 0;
                         foreach($photos as $img){
@@ -388,18 +389,20 @@ class ControllerProductionStockDiscounts extends Controller {
                                     'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='')?$result['shelf']:'-',
                                     'box'        => (isset($result['box'])) && ($result['box']!=='')?$result['box']:'-',
                                     'donor'      => $result['numb']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'numb=' . $result['numb'] . $url, true).'">'.$result['numb'].'</a>':'-',
+									'numb'       => $result['numb'] != '' ? $result['numb'] : '-',
                                     'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
                                     'adress'     => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
                                     'note'       => $result['note'],
+									'zаmetki'    => $result['zаmetki'],
                                     'price'      => $result['price'],
                                     'date_added' => $result['date_added'],
                                     'dateDif'    => $dateRes,
                                     'dop'        => $result['dop'],
                                     'quantity'   => $result['quantity'],
                                     'status'     => $stat,
-									'compability'=> $result['compability'],
 									'cond'       => $result['cond'],
-                                    'edit'       => $this->url->link('production/stock_discounts/edit', 'product_id=' . $result['product_id'] . $url, true)
+                                    'edit'       => $this->url->link('production/stock_discounts/edit', 'product_id=' . $result['product_id'] . $url, true),
+									'avitoname'  => $result['avitoname']
                             );
                         }       
 		}  
@@ -414,7 +417,7 @@ class ControllerProductionStockDiscounts extends Controller {
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_category'] = $this->language->get('column_category');
 		$data['column_model'] = $this->language->get('column_model');
-		$data['column_price'] = $this->language->get('column_price');
+		$data['column_price'] = "Цена&nbspдетали";
 		$data['column_quantity'] = $this->language->get('column_quantity');
 		$data['column_status'] = $this->language->get('column_status');
 		$data['column_action'] = $this->language->get('column_action');
@@ -1040,22 +1043,40 @@ class ControllerProductionStockDiscounts extends Controller {
         imagedestroy($source);
         imagedestroy($rotate);
         echo 1;
-    }  
+    }
+	
     public function savePrice() {
         $this->load->model('tool/xml');
         $this->load->model('tool/forms');
         $this->load->model('tool/product');
         $trill = $this->request->post;
         $trillPrice = $trill['price'];
-            foreach ($trillPrice as $vin => $priceCell) {
-            if ($priceCell != '') {
-             $this->model_tool_product->savePriceCell($vin, $priceCell);
-          
+        foreach ($trillPrice as $vin => $priceCell) {
+            if($priceCell != '') {
+				$this->model_tool_product->savePriceCell($vin, $priceCell);
             }
-            
         }
         $this->response->redirect($this->url->link('production/stock_discounts'));
-
-        //exit(var_dump($trill));
     }
+	
+	public function saveChanges() {
+		$this->load->model('tool/product');
+		if($this->request->post['selected']){
+			$selectedProds = $this->request->post['selected'];
+			$cellNames = array_keys($this->request->post);
+			$key = array_search('selected', $cellNames);
+			unset($cellNames[$key]);
+			foreach($selectedProds as $prod){
+				foreach($cellNames as $cellName){
+					$vals = $this->request->post[$cellName];
+					if($cellName == 'donor' && $vals[$prod] != '' && $vals[$prod] != '-'){
+						$this->model_tool_product->saveProductCell($prod, $vals[$prod], "numb");
+					} elseif($cellName != 'donor' && $vals[$prod] != ''){
+						$this->model_tool_product->saveProductCell($prod, $vals[$prod], $cellName);
+					}
+				}
+			}
+			$this->response->redirect($this->url->link('production/stock_discounts'));
+		}
+	}
 }

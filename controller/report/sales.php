@@ -85,27 +85,12 @@ class ControllerReportSales extends Controller{
 			$active_sheet->setCellValue('J'.$lp.'',''.$row['opl_type'].'');
 			$active_sheet->setCellValue('K'.$lp.'',''.$row['wherefrom'].'');
 			$active_sheet->setCellValue('L'.$lp.'',''.$row['city'].'');
-			
 			$lp = $lp+1;
 		}
-		/*
-		header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
-		header ( "Cache-Control: no-cache, must-revalidate" );
-		header ( "Pragma: no-cache" );
-		header ( "Content-type: application/vnd.ms-excel" );
-		header ( "Content-Disposition: attachment; filename=sales-report.xls" );
-		
-		$objWriter = new PHPExcel_Writer_Excel5($OrderExcel);
-		$objWriter->save('php://output');
-		*/
 		$objWriter = new PHPExcel_Writer_Excel5($OrderExcel);
 		$path = "downloadXcelFiles/sales-report.xls";
 		$objWriter->save("" . $path . "");
 		echo ($path);
-		
-		
-		
-		
 	}
     
 }

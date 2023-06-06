@@ -734,7 +734,12 @@ class ModelToolProduct extends Model {
         return $this->db->query("SELECT ".$sup->row['similar']." FROM ".DB_PREFIX.$req['target']." WHERE ".$tmp." ")->row;
         
     }
+	
     public function savePriceCell($vin, $priceCell){
-         $this->db->query("UPDATE ".DB_PREFIX."product SET price = ".$priceCell." WHERE vin = ".$vin);
+        $this->db->query("UPDATE ".DB_PREFIX."product SET price = ".$priceCell." WHERE vin = '".$vin."'");
     }
+	
+	public function saveProductCell($vin, $newValue, $cellName){
+		$this->db->query("UPDATE ".DB_PREFIX."product SET " . $cellName . " = '" . $newValue . "' WHERE vin = '" . $vin . "'");
+	}
 }

@@ -116,7 +116,7 @@
               <button type="button" id="button-filter" class="btn btn-primary pull-left"> Применить <?php echo $button_filter; ?></button>
               <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"> Очистить фильтры</button>
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
-              <button type="submit" id='btn-save-price' class="btn btn-success pull-right">Сохранить цены</button>
+              <button type="submit" id='btn-save-price' class="btn btn-success pull-right">Сохранить изменения</button>
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@
               <thead>
                 <tr>
                   <?php if($user['access'] == 19 || $user['access'] == 99999) { ?>
-                    <td class="text-center" colspan="2" style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                    <td class="text-center" colspan="2" style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" disabled /></td>
                   <?php } else { ?>
                     <td class="text-center"><i class="fa fa-android"></i></td>
                   <?php }?>
@@ -149,6 +149,7 @@
                     <?php } ?></td>
                   
                   <td class="text-left col-sm-2">Примечание</td>
+				  <td>Заметки для менеджеров</td>
                   <td class="text-left col-sm-2">Допинфо</td>
                   
                   <td>Донор</td>
@@ -164,8 +165,8 @@
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
 					<td class="text-left col-sm-2">Каталожный номер</td>
-					<td class="text-left col-sm-2">Совместимость</td>
 					<td class="text-left col-sm-2">Состояние</td>
+					<td>Заголовок авито</td>
                 </tr>
               </thead>
               <tbody>
@@ -173,9 +174,9 @@
                 <?php foreach ($products as $product) { ?>
                 <tr>
                   <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-center"><?php if (in_array($product['product_id'], $selected)) { ?>
-                    <input type="checkbox" name="selected[]" value="<?php echo $product['product_id']; ?>" checked="checked" />
+                    <input type="checkbox" name="selected[]" value="<?php echo $product['vin']; ?>" checked="checked" id="<?php echo $product['vin']; ?>" disabled />
                     <?php } else { ?>
-                    <input type="checkbox" name="selected[]" value="<?php echo $product['product_id']; ?>" />
+                    <input type="checkbox" name="selected[]" value="<?php echo $product['vin']; ?>" id="<?php echo $product['vin']; ?>" disabled />
                     <?php } ?></td><?php }?>
                   <td class="text-center">
                       <a class="btn btn-success" btn_type="descText" desc-target="<?php echo $product['product_id']; ?>" title="Описание для ДРОМ" data-toggle="modal" data-target="#proDescription"><i class="fa fa-text-height"></i></a>
@@ -222,12 +223,25 @@
 
                   <td><?php echo $product['vin']; ?></td>
                   <td><?php echo $product['stock'].'/'.$product['stell'].'/'.$product['jar'].'/'.$product['shelf'].'/'.$product['box']; ?></td>
-                  <th class="form-control col-xs-4">
-                      <input type="text" class="form-control " placeholder="<?php echo $product['price']; ?>" aria-label="" name="price['<?php echo $product['vin']; ?>']" aria-describedby="basic-addon1">
-                  </th>
-                  <td class="text-left"><?php echo htmlspecialchars_decode($product['note']); ?></td>
-                  <td class="text-left"><?php echo htmlspecialchars_decode($product['dop']);?></td>
-                  <td class="text-left"><?php echo $product['donor'];?></td>
+                  <td>
+                      <input type="text" class="form-control " placeholder="<?php echo $product['price']; ?>" aria-label="" name="price[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')" aria-describedby="basic-addon1">
+                  </td>
+                  <td class="text-left">
+				    <?php echo htmlspecialchars_decode($product['note']); ?><br><br>
+					<input type="text" class="form-control" value="<?php echo $product['note'];?>" name="note[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')">
+				  </td>
+				  <td>
+				    <?php echo $product['zаmetki']; ?><br><br>
+				    <input type="text" class="form-control" value="<?php echo $product['zаmetki'];?>" name="zаmetki[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')">
+				  </td>
+                  <td class="text-left">
+				    <?php echo htmlspecialchars_decode($product['dop']);?><br><br>
+				    <input type="text" class="form-control" value="<?php echo $product['dop'];?>" name="dop[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')">
+				  </td>
+                  <td class="text-left">
+				    <?php echo $product['donor'];?><br><br>
+					<input type="text" class="form-control" value="<?php echo $product['numb'];?>" name="donor[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')">
+				  </td>
                   
 
                   <td class="text-right"><?php if ($product['quantity'] <= 0) { ?>
@@ -238,9 +252,15 @@
                     <span class="label label-success"><?php echo $product['quantity']; ?></span>
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
-				  <td class="text-left"><?php echo $product['catn'];?></td>
-				  <td class="text-left"><?php echo $product['compability']; ?></td>
+				  <td>
+				    <?php echo $product['catn']; ?><br><br>
+					<input type="text" class="form-control" value="<?php echo $product['catn'];?>" name="catn[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')">
+				  </td>
 				  <td class="text-left"><?php echo $product['cond']; ?></td>
+				  <td class="text-left">
+				    <?php echo $product['avitoname']; ?><br><br>
+				    <input type="text" class="form-control" value="<?php echo $product['avitoname'];?>" name="avitoname[<?php echo $product['vin']; ?>]" onchange="funcSelect('<?php echo $product['vin'];?>')"> 
+				  </td>
                   <?php }?>
                 </tr>
                 <?php } ?>
@@ -419,5 +439,11 @@ $('input[name=\'filter_model\']').autocomplete({
 		$('input[name=\'filter_model\']').val(item['label']);
 	}
 });
+
+function funcSelect(vin){
+	var product = document.getElementById(vin);
+	product.checked = true;
+	product.disabled = false;
+}
 //--></script></div>
 <?php echo $footer; ?>
