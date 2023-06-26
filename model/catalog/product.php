@@ -50,7 +50,7 @@ class ModelCatalogProduct extends Model {
 
 	public function getProducts($data = array()) {
 
-		$sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
+		$sql = "SELECT p.product_id, p.vin, p.date_added, p.status, p.manager, p.catn, p.image, p.adress, p.stock, p.stell, p.jar, p.shelf, p.box, p.numb, p.note, p.zаmetki, p.dop, p.price, p.quantity, p.cond, p.avitoname, pd.name FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
 		//$sql .= " LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
 
 		$sql .= " WHERE !LOCATE('complect', vin)";
@@ -148,7 +148,7 @@ class ModelCatalogProduct extends Model {
 			$sql .= " AND p.box = '" . $sup->row['name'] . "'";
 		}
 		
-		$sql .= " GROUP BY p.product_id";
+		$sql .= " GROUP BY p.product_id, pd.name";
 
 		$sort_data = array(
 			'p.date_added',

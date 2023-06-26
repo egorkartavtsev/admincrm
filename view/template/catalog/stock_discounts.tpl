@@ -363,13 +363,7 @@ $('#button-filter').on('click', function() {
 	if (filter_vin) {
 		url += '&filter_vin=' + encodeURIComponent(filter_vin);
 	}
-	
-        var filter_wocat = $('input[name=\'filter_wocat\']').val();
-        
-        if (filter_wocat) {
-		url += '&filter_wocat=' + filter_wocat;
-	}
-        
+	        
         var filter_brand = $('input[name=\'filter_brand\']').val();
         var filter_brand = filter_brand.replace(/\s+/g," ");
         $('input[name=\'filter_brand\']').val($.trim(filter_brand));
