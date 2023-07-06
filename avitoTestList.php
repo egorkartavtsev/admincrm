@@ -16,52 +16,39 @@ $db_prefix = 'oc_';
         die("Connection failed: " . $mysqli ->connect_error);
     }
 
-    $result = $mysqli->query("SELECT * from oc_product_to_avito where 1 = 1 and dateEnd > STR_TO_DATE('2021-08-01', '%Y-%m-%d') ORDER BY dateEnd DESC", MYSQLI_USE_RESULT);
-    $data = array();
+    $xmls = simplexml_load_file('Avito/ads.xml');
 
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-	
-    $xmls = simplexml_load_file('https://admin.xn--174-5cdagf5b9cdset.xn--p1ai/Avito/ads.xml');
-	
-	/*foreach($xmls->Ad as $ad)
-	{
-		echo var_dump($ad);
-	}*/
-	echo '<table>';
-	$i = 1;
-    foreach ($xmls->Ad as $row)
-	{		
-		echo '<tr>';		
-		echo '<td>'.$i.'</td><td>'.$row->Id.'</td><td>'.$row->DateBegin.'</td><td>'.$row->DateEnd.'</td>';
-		echo '</tr>';
-		$i++;
-    }
+    foreach ($xmls->Ad as $ad)
+    {
+        $result = $mysqli->query("select
+                                                op.brand,
+                                                op.catn,
+                                                op.vin
+                                            from
+                                                oc_product op
+                                            left join oc_lib_fills olf on
+                                                olf.id = op.brand
+                                            where
+                                                op.vin = '" . $ad->Id . "'", MYSQLI_USE_RESULT);
+        $data = array();
 
-	echo '</table>';
-	die();
+        while ($row = $result->fetch_assoc()) {
+            $data = $row;
+        }
 
+        if(!isset($ad->AdType))
+            $ad->addChild('AdType', 'Товар приобретен на продажу');
 
+        if(!isset($ad->OEM) && $data['catn'] != '')
+            $ad->addChild('OEM', $data['catn']);
 
-	echo '<table>';
-	$i = 1;
-    foreach ($data as $row)
-	{
-		$key = array_search(
-			$row['vin'],
-			array_column((array)$xmls->Ad,'Id')
-		);
-		
-		echo '<tr>';		
-		echo '<td>'.$i.'</td><td>'.$row['vin'].'</td><td>'.$row['dateStart'].'('.($key?$xmls->Ad[$key]['DateStart']:'-').')</td><td>'.$row['dateEnd'].'</td>';
-		echo '</tr>';
-		$i++;
+        if(!isset($ad->Brand) && $data['brand'] != '')
+            $ad->addChild('Brand', $data['brand']);
+
+        //echo var_dump($data);
+        echo $data['catn'] . ' | ' . $data['brand']. ' | ' . $data['vin'];
+        echo '<br><hr><br>';
+
     }
 
-	echo '</table>';/**/
-    echo count($xmls->Ad).' != '.count($data);
-
-//    foreach($xmls->Ad as $ad) {
-//        echo $ad->Id.' - '.$ad->DateEnd.'<br/>';
-//    }
+    $xmls->saveXML('Avito/ads.xml');

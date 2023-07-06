@@ -61,7 +61,6 @@ class ModelToolXml extends Model {
     }
     
     public function avitoUpdateAd($data, $id, $xmls) {
-        //exit(var_dump($data));
         $this->load->model('common/avito');
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
@@ -137,6 +136,18 @@ class ModelToolXml extends Model {
         $node->appendChild($no->createCDATASection($templ));
     //------------------------------------------------------------------
         $xmls->Ad[$id]->ManagerName = 'Даниил';
+        if(!isset($xmls->Ad[$id]->AdType))
+            $xmls->Ad[$id]->addChild('AdType', 'Товар приобретен на продажу');
+        if(!isset($xmls->Ad[$id]->OEM))
+            $xmls->Ad[$id]->addChild('OEM', $data['catn']['value']);
+        else
+            $xmls->Ad[$id]->OEM = $data['catn']['value'];
+
+        if(!isset($xmls->Ad[$id]->Brand))
+            $xmls->Ad[$id]->addChild('Brand', $brand->row['name']);
+        else
+            $xmls->Ad[$id]->Brand = $brand->row['name'];
+
         $xmls->Ad[$id]->Price = $data['price']['value'] * 1.1;
         $xmls->Ad[$id]->ContactPhone = $phone;
         $xmls->Ad[$id]->Title = $data['avitoname'];
@@ -250,60 +261,63 @@ class ModelToolXml extends Model {
             //exit(var_dump($data));
             $ad = $xmls->addChild('Ad');
 
-                $ad->addChild('Id', $data['vin']);
-                $ad->addChild('DateBegin', date('Y-m-d', strtotime("+".$settings['sdate']." days")));
-                $ad->addChild('DateEnd', date('Y-m-d', strtotime("+".$settings['edate']." days")));
-                $ad->addChild('ListingFee', $settings['listingfree']);
-                $ad->addChild('AdStatus', $settings['adstatus']);
-                $ad->addChild('AllowEmail', $settings['allowemail']);
-                $ad->addChild('ManagerName', 'Даниил');
-                if ($data['adress']!='Челябинск, ул.Троицкая 1В корпус2'){
-                    $ad->addChild('Address', 'Россия, Челябинская область, Магнитогорск, Магнитная улица, 109/1');
-                } else {
-                    $ad->addChild('Address', 'Россия, Челябинская область, Челябинск, Троицкая  улица, 1В корпус2');
-                }
-                $ad->addChild('ContactPhone', $phone);
-                $ad->addChild('Category', 'Запчасти и аксессуары');
-                $aid = $this->model_common_avito->getPCID($data['podcateg']['value']);
-                $ad->addChild('TypeId', trim($aid));
-                $ad->addChild('Title', $data['avitoname']);
+            $ad->addChild('Id', $data['vin']);
+            $ad->addChild('AdType', 'Товар приобретен на продажу');
+            $ad->addChild('DateBegin', date('Y-m-d', strtotime("+".$settings['sdate']." days")));
+            $ad->addChild('DateEnd', date('Y-m-d', strtotime("+".$settings['edate']." days")));
+            $ad->addChild('ListingFee', $settings['listingfree']);
+            $ad->addChild('AdStatus', $settings['adstatus']);
+            $ad->addChild('AllowEmail', $settings['allowemail']);
+            $ad->addChild('Brand', $brand->row['name']);
+            $ad->addChild('ManagerName', 'Даниил');
+            if ($data['adress']!='Челябинск, ул.Троицкая 1В корпус2'){
+                $ad->addChild('Address', 'Россия, Челябинская область, Магнитогорск, Магнитная улица, 109/1');
+            } else {
+                $ad->addChild('Address', 'Россия, Челябинская область, Челябинск, Троицкая  улица, 1В корпус2');
+            }
+            $ad->addChild('ContactPhone', $phone);
+            $ad->addChild('Category', 'Запчасти и аксессуары');
+            $aid = $this->model_common_avito->getPCID($data['podcateg']['value']);
+            $ad->addChild('TypeId', trim($aid));
+            $ad->addChild('Title', $data['avitoname']);
+            $ad->addChild('OEM', $data['catn']['value']);
 
-                $desc = $ad->addChild('Description');
-                $node = dom_import_simplexml($desc);
-                $no   = $node->ownerDocument; 
-                $node->appendChild($no->createCDATASection($templ));
 
-                $ad->addChild('Price', $data['price']['value'] * 1.1);
-				if($data['type']['value'] == "НОВОЕ")
-				{
-					$ad->addChild('Condition', "Новый");
-				}
-				else
-				{
-					$ad->addChild('Condition', "Б/у");
-				}
-                /******************************/
-                $images = $ad->addChild('Images');
-                $image = $images->addChild('Image');
-                $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$data['image']['value']);
-                /*****************************/
-                $photos = $this->model_product_product->getPhotos($data['pid']);
-                $count=1;
-                if(!empty($photos)){
-                    foreach ($photos as $photo) {
-                        if($photo['img']!=$data['image']['value'] && $count<=8){
-                            $image = $images->addChild('Image');
-                            $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
-                            ++$count;
-                        }
+            $desc = $ad->addChild('Description');
+            $node = dom_import_simplexml($desc);
+            $no   = $node->ownerDocument;
+            $node->appendChild($no->createCDATASection($templ));
+
+            $ad->addChild('Price', $data['price']['value'] * 1.1);
+            if($data['type']['value'] == "НОВОЕ")
+            {
+                $ad->addChild('Condition', "Новый");
+            }
+            else
+            {
+                $ad->addChild('Condition', "Б/у");
+            }
+            /******************************/
+            $images = $ad->addChild('Images');
+            $image = $images->addChild('Image');
+            $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$data['image']['value']);
+            /*****************************/
+            $photos = $this->model_product_product->getPhotos($data['pid']);
+            $count=1;
+            if(!empty($photos)){
+                foreach ($photos as $photo) {
+                    if($photo['img']!=$data['image']['value'] && $count<=8){
+                        $image = $images->addChild('Image');
+                        $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$photo['img']);
+                        ++$count;
                     }
                 }
+            }
             $image = $images->addChild('Image');
             $image->addAttribute('url', HTTP_SHOWCASE.'image/'.$img);
-            if($data['youtube']['value'] != ''){
-						$xmls->Ad[$id]->addChild('VideoURL','https://www.youtube.com/watch?v='.$data['youtube']['value']);
-                                                
-            }
+            if($data['youtube']['value'] != '')
+                $ad->addChild('VideoURL','https://www.youtube.com/watch?v='.$data['youtube']['value']);
+
             $xmls->saveXML('Avito/ads.xml');
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_avito "
                     . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
