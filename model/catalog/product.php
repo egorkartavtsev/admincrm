@@ -50,35 +50,34 @@ class ModelCatalogProduct extends Model {
 
 	public function getProducts($data = array()) {
 
-                $sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
-                //$sql .= " LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
+		$sql = "SELECT p.product_id, p.vin, p.date_added, p.status, p.manager, p.catn, p.image, p.adress, p.stock, p.stell, p.jar, p.shelf, p.box, p.numb, p.note, p.zаmetki, p.dop, p.price, p.quantity, p.cond, p.avitoname, pd.name FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
+		//$sql .= " LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
 
-                $sql .= " WHERE !LOCATE('complect', vin)";
+		$sql .= " WHERE !LOCATE('complect', vin)";
 
-                if (isset($data['filter_brand']) && !is_null($data['filter_brand'])) {
-                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
-                }
-                
-                
-                if (isset($data['filter_drom'])) {
-                    if($data['filter_drom']==='1'){ 
-                        $sql .= " AND p.drom!='' ";
-                    } elseif ($data['filter_drom']==='0'){
-                        $sql .= " AND p.drom = '' ";
-                    }
-                }
-                
-                if (isset($data['filter_type'])) {
-                    if($data['filter_type']==='1'){ 
-                        $sql .= " AND p.type = 'НОВЫЙ' ";
-                    } elseif ($data['filter_type']==='0'){
-                        $sql .= " AND  p.type = 'Б/У' ";
-                    }
-                }
-                
-                if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
-                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.numb)";
-                }
+		if (isset($data['filter_brand']) && !is_null($data['filter_brand'])) {
+			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
+		}
+		
+		if (isset($data['filter_drom'])) {
+			if($data['filter_drom']==='1'){ 
+				$sql .= " AND p.drom!='' ";
+			} elseif ($data['filter_drom']==='0'){
+				$sql .= " AND p.drom = '' ";
+			}
+		}
+		
+		if (isset($data['filter_type'])) {
+			if($data['filter_type']==='1'){ 
+				$sql .= " AND p.type = 'НОВЫЙ' ";
+			} elseif ($data['filter_type']==='0'){
+				$sql .= " AND  p.type = 'Б/У' ";
+			}
+		}
+		
+		if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
+			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.numb)";
+		}
 
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
@@ -92,20 +91,18 @@ class ModelCatalogProduct extends Model {
 			$sql .= " AND p.price >= '" . $this->db->escape($data['filter_price_from']) . "%'";
 		}
 		
-                if (isset($data['filter_price_to']) && !is_null($data['filter_price_to'])) {
+        if (isset($data['filter_price_to']) && !is_null($data['filter_price_to'])) {
 			$sql .= " AND p.price <= '" . $this->db->escape($data['filter_price_to']) . "%'";
 		}
                 
-                if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
+        if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
 			$sql .= " AND p.vin LIKE '" . $this->db->escape($data['filter_vin']) . "%'";
 		}
-                if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
+        if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
 			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.catn)";
 		}
-                
-              
-                
-                if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
+		
+        if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
 			$sql .= " AND p.quantity = '" . (int)$data['filter_quantity'] . "'";
 		}
 
@@ -151,7 +148,7 @@ class ModelCatalogProduct extends Model {
 			$sql .= " AND p.box = '" . $sup->row['name'] . "'";
 		}
 		
-		$sql .= " GROUP BY p.product_id";
+		$sql .= " GROUP BY p.product_id, pd.name";
 
 		$sort_data = array(
 			'p.date_added',

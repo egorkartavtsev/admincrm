@@ -37,21 +37,21 @@
 			  <?php echo $filtLocation;?><br>
 			  <h4><input type="checkbox" name="isExact" <?php echo $checked; ?>/> <span class="label label-default">Указан точный адрес</span></h4>
 			  <button type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-filter"></i> Применить фильтры</button>
-              <button type="button" id="btn-clear-filters" class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button>
+              <button type="button" id="btn-clear-filters" class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button><br>
 			</div>
 			<div class="col-sm-2">
 			</div>
 			<div class="col-sm-4">
 			  <h3 class="panel-title" align="center"><b>Новое местоположение товара</b></h3><br>
 			  <?php echo $form;?> <br>
-		<form action="<?php echo $relocate; ?>" method="post" enctype="multipart/form-data" id="form-product">
-		  <button type="button" id='btn-relocate' class="btn btn-success pull-right">Переместить товар</button>
-			</div>
+			  <button type="button" id='btn-relocate' class="btn btn-success pull-right">Переместить товар</button>
+			</div><br>
 			<div class="col-sm-2">
-				<h3 class="panel-title" align="left"><b>Недавно использованные адреса:</b></h3><br>
-				<?php foreach($previousAddr as $addr){?>
-					<button type="button" name="previousAddr" class="btn btn-success pull-right" value="<?php echo $addr['adress']; ?>:<?php echo $addr['location']; ?>" onclick="chooseAddr(this)"> <?php echo $addr['adress']; ?><br><?php echo $addr['location']; ?></button><br>
-				<?php } ?>
+		<form action="<?php echo $relocate; ?>" method="post" enctype="multipart/form-data" id="form-product">
+			  <h3 class="panel-title" align="left"><b>Недавно использованные адреса:</b></h3><br>
+			  <?php foreach($previousAddr as $addr){?>
+			  	<button type="button" name="previousAddr" class="btn btn-success pull-right" value="<?php echo $addr['adress']; ?>:<?php echo $addr['location']; ?>" onclick="chooseAddr(this)"> <?php echo $addr['adress']; ?><br><?php echo $addr['location']; ?></button><br>
+			  <?php } ?>
 			</div>
 		  </div>
 		</div>

@@ -100,13 +100,15 @@ class ControllerProductionStockDiscounts extends Controller {
 	}
 
 	protected function getList() {
-                $this->load->model('tool/layout');
-                $data = $this->model_tool_layout->getLayout($this->request->get['route']);
-                
-                $user = $this->user->getUserInfo();
-                $data['user'] = array(
-                    'access' => (int)$user['userAL']
-                );
+		$this->load->model('tool/layout');
+		$this->load->model('tool/product');        
+		$this->load->model('tool/image');
+		$data = $this->model_tool_layout->getLayout($this->request->get['route']);
+		
+		$user = $this->user->getUserInfo();
+		$data['user'] = array(
+			'access' => (int)$user['userAL']
+		);
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = trim($this->request->get['filter_name']);
 		} else {
@@ -132,23 +134,16 @@ class ControllerProductionStockDiscounts extends Controller {
 		} else {
 			$filter_catn = null;
 		}
-                if (isset($this->request->get['filter_category'])) {
+		if (isset($this->request->get['filter_category'])) {
 			$filter_category = trim($this->request->get['filter_category']);
 		} else {
 			$filter_category = NULL;
 		}
-                if (isset($this->request->get['filter_wocat'])) {
-			$filter_wocat = trim($this->request->get['filter_wocat']);
-		} else {
-			$filter_wocat = null;
-		}
-                
 		if (isset($this->request->get['filter_model'])) {
 			$filter_model = trim($this->request->get['filter_model']);
 		} else {
 			$filter_model = null;
 		}
-
 		if (isset($this->request->get['filter_price_from'])) {
 			$filter_price_from = trim($this->request->get['filter_price_from']);
 		} else {
@@ -159,137 +154,127 @@ class ControllerProductionStockDiscounts extends Controller {
 		} else {
 			$filter_price_to = null;
 		}
-		
-                if (isset($this->request->get['filter_vin'])) {
+		if (isset($this->request->get['filter_vin'])) {
 			$filter_vin = trim($this->request->get['filter_vin']);
 		} else {
 			$filter_vin = null;
 		}
-                
-                if (isset($this->request->get['filter_brand'])) {
+		if (isset($this->request->get['filter_brand'])) {
 			$filter_brand = trim($this->request->get['filter_brand']);
 		} else {
 			$filter_brand = null;
 		}
-                if (isset($this->request->get['filter_drom'])) {
+		if (isset($this->request->get['filter_drom'])) {
 			$filter_drom = trim($this->request->get['filter_drom']);
 		} else {
 			$filter_drom = null;
 		}
-                if (isset($this->request->get['filter_type'])) {
+		if (isset($this->request->get['filter_type'])) {
 			$filter_type = trim($this->request->get['filter_type']);
 		} else {
 			$filter_type = null;
 		}
-
 		if (isset($this->request->get['filter_quantity'])) {
 			$filter_quantity = trim($this->request->get['filter_quantity']);
 		} else {
 			$filter_quantity = null;
 		}
-
 		if (isset($this->request->get['filter_status'])) {
 			$filter_status = trim($this->request->get['filter_status']);
 		} else {
 			$filter_status = null;
 		}
-
 		if (isset($this->request->get['filter_image'])) {
 			$filter_image = trim($this->request->get['filter_image']);
 		} else {
 			$filter_image = null;
 		}
-
 		if (isset($this->request->get['sort'])) {
 			$sort = trim($this->request->get['sort']);
 		} else {
 			$sort = 'pd.date_added';
 		}
-
 		if (isset($this->request->get['order'])) {
 			$order = trim($this->request->get['order']);
 		} else {
 			$order = 'DESC';
 		}
-
 		if (isset($this->request->get['page'])) {
 			$page = trim($this->request->get['page']);
 		} else {
 			$page = 1;
 		}
-
 		$url = '';
-
 		if (isset($this->request->get['filter_catn'])) {
 			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
-			}
+		}
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
-			}
+		}
 		if (isset($this->request->get['filter_donor'])) {
 			$url .= '&filter_donor=' . urlencode(html_entity_decode($this->request->get['filter_donor'], ENT_QUOTES, 'UTF-8'));
-			}
-
+		}
 		if (isset($this->request->get['filter_category'])) {
 			$url .= '&filter_category=' . urlencode(html_entity_decode($this->request->get['filter_category'], ENT_QUOTES, 'UTF-8'));
 		}
-		
-                if (isset($this->request->get['filter_wocat'])) {
-			$url .= '&filter_wocat=' . urlencode(html_entity_decode($this->request->get['filter_wocat'], ENT_QUOTES, 'UTF-8'));
-		}
-
 		if (isset($this->request->get['filter_model'])) {
 			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 		}
-
 		if (isset($this->request->get['filter_price_from'])) {
 			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
 		}
 		if (isset($this->request->get['filter_price_to'])) {
 			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 		}
-		
-                if (isset($this->request->get['filter_vin'])) {
+		if (isset($this->request->get['filter_vin'])) {
 			$url .= '&filter_vin=' . $this->request->get['filter_vin'];
 		}
-                
-                if (isset($this->request->get['filter_brand'])) {
+		if (isset($this->request->get['filter_brand'])) {
 			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 		}
-                if (isset($this->request->get['filter_drom'])) {
+		if (isset($this->request->get['filter_drom'])) {
 			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 		}
-                if (isset($this->request->get['filter_type'])) {
+		if (isset($this->request->get['filter_type'])) {
 			$url .= '&filter_type=' . $this->request->get['filter_type'];
 		}
-
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
 		}
-
 		if (isset($this->request->get['filter_status'])) {
 			$url .= '&filter_status=' . $this->request->get['filter_status'];
 		}
-
 		if (isset($this->request->get['filter_image'])) {
 			$url .= '&filter_image=' . $this->request->get['filter_image'];
 		}
+		if ($order == 'ASC') {
+			$url .= '&order=DESC';
+		} else {
+			$url .= '&order=ASC';
+		}
+		if (isset($this->request->get['page'])) {
+			$url .= '&page=' . $this->request->get['page'];
+		}
+		
+		//сначала мы формируем эти ссылки, а потом уже проверяем sort
+		$data['sort_name'] = $this->url->link('production/stock_discounts', 'sort=pd.name' . $url, true);
+		$data['sort_model'] = $this->url->link('production/stock_discounts', 'sort=p.length' . $url, true);
+		$data['sort_manager'] = $this->url->link('production/stock_discounts', 'sort=p.manager' . $url, true);
+		$data['sort_locate'] = $this->url->link('production/stock_discounts', 'sort=p.weight' . $url, true);
+		$data['sort_date_added'] = $this->url->link('production/stock_discounts', 'sort=p.date_added' . $url, true);
+		$data['sort_price'] = $this->url->link('production/stock_discounts', 'sort=p.price' . $url, true);
+		$data['sort_category'] = $this->url->link('production/stock_discounts', 'sort=p2c.category_id' . $url, true);
+		$data['sort_quantity'] = $this->url->link('production/stock_discounts', 'sort=p.quantity' . $url, true);
+		$data['sort_status'] = $this->url->link('production/stock_discounts', 'sort=p.status' . $url, true);
+		$data['sort_order'] = $this->url->link('production/stock_discounts', 'sort=p.sort_order' . $url, true);
 
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
 
-		if (isset($this->request->get['order'])) {
-			$url .= '&order=' . $this->request->get['order'];
-		}
-
-		if (isset($this->request->get['page'])) {
-			$url .= '&page=' . $this->request->get['page'];
-		}
-
 		$data['add'] = $this->url->link('production/addition', '1' . $url, true);
-		$data['delete'] = $this->url->link('production/stock_discounts/savePrice', '1' . $url, true);
-                $data['go_site'] = HTTP_SHOWCASE.'index.php?route=catalog/product&product_id=';
+		$data['delete'] = $this->url->link('production/stock_discounts/saveChanges', '1' . $url, true);
+		$data['go_site'] = HTTP_SHOWCASE.'index.php?route=catalog/product&product_id=';
 		$data['products'] = array();
 
 		$filter_data = array(
@@ -304,8 +289,7 @@ class ControllerProductionStockDiscounts extends Controller {
 			'filter_drom'	  => $filter_drom,
 			'filter_type'	  => $filter_type,
 			'filter_quantity' => $filter_quantity,
-                        'filter_category' => $filter_category,
-                        'filter_wocat' => $filter_wocat,
+			'filter_category' => $filter_category,
 			'filter_status'   => $filter_status,
 			'filter_image'    => $filter_image,
 			'sort'            => $sort,
@@ -313,100 +297,87 @@ class ControllerProductionStockDiscounts extends Controller {
 			'start'           => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit'           => $this->config->get('config_limit_admin')
 		);
-                $this->load->model('tool/product');        
-		$this->load->model('tool/image');
-
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
-                
 		$results = $this->model_catalog_product->getProducts($filter_data);
-//                $data['utype'] = $this->session->data['uType'];
-//                exit(var_dump($results));
+	//  $data['utype'] = $this->session->data['uType'];
 		foreach ($results as $result) {
-                        $photos = $this->model_tool_product->getProdImg($result['product_id']);
-                        $image = array();
-                        $local_id = 0;
-                        foreach($photos as $img){
-                            $image[] = array (
-                                    'thumb'         => $this->model_tool_image->resize($img['image'], 400, 300),
-                                    'popup'         => $this->model_tool_image->resize($img['image'], 1024, 768),
-                                    'main'          => $img['image']==$result['image']?TRUE:FALSE,
-                                    'lid'           => $local_id
-                            );
-                        ++$local_id;    
-                        }
-                        
-//			if (is_file(DIR_IMAGE . $result['image'])) {
-//				$image = $this->model_tool_image->resize($result['image'], 400, 300);
-//			} else {
-//				$image = $this->model_tool_image->resize('no_image.png', 400, 300);
-//			}
-                        
-                        $now = time();
-                        $added = strtotime($result['date_added']);
-                        $dateDif = abs($added-$now);
-                        $dateRes = floor($dateDif/(60*60*24));
-                        
-                        $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['vin']."'");
-                        $saleDate = '';
-                        if(!empty($quer->row)){
-                            $saleDate = $quer->row['date'];
-                        } else {
-                            $saleDate = 'В наличии';
-                        }
-                        $stat ='';
-                        switch ($result['status']){
-                            case 0:
-                                $stat=$this->language->get('text_disabled');
-                                break;
-                            case 1:
-                                $stat=$this->language->get('text_enabled');
-                                break;
-                            case 2:
-                                $stat=$this->language->get('text_reserve');
-                                break;
-                        }
-                        if(!count($image)){
-                            $image[] = array (
-                                    'thumb'         => $this->model_tool_image->resize('no-image.png', 400, 300),
-                                    'main'          => TRUE,
-                                    'lid'           => 0
-                            );
-                        } elseif (!in_array(TRUE,array_column($image,'main'))) {
-                                $image[0]['main'] = TRUE;
-                        }
-                        if($result['product_id']!=NULL){
-                            $data['products'][] = array(
-                                    'product_id' => $result['product_id'],
-                                    'image'      => $image,
-                                    'saled'      => $saleDate,
-                                    'manager'    => $result['manager'],
-                                    'name'       => $result['name'],
-                                    'vin'        => $result['vin'],
-                                    'catn'        => $result['catn'],
-                                    'stell'      => (isset($result['stell'])) && ($result['stell']!=='')?$result['stell']:'-',
-                                    'jar'        => (isset($result['jar'])) && ($result['jar']!=='')?$result['jar']:'-',
-                                    'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='')?$result['shelf']:'-',
-                                    'box'        => (isset($result['box'])) && ($result['box']!=='')?$result['box']:'-',
-                                    'donor'      => $result['numb']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'numb=' . $result['numb'] . $url, true).'">'.$result['numb'].'</a>':'-',
-                                    'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
-                                    'adress'     => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
-                                    'note'       => $result['note'],
-                                    'price'      => $result['price'],
-                                    'date_added' => $result['date_added'],
-                                    'dateDif'    => $dateRes,
-                                    'dop'        => $result['dop'],
-                                    'quantity'   => $result['quantity'],
-                                    'status'     => $stat,
-									'compability'=> $result['compability'],
-									'cond'       => $result['cond'],
-                                    'edit'       => $this->url->link('production/stock_discounts/edit', 'product_id=' . $result['product_id'] . $url, true)
-                            );
-                        }       
-		}  
+			$photos = $this->model_tool_product->getProdImg($result['product_id']);
+			$image = array();
+			$local_id = 0;
+			foreach($photos as $img){
+				$image[] = array (
+					'thumb'         => $this->model_tool_image->resize($img['image'], 400, 300),
+					'popup'         => $this->model_tool_image->resize($img['image'], 1024, 768),
+					'main'          => $img['image']==$result['image']?TRUE:FALSE,
+					'lid'           => $local_id
+				);
+				++$local_id;    
+			}
+	//			if (is_file(DIR_IMAGE . $result['image'])) {
+	//				$image = $this->model_tool_image->resize($result['image'], 400, 300);
+	//			} else {
+	//				$image = $this->model_tool_image->resize('no_image.png', 400, 300);
+	//			}
+			$now = time();
+			$added = strtotime($result['date_added']);
+			$dateDif = abs($added-$now);
+			$dateRes = floor($dateDif/(60*60*24));
+			
+			$stat ='';
+			switch ($result['status']){
+				case 0:
+					$stat=$this->language->get('text_disabled');
+					break;
+				case 1:
+					$stat=$this->language->get('text_enabled');
+					break;
+				case 2:
+					$stat=$this->language->get('text_reserve');
+					break;
+			}
+			if(!count($image)){
+				$image[] = array (
+					'thumb'         => $this->model_tool_image->resize('no-image.png', 400, 300),
+					'main'          => TRUE,
+					'lid'           => 0
+				);
+			} elseif (!in_array(TRUE,array_column($image,'main'))) {
+				$image[0]['main'] = TRUE;
+			}
+			if($result['product_id']!=NULL){
+				$data['products'][] = array(
+					'product_id' => $result['product_id'],
+					'image'      => $image,
+					'manager'    => $result['manager'],
+					'name'       => $result['name'],
+					'vin'        => $result['vin'],
+					'catn'        => $result['catn'],
+					'stell'      => (isset($result['stell'])) && ($result['stell']!=='')?$result['stell']:'-',
+					'jar'        => (isset($result['jar'])) && ($result['jar']!=='')?$result['jar']:'-',
+					'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='')?$result['shelf']:'-',
+					'box'        => (isset($result['box'])) && ($result['box']!=='')?$result['box']:'-',
+					'donor'      => $result['numb']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'numb=' . $result['numb'] . $url, true).'">'.$result['numb'].'</a>':'-',
+					'numb'       => $result['numb'] != '' ? $result['numb'] : '-',
+					'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
+					'adress'     => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
+					'note'       => $result['note'],
+					'zаmetki'    => $result['zаmetki'],
+					'price'      => $result['price'],
+					'date_added' => $result['date_added'],
+					'dateDif'    => $dateRes,
+					'dop'        => $result['dop'],
+					'quantity'   => $result['quantity'],
+					'status'     => $stat,
+					'cond'       => $result['cond'],
+					'edit'       => $this->url->link('production/stock_discounts/edit', 'product_id=' . $result['product_id'] . $url, true),
+					'avitoname'  => $result['avitoname']
+				);
+			}
+		}
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
-                $data['text_reserve'] = $this->language->get('text_reserve');
+				$data['text_reserve'] = $this->language->get('text_reserve');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
 
@@ -414,7 +385,7 @@ class ControllerProductionStockDiscounts extends Controller {
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_category'] = $this->language->get('column_category');
 		$data['column_model'] = $this->language->get('column_model');
-		$data['column_price'] = $this->language->get('column_price');
+		$data['column_price'] = "Цена&nbspдетали";
 		$data['column_quantity'] = $this->language->get('column_quantity');
 		$data['column_status'] = $this->language->get('column_status');
 		$data['column_action'] = $this->language->get('column_action');
@@ -439,7 +410,6 @@ class ControllerProductionStockDiscounts extends Controller {
 		} else {
 			$data['error_warning'] = '';
 		}
-
 		if (isset($this->session->data['success'])) {
 			$data['success'] = $this->session->data['success'];
 
@@ -447,7 +417,6 @@ class ControllerProductionStockDiscounts extends Controller {
 		} else {
 			$data['success'] = '';
 		}
-
 		if (isset($this->request->post['selected'])) {
 			$data['selected'] = (array)$this->request->post['selected'];
 		} else {
@@ -456,139 +425,52 @@ class ControllerProductionStockDiscounts extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_catn'])) {
+			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
+		}
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
 		if (isset($this->request->get['filter_donor'])) {
 			$url .= '&filter_donor=' . urlencode(html_entity_decode($this->request->get['filter_donor'], ENT_QUOTES, 'UTF-8'));
 		}
-
-		if (isset($this->request->get['filter_catn'])) {
-			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
-		}
-
 		if (isset($this->request->get['filter_model'])) {
 			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 		}
-
 		if (isset($this->request->get['filter_price_from'])) {
 			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
 		}
 		if (isset($this->request->get['filter_price_to'])) {
 			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 		}
-		
-                if (isset($this->request->get['filter_vin'])) {
-			$url .= '&filter_vin=' . $this->request->get['filter_vin'];
-		}
-                
-                if (isset($this->request->get['filter_brand'])) {
-			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
-		}
-                if (isset($this->request->get['filter_drom'])) {
-			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
-		}
-                if (isset($this->request->get['filter_type'])) {
-			$url .= '&filter_type=' . $this->request->get['filter_type'];
-		}
-
-		if (isset($this->request->get['filter_quantity'])) {
-			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
-		}
-
-		if (isset($this->request->get['filter_category'])) {
-                  $url .= '&filter_category=' . $this->request->get['filter_category'];
-                }
-		if (isset($this->request->get['filter_wocat'])) {
-                  $url .= '&filter_wocat=' . $this->request->get['filter_wocat'];
-                }
-
-		if (isset($this->request->get['filter_status'])) {
-			$url .= '&filter_status=' . $this->request->get['filter_status'];
-		}
-
-		if (isset($this->request->get['filter_image'])) {
-			$url .= '&filter_image=' . $this->request->get['filter_image'];
-		}
-
-		if ($order == 'ASC') {
-			$url .= '&order=DESC';
-		} else {
-			$url .= '&order=ASC';
-		}
-
-		if (isset($this->request->get['page'])) {
-			$url .= '&page=' . $this->request->get['page'];
-		}
-
-		$data['sort_name'] = $this->url->link('production/stock_discounts', 'sort=pd.name' . $url, true);
-		$data['sort_model'] = $this->url->link('production/stock_discounts', 'sort=p.length' . $url, true);
-		$data['sort_manager'] = $this->url->link('production/stock_discounts', 'sort=p.manager' . $url, true);
-		$data['sort_locate'] = $this->url->link('production/stock_discounts', 'sort=p.weight' . $url, true);
-		$data['sort_date_added'] = $this->url->link('production/stock_discounts', 'sort=p.date_added' . $url, true);
-		$data['sort_price'] = $this->url->link('production/stock_discounts', 'sort=p.price' . $url, true);
-		$data['sort_category'] = $this->url->link('production/stock_discounts', 'sort=p2c.category_id' . $url, true);
-		$data['sort_quantity'] = $this->url->link('production/stock_discounts', 'sort=p.quantity' . $url, true);
-		$data['sort_status'] = $this->url->link('production/stock_discounts', 'sort=p.status' . $url, true);
-		$data['sort_order'] = $this->url->link('production/stock_discounts', 'sort=p.sort_order' . $url, true);
-
-		$url = '';
-
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
-		}
-		if (isset($this->request->get['filter_donor'])) {
-			$url .= '&filter_donor=' . urlencode(html_entity_decode($this->request->get['filter_donor'], ENT_QUOTES, 'UTF-8'));
-		}
-		if (isset($this->request->get['filter_catn'])) {
-			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
-		}
-
-		if (isset($this->request->get['filter_model'])) {
-			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
-		}
-
-		if (isset($this->request->get['filter_price_from'])) {
-			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
-		}
-		if (isset($this->request->get['filter_price_to'])) {
-			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
-		}
-
 		if (isset($this->request->get['filter_vin'])) {
 			$url .= '&filter_vin=' . $this->request->get['filter_vin'];
 		}
-		
-                if (isset($this->request->get['filter_brand'])) {
+		if (isset($this->request->get['filter_brand'])) {
 			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 		}
-                if (isset($this->request->get['filter_drom'])) {
+		if (isset($this->request->get['filter_drom'])) {
 			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 		}
-                if (isset($this->request->get['filter_type'])) {
+		if (isset($this->request->get['filter_type'])) {
 			$url .= '&filter_type=' . $this->request->get['filter_type'];
-		}
-                
+		}	
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
 		}
-
 		if (isset($this->request->get['filter_status'])) {
 			$url .= '&filter_status=' . $this->request->get['filter_status'];
 		}
-
 		if (isset($this->request->get['filter_image'])) {
 			$url .= '&filter_image=' . $this->request->get['filter_image'];
 		}
-
+//		тут добавляется sort и order, но нет категории и wocat
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
-
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
-
 		$pagination = new Pagination();
 		$pagination->total = $product_total;
 		$pagination->page = $page;
@@ -611,18 +493,15 @@ class ControllerProductionStockDiscounts extends Controller {
 		$data['filter_type'] = $filter_type;
 		$data['filter_quantity'] = $filter_quantity;
 		$data['filter_category'] = $filter_category;
-		$data['filter_wocat'] = $filter_wocat;
 		$data['filter_status'] = $filter_status;
 		$data['filter_image'] = $filter_image;
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
-                //exit(var_dump($data['products']));
+		//exit(var_dump($data['products']));
 		$this->response->setOutput($this->load->view('catalog/stock_discounts', $data));
 	}
-        
-        
-        
+	
 	protected function getForm() {
             $this->load->model('tool/product');
             $this->load->model('product/product');
@@ -1040,22 +919,40 @@ class ControllerProductionStockDiscounts extends Controller {
         imagedestroy($source);
         imagedestroy($rotate);
         echo 1;
-    }  
+    }
+	
     public function savePrice() {
         $this->load->model('tool/xml');
         $this->load->model('tool/forms');
         $this->load->model('tool/product');
         $trill = $this->request->post;
         $trillPrice = $trill['price'];
-            foreach ($trillPrice as $vin => $priceCell) {
-            if ($priceCell != '') {
-             $this->model_tool_product->savePriceCell($vin, $priceCell);
-          
+        foreach ($trillPrice as $vin => $priceCell) {
+            if($priceCell != '') {
+				$this->model_tool_product->savePriceCell($vin, $priceCell);
             }
-            
         }
         $this->response->redirect($this->url->link('production/stock_discounts'));
-
-        //exit(var_dump($trill));
     }
+	
+	public function saveChanges() {
+		$this->load->model('tool/product');
+		if($this->request->post['selected']){
+			$selectedProds = $this->request->post['selected'];
+			$cellNames = array_keys($this->request->post);
+			$key = array_search('selected', $cellNames);
+			unset($cellNames[$key]);
+			foreach($selectedProds as $prod){
+				foreach($cellNames as $cellName){
+					$vals = $this->request->post[$cellName];
+					if($cellName == 'donor' && $vals[$prod] != '' && $vals[$prod] != '-'){
+						$this->model_tool_product->saveProductCell($prod, $vals[$prod], "numb");
+					} elseif($cellName != 'donor' && $vals[$prod] != ''){
+						$this->model_tool_product->saveProductCell($prod, $vals[$prod], $cellName);
+					}
+				}
+			}
+			$this->response->redirect($this->url->link('production/stock_discounts'));
+		}
+	}
 }

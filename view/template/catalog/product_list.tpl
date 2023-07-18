@@ -68,17 +68,17 @@
               </div>
 			  <div class="form-group col-sm-6">
                 <label class="control-label" for="input-price">Цена от:</label>
-                <input type="text" name="filter_price_from" value="<?php echo $filter_price_from; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+                <input type="number" name="filter_price_from" value="<?php echo $filter_price_from; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
               </div>
               <div class="form-group col-sm-6">
                 <label class="control-label" for="input-price">Цена до:</label>
-                <input type="text" name="filter_price_to" value="<?php echo $filter_price_to; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+                <input type="number" name="filter_price_to" value="<?php echo $filter_price_to; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-quantity"><?php echo $entry_quantity; ?></label>
-                <input type="text" name="filter_quantity" value="<?php echo $filter_quantity; ?>" placeholder="<?php echo $entry_quantity; ?>" id="input-quantity" class="form-control" />
+                <input type="number" name="filter_quantity" value="<?php echo $filter_quantity; ?>" placeholder="<?php echo $entry_quantity; ?>" id="input-quantity" class="form-control" />
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-brand">Марка, модель, модельный ряд</label>
@@ -370,16 +370,10 @@ $('#button-filter').on('click', function() {
 	}
 
 	var filter_price_from = $('input[name=\'filter_price_from\']').val();
-        var filter_price_from = filter_price_from.replace(/\s+/g," ");
-        $('input[name=\'filter_price_from\']').val($.trim(filter_price_from));
-
 	if (filter_price_from) {
 		url += '&filter_price_from=' + encodeURIComponent(filter_price_from);
 	}
 	var filter_price_to = $('input[name=\'filter_price_to\']').val();
-        var filter_price_to = filter_price_to.replace(/\s+/g," ");
-        $('input[name=\'filter_price_to\']').val($.trim(filter_price_to));
-
 	if (filter_price_to) {
 		url += '&filter_price_to=' + encodeURIComponent(filter_price_to);
 	}
@@ -427,6 +421,13 @@ $('#button-filter').on('click', function() {
   if (filter_status != '*') {
     url += '&filter_status=' + encodeURIComponent(filter_status);
   }
+  
+  
+  var filter_quantity = $('input[name=\'filter_quantity\']').val();
+  if(filter_quantity) {
+	url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+  }
+  
   //фильтры местоположения
   var filter_adress = $('select[name=\'filter_adress\']').val();
   if(filter_adress && filter_adress != "-") {
@@ -452,8 +453,8 @@ $('#button-filter').on('click', function() {
   if(filter_box && filter_box != "-") {
 	url +='&filter_box='+ encodeURIComponent(filter_box);
   }
-
-	location = url;
+  
+  location = url;
 });
 //--></script>
   <script type="text/javascript"><!--

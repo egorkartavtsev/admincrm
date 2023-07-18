@@ -1834,6 +1834,41 @@ $(document).ready(function() {
             }
         });
     });
+	
+	$(document).on('click', '[type=downloadReport]', function(){
+		var req = {filter:[]};
+        $(this).parent().find('input').each(function(){
+            if($(this).val()!==''){
+                var object = {
+                    name:$(this).attr('name'),
+                    val:$(this).val()
+                };
+                req.filter.push(object);
+            }
+        });
+        $(this).parent().find('select').each(function(){
+            if($(this).val()!==''){
+                var object = {
+                    name:$(this).attr('name'),
+                    val:$(this).val()
+                };
+                req.filter.push(object);
+            }
+        });
+		$.ajax({
+			url: "index.php?route=report/sales/downloadReport",
+            method: "POST",
+            data:{filter:req.filter},
+			success: function(response){
+				alert(response);
+				window.open(response, "save");
+			},
+			error: function(){
+				alert('error');
+			}
+		});
+		
+	});
     
     $(document).on('click', '.ct-bar', function(event){
         var ind = $('.ct-series line').index($(this));
